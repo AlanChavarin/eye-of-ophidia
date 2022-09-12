@@ -4,6 +4,8 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
 const cors = require('cors')
 const {errorHandler} = require('./middleware/errorMiddleware')
+const bodyParser = require('body-parser')
+
 
 app.use(cors({
     origin: 'http://localhost:3000'
@@ -22,4 +24,6 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.use('/api/matches', require('./routes/matchRoutes'))
+app.use('/api/heroes', require('./routes/heroRoutes'))
+
 app.use(errorHandler)
