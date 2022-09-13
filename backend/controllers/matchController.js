@@ -1,40 +1,50 @@
 const asyncHandler = require('express-async-handler')
 const Match = require('../models/matchmodel')
-const Hero = require('../models/heroModel')
 
-const getMatch = asyncHandler(async (req, res) => {
-    let matchResult
+const getMatches = asyncHandler(async (req, res) => {
+    let matches
     if(req.query.hero1 && req.query.hero2 && req.query.text){
-        matchesResult = await Match.find({ 
+        matches = await Match.find({ 
             $text: {$search: req.query.text},
             $or: [{"player1.hero": req.query.hero1, "player2.hero": req.query.hero2, },
                 {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }]
             })
     } else if(req.query.hero1 && req.query.hero2){
-        matchesResult = await Match.find({ 
+        matches = await Match.find({ 
         $or: [{"player1.hero": req.query.hero1, "player2.hero": req.query.hero2, },
             {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }]
         })
     } else if(req.query.hero1){
-        matchesResult = await Match.find({
+        matches = await Match.find({
             $or: [{"player1.hero": req.query.hero1},{"player2.hero": req.query.hero1}]
         })
     } else if(req.query.text){
-        matchesResult = await Match.find({ 
+        matches = await Match.find({ 
             $text: {$search: req.query.text}
         })
     } else {
-        matchesResult = await Match.find({})
+        matches = await Match.find({})
     }
-    res.status(200).json(matchesResult)
+    res.status(200).json(matches)
+})
+
+const getMatch = asyncHandler(async (req, res) => {
+    console.log(req.params.id)
+    const match = await Match.findById({_id: req.params.id})
+    if(!match){
+        res.status(400)
+        throw new Error('Match with that id not found')
+    }
+    res.status(200).json(match)
 })
 
 const postMatch = asyncHandler(async (req, res) => {
-    const {player1, player2, event, date, description, link} = req.body
-    if(!(await Hero.exists({name: player1.hero})) || !(await Hero.exists({name: player2.hero}))){
+    if(req.user.privilege === 'banned'){
         res.status(400)
-        throw new Error('Hero with that name doesnt exist! Double check your spelling')
+        throw new Error('User does not have the right privileges to perform a post')
     }
+
+    const {player1, player2, event, date, description, link} = req.body
     if( !player1.name || !player1.hero || !player1.deck || 
         !player2.name || !player2.hero || !player2.deck ||
         !event || !date || !link){
@@ -55,30 +65,42 @@ const postMatch = asyncHandler(async (req, res) => {
          event: event,
          link: link,
          date: date,
+         creator: req.user._id,
          description: description
     })
     res.status(200).json(match)
 })
 
 const updateMatch = asyncHandler(async (req, res) => {
-    console.log(req.body);
     if(!Match.exists({_id: req.params.id})){
         res.status(400)
         throw new Error('Match with that id does not exist')
     }
-
-    const match = await Match.findByIdAndUpdate(req.params.id, req.body, {new: true})
-    res.status(200).json(match)
+    const tempMatch = await Match.findById(req.params.id)
+    //console.log(req.user._id, tempMatch.creator, (tempMatch.creator.toString() === req.user._id.toString()));
+    if(req.user.privilege === 'admin' || req.user.privilege === 'moderator' || req.user._id.toString() === tempMatch.creator.toString()){
+        const match = await Match.findOneAndUpdate({_id: req.params.id}, req.body, {runValidators: true, new: true})
+        res.status(200).json(match)
+    } else {
+        res.status(400)
+        throw new Error('User does not have the right privileges to perform an update')
+    }
+    
 })
 
 const deleteMatch = asyncHandler(async (req, res) => {
-    res.status(200).json({
-        message: "Hello from delete match! This method isn't finished yet!",
-        id: (req.params.id) ? req.params.id : "no params sent"
-    })
+    if(req.user.privilege === 'admin' || req.user.privilege === 'moderator'){
+        const match = await Match.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        res.status(200).json(match)
+    } else {
+        res.status(400)
+        throw new Error('User does not have the right privileges to delete')
+    }
+    
 })
 
 module.exports = {
+    getMatches,
     getMatch,
     postMatch,
     updateMatch,

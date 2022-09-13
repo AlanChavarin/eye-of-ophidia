@@ -1,14 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const {getMatch, postMatch, updateMatch, deleteMatch} = require('../controllers/matchController')
+const {getMatch, getMatches, postMatch, updateMatch, deleteMatch} = require('../controllers/matchController')
+const {protect} = require('../middleware/authMiddleware')
 
+router.get('/', getMatches)
 
-router.get('/', getMatch)
+router.get('/:id', getMatch)
 
-router.post('/', postMatch)
+router.post('/', protect, postMatch)
 
-router.put('/:id', updateMatch)
+router.put('/:id', protect, updateMatch)
 
-router.delete('/:id', deleteMatch)
+router.delete('/:id', protect, deleteMatch)
 
 module.exports = router
