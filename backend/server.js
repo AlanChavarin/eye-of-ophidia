@@ -26,6 +26,7 @@ app.use('/api/matches', require('./routes/matchRoutes'))
 app.use('/api/heroes', require('./routes/heroRoutes'))
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/admin', require('./routes/adminRoutes'))
+app.use('/api/issues', require('./routes/issueRoutes'))
 
 app.get('/api/test/', async (req, res) => {
     res.status(200).send('test')

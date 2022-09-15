@@ -18,6 +18,7 @@ const matchSchema = mongoose.Schema({
     date: {type: Date, required: true},
     creator: ObjectId,
     description: String,
+    deleted: Boolean
 })
 
 module.exports = mongoose.model('Match', matchSchema)

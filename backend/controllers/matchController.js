@@ -1,36 +1,43 @@
 const asyncHandler = require('express-async-handler')
-const Match = require('../models/matchmodel')
+const Match = require('../models/matchModel')
 
 const getMatches = asyncHandler(async (req, res) => {
     let matches
+    if(!req.recyclebin){req.recyclebin = false}
+    console.log(req.recyclebin)
     if(req.query.hero1 && req.query.hero2 && req.query.text){
         matches = await Match.find({ 
             $text: {$search: req.query.text},
             $or: [{"player1.hero": req.query.hero1, "player2.hero": req.query.hero2, },
-                {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }]
+                {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }],
+            deleted: req.recyclebin
             })
     } else if(req.query.hero1 && req.query.hero2){
         matches = await Match.find({ 
         $or: [{"player1.hero": req.query.hero1, "player2.hero": req.query.hero2, },
-            {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }]
+            {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }],
+        deleted: req.recyclebin
         })
     } else if(req.query.hero1){
         matches = await Match.find({
-            $or: [{"player1.hero": req.query.hero1},{"player2.hero": req.query.hero1}]
+            $or: [{"player1.hero": req.query.hero1},{"player2.hero": req.query.hero1}],
+            deleted: req.recyclebin
         })
     } else if(req.query.text){
         matches = await Match.find({ 
-            $text: {$search: req.query.text}
+            $text: {$search: req.query.text},
+            deleted: req.recyclebin
         })
     } else {
-        matches = await Match.find({})
+        matches = await Match.find({deleted: req.recyclebin})
     }
     res.status(200).json(matches)
 })
 
 const getMatch = asyncHandler(async (req, res) => {
-    console.log(req.params.id)
-    const match = await Match.findById({_id: req.params.id})
+    //console.log(req.params.id)
+    if(!req.recyclebin){req.recyclebin = false}
+    const match = await Match.findOne({_id: req.params.id, deleted: req.recyclebin})
     if(!match){
         res.status(400)
         throw new Error('Match with that id not found')
@@ -66,7 +73,8 @@ const postMatch = asyncHandler(async (req, res) => {
          link: link,
          date: date,
          creator: req.user._id,
-         description: description
+         description: description,
+         deleted: false
     })
     res.status(200).json(match)
 })
@@ -78,25 +86,19 @@ const updateMatch = asyncHandler(async (req, res) => {
     }
     const tempMatch = await Match.findById(req.params.id)
     //console.log(req.user._id, tempMatch.creator, (tempMatch.creator.toString() === req.user._id.toString()));
-    if(req.user.privilege === 'admin' || req.user.privilege === 'moderator' || req.user._id.toString() === tempMatch.creator.toString()){
-        const match = await Match.findOneAndUpdate({_id: req.params.id}, req.body, {runValidators: true, new: true})
-        res.status(200).json(match)
-    } else {
-        res.status(400)
-        throw new Error('User does not have the right privileges to perform an update')
-    }
+    const match = await Match.findOneAndUpdate({_id: req.params.id, deleted: false}, req.body, {runValidators: true, new: true})
+    res.status(200).json(match)
     
 })
 
 const deleteMatch = asyncHandler(async (req, res) => {
-    if(req.user.privilege === 'admin' || req.user.privilege === 'moderator'){
-        const match = await Match.findByIdAndUpdate(req.params.id, req.body, {new: true})
-        res.status(200).json(match)
-    } else {
-        res.status(400)
-        throw new Error('User does not have the right privileges to delete')
-    }
-    
+    const match = await Match.findByIdAndUpdate(req.params.id, {deleted: true}, {new: true})
+    res.status(200).json(match)
+})
+
+const restoreMatch = asyncHandler(async (req, res) => {
+    const match = await Match.findByIdAndUpdate(req.params.id, {deleted: false})
+    res.status(200).json(match)
 })
 
 module.exports = {
@@ -104,5 +106,6 @@ module.exports = {
     getMatch,
     postMatch,
     updateMatch,
-    deleteMatch
+    deleteMatch,
+    restoreMatch
 }
