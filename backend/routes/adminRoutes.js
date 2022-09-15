@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const {protect} = require('../middleware/authMiddleware')
+const {protect, protectAdmin, protectModerator} = require('../middleware/authMiddleware')
 const {adminChangePrivileges, moderatorChangePrivileges} = require('../controllers/adminController')
 
-router.put('/admin/:id', protect, adminChangePrivileges)
+router.put('/admin/:userid', protect, protectAdmin, adminChangePrivileges)
 
-router.put('/moderator/:id', protect, moderatorChangePrivileges)
+router.put('/moderator/:userid', protect, protectModerator, moderatorChangePrivileges)
 
 module.exports = router
