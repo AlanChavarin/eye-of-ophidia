@@ -14,7 +14,7 @@ const protectCorrectUser = asyncHandler(async (req, res, next) => {
     }
 })
 
-router.put('/moderator/:commentid', protect, protectModerator, editComment)
+//router.put('/moderator/:commentid', protect, protectModerator, editComment)
 
 router.delete('/moderator/:commentid', protect, protectModerator, deleteComment)
 
@@ -25,7 +25,5 @@ router.post('/:matchid', protect, postComment)
 router.put('/:commentid', protect, protectCorrectUser, editComment)
 
 router.delete('/:commentid', protect, protectCorrectUser, deleteComment)
-
-
 
 module.exports = router

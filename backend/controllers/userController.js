@@ -21,7 +21,8 @@ const registerUser = asyncHandler(async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
-        privilege: "user"
+        privilege: 'user',
+        karma: 0
     })
     
     res.status(200).json({
@@ -46,7 +47,9 @@ const loginUser = asyncHandler(async (req, res) => {
 const getMe = asyncHandler(async (req, res) => {
     res.status(200).json({
         name: req.user.name,
-        email: req.user.email
+        email: req.user.email,
+        karma: req.user.karma,
+        privilege: req.user.privilege
     })
 })
 

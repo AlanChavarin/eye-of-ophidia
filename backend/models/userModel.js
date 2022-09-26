@@ -15,7 +15,11 @@ const userSchema = mongoose.Schema({
     privilege: {
         type: String,
         required: true,
-        enum: ['admin', 'moderator', 'user', 'banned'] 
+        enum: ['admin', 'moderator', 'helper', 'user', 'banned'] 
+    },
+    karma: {
+        type: Number,
+        required: true
     }
 })
 

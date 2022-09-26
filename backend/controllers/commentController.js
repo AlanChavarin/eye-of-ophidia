@@ -25,7 +25,7 @@ const editComment = asyncHandler(async(req, res) => {
 
 const deleteComment = asyncHandler(async(req, res) => {
     const comment = await Comment.findByIdAndDelete(req.params.commentid)
-    re.status(200).json(comment)
+    res.status(200).json(comment)
 })
 
 module.exports = {

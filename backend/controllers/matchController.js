@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Match = require('../models/matchModel')
+const {postMatchEdit} = require('./matchEditHistoryController') 
 
 const getMatches = asyncHandler(async (req, res) => {
     let matches
@@ -46,11 +47,6 @@ const getMatch = asyncHandler(async (req, res) => {
 })
 
 const postMatch = asyncHandler(async (req, res) => {
-    if(req.user.privilege === 'banned'){
-        res.status(400)
-        throw new Error('User does not have the right privileges to perform a post')
-    }
-
     const {player1, player2, event, date, description, link} = req.body
     if( !player1.name || !player1.hero || !player1.deck || 
         !player2.name || !player2.hero || !player2.deck ||
@@ -76,17 +72,17 @@ const postMatch = asyncHandler(async (req, res) => {
          description: description,
          deleted: false
     })
+    postMatchEdit(match, req.user_id)
     res.status(200).json(match)
 })
 
 const updateMatch = asyncHandler(async (req, res) => {
-    if(!Match.exists({_id: req.params.id})){
+    if(!Match.exists({_id: req.params.matchid, deleted: false})){
         res.status(400)
-        throw new Error('Match with that id does not exist')
+        throw new Error('Match with that id does not exist or has been deleted')
     }
-    const tempMatch = await Match.findById(req.params.id)
-    //console.log(req.user._id, tempMatch.creator, (tempMatch.creator.toString() === req.user._id.toString()));
-    const match = await Match.findOneAndUpdate({_id: req.params.id, deleted: false}, req.body, {runValidators: true, new: true})
+    const match = await Match.findOneAndUpdate({_id: req.params.matchid, deleted: false}, req.body, {runValidators: true, new: true})
+    postMatchEdit(match, req.user._id)
     res.status(200).json(match)
     
 })

@@ -38,4 +38,13 @@ const protectModerator = asyncHandler(async (req, res, next) => {
     }
 })
 
-module.exports = {protect, protectAdmin, protectModerator}
+const protectHelper = asyncHandler(async (req, res, next) => {
+    if(req.user.privilege === 'admin' || req.user.privilege === 'moderator' || req.user.privilege === 'helper'){
+        next()
+    } else {
+        res.status(400)
+        throw new Error('You need admin or moderator privileges to access this function')
+    }
+}) 
+
+module.exports = {protect, protectAdmin, protectModerator, protectHelper}

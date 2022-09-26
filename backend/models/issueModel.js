@@ -11,10 +11,14 @@ const issueSchema = mongoose.Schema({
         type: ObjectId,
         required: true
     },
+    creator: {
+        type: ObjectId,
+        required: true
+    },
     status: {
         type: String,
         required: true,
-        enum: ['pending', 'fixed', 'deleted']
+        enum: ['pending', 'fixed', 'closed']
     }
 })
 
