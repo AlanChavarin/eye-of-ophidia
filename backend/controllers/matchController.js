@@ -5,21 +5,35 @@ const {postMatchEdit} = require('./matchEditHistoryController')
 const getMatches = asyncHandler(async (req, res) => {
     let matches
     if(!req.recyclebin){req.recyclebin = false}
-    console.log(req.recyclebin)
     if(req.query.hero1 && req.query.hero2 && req.query.text){
         matches = await Match.find({ 
-            $text: {$search: req.query.text},
-            $or: [{"player1.hero": req.query.hero1, "player2.hero": req.query.hero2, },
-                {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }],
-            deleted: req.recyclebin
+                $text: {$search: req.query.text},
+                $or: [{"player1.hero": req.query.hero1, "player2.hero": req.query.hero2, },
+                    {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }],
+                deleted: req.recyclebin
             })
     } else if(req.query.hero1 && req.query.hero2){
         matches = await Match.find({ 
-        $or: [{"player1.hero": req.query.hero1, "player2.hero": req.query.hero2, },
-            {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }],
-        deleted: req.recyclebin
+                $or: [{"player1.hero": req.query.hero1, "player2.hero": req.query.hero2, },
+                    {"player1.hero": req.query.hero2, "player2.hero": req.query.hero1, }],
+                deleted: req.recyclebin
+            })
+    } else if(req.query.hero1 && req.query.text){
+        matches = await Match.find({ 
+                $text: {$search: req.query.text},
+                $or: [{"player1.hero": req.query.hero1},
+                    {"player2.hero": req.query.hero1, }],
+                deleted: req.recyclebin
+            })
+    } else if(req.query.hero2 && req.query.text){
+        matches = await Match.find({ 
+            $text: {$search: req.query.text},
+            $or: [{"player1.hero": req.query.hero2},
+                {"player2.hero": req.query.hero2, }],
+            deleted: req.recyclebin
         })
-    } else if(req.query.hero1){
+    }
+    else if(req.query.hero1){
         matches = await Match.find({
             $or: [{"player1.hero": req.query.hero1},{"player2.hero": req.query.hero1}],
             deleted: req.recyclebin
