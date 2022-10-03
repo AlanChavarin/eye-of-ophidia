@@ -1,11 +1,12 @@
 import './styles/SearchForm.css'
 import {useState} from 'react'
 import HeroSelect from './HeroSelect'
+import {useNavigate} from 'react-router-dom'
 
 function SearchForm() {
 
     const API_URL = 'http://localhost:5000/api/matches/'
-
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         text: "",
         hero1: "",
@@ -20,13 +21,18 @@ function SearchForm() {
         }))
     }
 
+    // const onSubmit = (e) => {
+    //     e.preventDefault()
+    //     fetch(API_URL + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)
+    //     .then(res => res.json())
+    //     .then((data) => {
+    //         console.log(data)
+    //     })
+    // }
+
     const onSubmit = (e) => {
         e.preventDefault()
-        fetch(API_URL + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)
-        .then(res => res.json())
-        .then((data) => {
-            console.log(data)
-        })
+        navigate('/matches/?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)
     }
 
     return (
@@ -49,7 +55,5 @@ function SearchForm() {
         </div>
     )
 }
-
-// value={formData.text} onChange={(e) => setFormData({text: e.target.value})}
 
 export default SearchForm
