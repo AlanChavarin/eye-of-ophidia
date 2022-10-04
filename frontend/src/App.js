@@ -11,22 +11,28 @@ import Login from "./components/pages/Login"
 //tools
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 
+//context
+import {UserProvider} from './context/UserContext'
+
 function App() {
   return (
-    <Router>
-      <div className="app-parent">
-        <Navbar />
-        <div className='app-container'>
-          <Routes>
-            <Route path='/' element={<Home />}/>
-            <Route path='/matches/' element={<SearchResults />}/>
-            <Route path='/matches/:matchid' element={<Match />}/>
-            <Route path='/login' element={<Login />}/>
-          </Routes>
+    <UserProvider>
+      <Router>
+        <div className="app-parent">
+          <Navbar />
+          <div className='app-container'>
+            <Routes>
+              <Route path='/' element={<Home />}/>
+              <Route path='/matches/' element={<SearchResults />}/>
+              <Route path='/matches/:matchid' element={<Match />}/>
+              <Route path='/login' element={<Login />}/>
+            </Routes>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-    </Router>
+      </Router>
+    </UserProvider>
+    
   );
 }
 
