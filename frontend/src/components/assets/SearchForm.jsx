@@ -21,15 +21,6 @@ function SearchForm() {
         }))
     }
 
-    // const onSubmit = (e) => {
-    //     e.preventDefault()
-    //     fetch(API_URL + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)
-    //     .then(res => res.json())
-    //     .then((data) => {
-    //         console.log(data)
-    //     })
-    // }
-
     const onSubmit = (e) => {
         e.preventDefault()
         navigate('/matches/?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)

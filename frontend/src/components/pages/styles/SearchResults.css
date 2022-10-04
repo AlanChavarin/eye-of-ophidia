@@ -1,4 +1,8 @@
 .searchresults-parent{
+    
+}
+
+.searchresults-matchescontainer{
     display: flex;
     flex-direction: column;
 }

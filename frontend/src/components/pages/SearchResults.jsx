@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import {useSearchParams} from 'react-router-dom'
+import MatchResult from '../assets/MatchResult'
+import SearchForm from '../assets/SearchForm'
 
 function SearchResults() {
-    const [searchParams, setSearchParams] = useSearchParams([])
+    const [searchParams, setSearchParams] = useSearchParams()
     const [matches, setMatches] = useState()
     const API_URL = 'http://localhost:5000/api/matches/'
     const text = searchParams.get('text')
@@ -11,39 +13,34 @@ function SearchResults() {
 
     useEffect(() => {
         getMatches()
-        setTimeout(() => {
-            console.log(matches, 'this is from useEffect')
-        }, 5000)
-    }, [])
+    }, [searchParams])
+
+    useEffect(() => {
+        console.log(matches, 'this is from state')
+    }, [matches])
 
 
     const getMatches = () => {
         fetch(API_URL + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)
         .then(res => res.json())
         .then((data) => {
-            let arr = []
-            data.map((match) => {
-                arr.push(match)
-            })
-            console.log(arr);
-            setMatches(arr)
+            console.log(data, 'this is from fetch()')
+            setMatches(data)
         })
     }
 
   return (
     <div className='searchresults-parent'>
         <div>
-
+            <SearchForm />
         </div>
-        {/* <div>
-            text: {text}
+        
+        <div className='searchresults-matchescontainer'>
+          {matches?.map((match) => (
+            <MatchResult key={match._id} match={match}/>
+            ))}  
         </div>
-        <div>
-            hero1: {hero1}
-        </div>
-        <div>
-            hero2: {hero2}
-        </div> */}
+        
     </div>
   )
 }

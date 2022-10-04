@@ -7,6 +7,9 @@ function Navbar() {
       <Link className='navbar-grid-item navbar-title' to='/'>
         <div>Eye of Ophidia</div>
       </Link>
+      <Link className='navbar-grid-item navbar-title' to='/login'>
+        <div>Login/Register</div>
+      </Link>
     </div>
   )
 }
