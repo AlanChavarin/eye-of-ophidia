@@ -15,7 +15,7 @@ code {
 .app-parent{
   height: 100vh;
   display: grid;
-  grid-template-rows: 8vh auto 5vh;
+  grid-template-rows: 8vh auto 8vh;
 }
 
 .app-parent > *{

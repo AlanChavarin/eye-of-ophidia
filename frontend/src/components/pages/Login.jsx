@@ -1,7 +1,10 @@
 import './styles/Login.css'
-import {useState} from 'react'
+import {useState, useContext} from 'react'
+import UserContext from '../../context/UserContext'
 
 function Login() {
+  const API_URL = 'http://localhost:5000/api/users/login'
+  const {updateLoggedInUserData} = useContext(UserContext)
 
   const [formData, setFormData] = useState({
     email: '',
@@ -20,7 +23,28 @@ function Login() {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    console.log(formData)
+
+    fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      if(data.errorMesssage){
+        throw new Error(data.errorMessage)
+      } else {
+        localStorage.setItem('user', data.token)
+        updateLoggedInUserData()
+      }
+    })
   }
 
   return (

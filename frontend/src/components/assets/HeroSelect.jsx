@@ -25,7 +25,7 @@ function HeroSelect({name, onChange}) {
     <div>
         <select name={name} onChange={onChange}>
             <option value=''>None</option>
-            {heroData.map((hero) => (<option value={hero}>{hero}</option>))}
+            {heroData.map((hero) => (<option value={hero} key={hero}>{hero}</option>))}
         </select>
     </div>
   )
