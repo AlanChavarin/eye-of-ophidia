@@ -1,7 +1,12 @@
 import {Link} from 'react-router-dom'
 import './styles/Navbar.css'
+import UserContext from '../../context/UserContext'
+import {useContext} from 'react'
 
 function Navbar() {
+
+  const {userData} = useContext(UserContext)
+
   return (
     <div className='navbar-parent'>
       <Link className='navbar-grid-item navbar-title' to='/'>
@@ -10,6 +15,12 @@ function Navbar() {
       <Link className='navbar-grid-item navbar-title' to='/login'>
         <div>Login/Register</div>
       </Link>
+      {(userData.name) ? (
+        <Link className='navbar-grid-item navbar-title' to='/logout'>
+          <div>Logout</div>
+        </Link>
+      ) : <></>}
+      
     </div>
   )
 }

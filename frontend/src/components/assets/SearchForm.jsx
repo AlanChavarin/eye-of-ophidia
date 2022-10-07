@@ -5,7 +5,6 @@ import {useNavigate} from 'react-router-dom'
 
 function SearchForm() {
 
-    const API_URL = 'http://localhost:5000/api/matches/'
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
         text: "",

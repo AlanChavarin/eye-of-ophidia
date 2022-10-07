@@ -16,25 +16,28 @@ export const UserProvider = ({children}) => {
     const updateLoggedInUserData = () => {
         console.log('updateLoggedInUserData')
         const userToken = localStorage.getItem('user')
-        fetch(API_URL, {
-            method: 'GET',
-            headers: {
-                'authorization': 'Bearer ' + userToken
-            }
-        })
-        .then((res) => {
-            return res.json()
-        })
-        .then((data) => {
-            if(data.errorMessage){
-                console.log(data.errorMessage)
-            } else {
-                setUserData({
-                    name: data.name,
-                    email: data.email,
-                })
-            }
-        })
+        if(userToken){
+            fetch(API_URL, {
+                method: 'GET',
+                headers: {
+                    'authorization': 'Bearer ' + userToken
+                }
+            })
+            .then((res) => {
+                return res.json()
+            })
+            .then((data) => {
+                if(data.errorMessage){
+                    console.log(data.errorMessage)
+                } else {
+                    setUserData({
+                        name: data.name,
+                        email: data.email,
+                    })
+                }
+            })
+        }
+        
     }
 
     return <UserContext.Provider value={{

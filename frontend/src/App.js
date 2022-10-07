@@ -7,6 +7,7 @@ import Home from "./components/pages/Home"
 import SearchResults from "./components/pages/SearchResults"
 import Match from "./components/pages/Match"
 import Login from "./components/pages/Login"
+import Logout from "./components/pages/Logout"
 
 //tools
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
@@ -26,6 +27,7 @@ function App() {
               <Route path='/matches/' element={<SearchResults />}/>
               <Route path='/matches/:matchid' element={<Match />}/>
               <Route path='/login' element={<Login />}/>
+              <Route path='/logout' element={<Logout />}/>
             </Routes>
           </div>
           <Footer />

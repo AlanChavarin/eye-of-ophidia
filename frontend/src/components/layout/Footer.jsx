@@ -14,7 +14,7 @@ function Footer() {
         {(userData.name) ? 
         <>
           <div>
-            Username: {userData.name}
+            Name: {userData.name}
           </div>
           <div>
             Email: {userData.email}
