@@ -8,17 +8,20 @@ import SearchResults from "./components/pages/SearchResults"
 import Match from "./components/pages/Match"
 import Login from "./components/pages/Login"
 import Logout from "./components/pages/Logout"
+import Me from "./components/pages/Me"
+import PostMatch from "./components/pages/PostMatch"
 
 //tools
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 
 //context
 import {UserProvider} from './context/UserContext'
+import UserAuth from "./auth/UserAuth"
 
 function App() {
+
   return (
     <UserProvider>
-      <Router>
         <div className="app-parent">
           <Navbar />
           <div className='app-container'>
@@ -28,11 +31,14 @@ function App() {
               <Route path='/matches/:matchid' element={<Match />}/>
               <Route path='/login' element={<Login />}/>
               <Route path='/logout' element={<Logout />}/>
+              <Route element={<UserAuth />}>
+                <Route path='/postmatch' element={<PostMatch />}/>
+                <Route path='/me' element={<Me />}/>
+              </Route>
             </Routes>
           </div>
           <Footer />
         </div>
-      </Router>
     </UserProvider>
     
   );

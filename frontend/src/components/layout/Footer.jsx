@@ -11,7 +11,7 @@ function Footer() {
         Copyright Alan Chavarin
       </div>
       <div className='footer-item footer-userdata'>
-        {(userData.name) ? 
+        {(userData?.name) ? 
         <>
           <div>
             Name: {userData.name}

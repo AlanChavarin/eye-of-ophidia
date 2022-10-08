@@ -16,9 +16,14 @@ function Navbar() {
         <div>Login/Register</div>
       </Link>
       {(userData.name) ? (
-        <Link className='navbar-grid-item navbar-title' to='/logout'>
-          <div>Logout</div>
-        </Link>
+        <>
+          <Link className='navbar-grid-item navbar-title' to='/me'>
+            <div>Me</div>
+          </Link>
+          <Link className='navbar-grid-item navbar-title' to='/logout'>
+            <div>Logout</div>
+          </Link>
+        </>
       ) : <></>}
       
     </div>

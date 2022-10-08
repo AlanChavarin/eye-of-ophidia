@@ -6,7 +6,9 @@ export const UserProvider = ({children}) => {
     const API_URL = 'http://localhost:5000/api/users/me'
     const [userData, setUserData] = useState({
         name:'',
-        password: ''
+        email: '',
+        karma: 0,
+        privilege: ''
     })
 
     useEffect(() => {
@@ -33,11 +35,19 @@ export const UserProvider = ({children}) => {
                     setUserData({
                         name: data.name,
                         email: data.email,
+                        karma: data.karma,
+                        privilege: data.privilege
                     })
                 }
             })
+        } else {
+            setUserData({
+                name:'',
+                email: '',
+                karma: 0,
+                privilege: ''
+            })
         }
-        
     }
 
     return <UserContext.Provider value={{
