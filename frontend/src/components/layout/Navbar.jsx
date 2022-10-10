@@ -23,6 +23,9 @@ function Navbar() {
           <Link className='navbar-grid-item navbar-title' to='/logout'>
             <div>Logout</div>
           </Link>
+          <Link className='navbar-grid-item navbar-title' to='/postmatch'>
+            <div>Submit a new match!</div>
+          </Link>
         </>
       ) : <></>}
       

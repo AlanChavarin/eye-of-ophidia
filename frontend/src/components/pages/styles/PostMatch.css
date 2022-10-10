@@ -1,0 +1,11 @@
+.postmatch-form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.postmatch-form-container{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
