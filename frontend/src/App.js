@@ -33,6 +33,7 @@ function App() {
               <Route path='/logout' element={<Logout />}/>
               <Route element={<UserAuth />}>
                 <Route path='/postmatch' element={<PostMatch />}/>
+                <Route path='/postmatch/:matchid' element={<PostMatch />}/>
                 <Route path='/me' element={<Me />}/>
               </Route>
             </Routes>

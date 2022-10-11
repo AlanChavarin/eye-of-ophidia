@@ -1,6 +1,7 @@
 import {useContext} from 'react'
 import UserContext from '../../context/UserContext'
 import './styles/Footer.css'
+import {Link} from 'react-router-dom'
 
 function Footer() {
   const {userData} = useContext(UserContext)
@@ -21,6 +22,11 @@ function Footer() {
           </div>
         </> : <></>}
       </div>
+      {(userData?.name) ? <>
+        <Link className='navbar-grid-item navbar-title' to='/logout'>
+          <div>Logout</div>
+        </Link>
+      </> : <></>}
       
     </div>
   )

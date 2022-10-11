@@ -21,14 +21,21 @@ function Match() {
         fetch(API_URL + matchid)
         .then(res => res.json())
         .then((data) => {
+            if(data.errorMessage){
+                throw new Error(data.errorMessage)
+            }
             setMatch(data)
+        })
+        .catch((error) => {
+            console.log(error);
         })
     }
 
 
   return (
-    <div>
+    <div className='matchresult-parent'>
         <MatchResult match={match} />
+        
     </div>
   )
 }

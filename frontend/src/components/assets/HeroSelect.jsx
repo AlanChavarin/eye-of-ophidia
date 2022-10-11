@@ -1,6 +1,6 @@
  import {useState, useEffect} from 'react'
 
-function HeroSelect({name, onChange, required}) {
+function HeroSelect({name, onChange, required, value}) {
     const API_URL = 'http://localhost:5000/api/heroes'
 
     const [heroData, setHeroData] = useState([])
@@ -23,7 +23,7 @@ function HeroSelect({name, onChange, required}) {
     
   return (
     <div>
-        <select name={name} onChange={onChange} required={required}>
+        <select name={name} onChange={onChange} required={required} value={value}>
             <option value=''>None</option>
             {heroData.map((hero) => (<option value={hero} key={hero}>{hero}</option>))}
         </select>

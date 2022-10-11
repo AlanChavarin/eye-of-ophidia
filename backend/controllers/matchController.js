@@ -86,7 +86,7 @@ const postMatch = asyncHandler(async (req, res) => {
          description: description,
          deleted: false
     })
-    postMatchEdit(match, req.user_id)
+    postMatchEdit(match, req.user._id)
     res.status(200).json(match)
 })
 

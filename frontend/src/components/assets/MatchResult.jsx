@@ -17,6 +17,7 @@ function MatchResults({match}) {
           <div>Video Link: {match.link}</div>
           <div>Date: {match.date}</div>
           <Link to={'/matches/' + match._id}>Go to match page!</Link>
+          <Link to={'/postmatch/' + match._id}>Edit this match</Link>
         </>
       ): <></>}
       
