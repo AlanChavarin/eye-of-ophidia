@@ -13,6 +13,9 @@ function HeroSelect({name, onChange, required, value}) {
         fetch(API_URL)
         .then(res => res.json())
         .then((data) => {
+            if(data.errorMessage){
+                throw new Error(data.errorMessage)
+            }
             let heroNames = []
             data.map((hero) => {
                 heroNames.push(hero.name)
