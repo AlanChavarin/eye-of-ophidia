@@ -1,1 +1,1 @@
-test
+Eye of Ophida is an app that will allow Flesh and Blood players to search through a catalog of all major recorded competitive Flesh and Blood matches. They can use key terms such as the hero's match ups, specific players, and specific events. The community can suggest new big tournaments to be added to the catalog as well as trusted community members will be entering all important match data. 
