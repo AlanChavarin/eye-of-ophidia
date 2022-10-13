@@ -1,7 +1,10 @@
 import './styles/MatchResult.css'
 import {Link} from 'react-router-dom'
+import {useContext} from 'react'
+import UserContext from '../../context/UserContext'
 
 function MatchResults({match}) {
+  const {userData} = useContext(UserContext)
   return (
     <div className='matchresult-parent'>
       {match ? (
@@ -17,7 +20,7 @@ function MatchResults({match}) {
           <div>Video Link: {match.link}</div>
           <div>Date: {match.date}</div>
           <Link to={'/matches/' + match._id}>Go to match page!</Link>
-          <Link to={'/postmatch/' + match._id}>Edit this match</Link>
+          {(userData?.privilege === 'admin') ? <Link to={'/postmatch/' + match._id}>Edit this match</Link> : <></>}
         </>
       ): <></>}
       

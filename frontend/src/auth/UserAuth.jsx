@@ -2,18 +2,43 @@ import {Outlet} from 'react-router-dom'
 import {useContext} from 'react'
 import UserContext from '../context/UserContext'
 
-function UserAuth() {
+function UserAuth({privilege}) {
     const {userData} = useContext(UserContext)
 
-    if(userData?.name){
-        return (<Outlet />)
-    } else {
-        return (
-            <div>
-                You are not authorized to access this page. 
-            </div>
-        )
+    switch(privilege){
+        case 'admin': {
+            console.log('admin')
+            if(userData?.privilege === 'admin'){
+                return <Outlet />
+            } else {
+                return (<div>You need admin privileges to access this page</div>)
+            }
+            break;
+        }
+        case 'user': {
+            console.log('user')
+            if(userData?.privilege === 'admin' || userData?.privilege === 'user'){
+                return <Outlet />
+            } else {
+                return (<div>You must be logged in to access this page</div>)
+            }
+            break;
+        }
+        default: {
+            return (<div>prop error</div>)
+        }
     }
+
+
+    // if(userData?.privilege){
+    //     return (<Outlet />)
+    // } else {
+    //     return (
+    //         <div>
+    //             You are not authorized to access this page. 
+    //         </div>
+    //     )
+    // }
     
 }
 export default UserAuth

@@ -31,10 +31,12 @@ function App() {
               <Route path='/matches/:matchid' element={<Match />}/>
               <Route path='/login' element={<Login />}/>
               <Route path='/logout' element={<Logout />}/>
-              <Route element={<UserAuth />}>
+              <Route element={<UserAuth privilege='user'/>}>
+                <Route path='/me' element={<Me />}/>
+              </Route>
+              <Route element={<UserAuth privilege='admin'/>}>
                 <Route path='/postmatch' element={<PostMatch />}/>
                 <Route path='/postmatch/:matchid' element={<PostMatch />}/>
-                <Route path='/me' element={<Me />}/>
               </Route>
             </Routes>
           </div>
