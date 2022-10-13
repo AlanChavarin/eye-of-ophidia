@@ -16,7 +16,6 @@ export const UserProvider = ({children}) => {
     }, [])
 
     const updateLoggedInUserData = () => {
-        console.log('updateLoggedInUserData')
         const userToken = localStorage.getItem('user')
         if(userToken){
             fetch(API_URL, {

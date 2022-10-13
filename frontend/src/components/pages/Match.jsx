@@ -2,11 +2,11 @@ import {useParams} from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import MatchResult from '../assets/MatchResult'
 import Comments from '../assets/Comments'
+import Issues from '../assets/Issues'
 
 
 function Match() {
     const API_URL = 'http://localhost:5000/api/matches/'
-    const API_URL_COMMENTS = 'http://localhost:5000/api/comments/'
     const {matchid} = useParams()
     const [match, setMatch] = useState()
 
@@ -14,9 +14,6 @@ function Match() {
         getMatch()
     }, [])
 
-    useEffect(() => {
-        console.log(match, 'this is from state')
-    }, [match])
 
 
     const getMatch = () => {
@@ -38,6 +35,7 @@ function Match() {
     <div className='matchresult-parent'>
         <MatchResult match={match} />
         <Comments matchid={matchid}/>
+        <Issues matchid={matchid}/>
     </div>
   )
 }
