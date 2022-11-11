@@ -29,7 +29,7 @@ export const UserProvider = ({children}) => {
             })
             .then((data) => {
                 if(data.errorMessage){
-                    console.log(data.errorMessage)
+                    throw new Error(data.errorMessage)
                 } else {
                     setUserData({
                         name: data.name,
@@ -38,6 +38,9 @@ export const UserProvider = ({children}) => {
                         privilege: data.privilege
                     })
                 }
+            })
+            .catch((error) => {
+                console.log(error)
             })
         } else {
             setUserData({

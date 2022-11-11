@@ -13,7 +13,6 @@ function UserAuth({privilege}) {
             } else {
                 return (<div>You need admin privileges to access this page</div>)
             }
-            break;
         }
         case 'user': {
             console.log('user')
@@ -22,23 +21,11 @@ function UserAuth({privilege}) {
             } else {
                 return (<div>You must be logged in to access this page</div>)
             }
-            break;
         }
         default: {
             return (<div>prop error</div>)
         }
     }
-
-
-    // if(userData?.privilege){
-    //     return (<Outlet />)
-    // } else {
-    //     return (
-    //         <div>
-    //             You are not authorized to access this page. 
-    //         </div>
-    //     )
-    // }
     
 }
 export default UserAuth

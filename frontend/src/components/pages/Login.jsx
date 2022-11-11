@@ -1,9 +1,9 @@
 import './styles/Login.css'
-import {useState, useContext} from 'react'
+import {useState, useContext, useEffect} from 'react'
 import UserContext from '../../context/UserContext'
+import { loginCall, registrationCall } from '../../service/LoginService'
 
 function Login() {
-  const API_URL = 'http://localhost:5000/api/users/'
   const {updateLoggedInUserData} = useContext(UserContext)
   const [registrationMode, setRegistrationMode] = useState(false)
   const [formData, setFormData] = useState({
@@ -12,6 +12,10 @@ function Login() {
     password: '',
     password2: ''
   })
+
+  useEffect(() => {
+    
+  }, [])
 
   const {name, email, password, password2} = formData
 
@@ -22,60 +26,11 @@ function Login() {
       [e.target.name]: e.target.value
     }))
   }
-
-  const onSubmitForLogin = (e) => {
+    
+  const onSubmit = async (e) => {
     e.preventDefault()
-    fetch(API_URL + 'login', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
-    })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      if(data.errorMessage){
-        throw new Error(data.errorMessage)
-      } else {
-        localStorage.setItem('user', data.token)
-        updateLoggedInUserData()
-      }
-    })
-  }
-
-  const onSubmitForRegistration = (e) => {
-    e.preventDefault()
-    //check if passwords match
-    if(password !== password2){
-      throw new Error('passwords do not match!')
-    } else {
-      fetch(API_URL + 'register', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: name,
-          password: password,
-          email: email
-        })
-      })
-      .then(res => res.json())
-      .then((data) => {
-        if(data.errorMessage){
-          throw new Error(data.errorMessage)
-        } else {
-          console.log(data)
-          localStorage.setItem('user', data.token)
-          updateLoggedInUserData()
-        }
-      })
-    }
+    registrationMode ? await registrationCall(formData) : await loginCall(formData)
+    updateLoggedInUserData()
   }
 
   return (
@@ -84,7 +39,7 @@ function Login() {
           <button onClick={() => setRegistrationMode(false)}>Login</button>
           <button onClick={() => setRegistrationMode(true)}>Registration</button>
         </div>
-        <form className='login-form' onSubmit={(registrationMode) ? onSubmitForRegistration : onSubmitForLogin}>
+        <form className='login-form' onSubmit={onSubmit}>
             {(registrationMode) ? (
               <div className='login-form-container'>
                 <label>Name</label>

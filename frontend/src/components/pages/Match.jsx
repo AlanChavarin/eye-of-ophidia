@@ -14,8 +14,6 @@ function Match() {
         getMatch()
     }, [])
 
-
-
     const getMatch = () => {
         fetch(API_URL + matchid)
         .then(res => res.json())
