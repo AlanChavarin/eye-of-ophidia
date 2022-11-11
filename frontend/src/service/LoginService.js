@@ -1,41 +1,36 @@
 const API_URL = 'http://localhost:5000/api/users/'
 
-
-export const loginCall = async (formData) => {
+export const postLogin = async (formData, updateLoggedInUserData) => {
     const {email, password} = formData
-    return new Promise(resolve => {
-        fetch(API_URL + 'login', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        })
-        .then((res) => {
-            return res.json()
-        })
-        .then((data) => {
-            if(data.errorMessage){
-                throw new Error(data.errorMessage)
-            } else {
-                localStorage.setItem('user', data.token)
-                resolve(true)
-            }
+    fetch(API_URL + 'login', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password
         })
     })
-    
+    .then((res) => {
+        return res.json()
+    })
+    .then((data) => {
+        if(data.errorMessage){
+            throw new Error(data.errorMessage)
+        } else {
+            localStorage.setItem('user', data.token)
+            updateLoggedInUserData()
+        }
+    })
 }
 
-export const registrationCall = async (formData) => {
+export const postRegistration = async (formData, updateLoggedInUserData) => {
     const {name, email, password, password2} = formData
     //check if passwords match
     if(password !== password2){
-      throw new Error('passwords do not match!')
+        throw new Error('passwords do not match!')
     } else {
-      return new Promise(resolve => {
         fetch(API_URL + 'register', {
             method: 'POST',
             headers: {
@@ -53,9 +48,8 @@ export const registrationCall = async (formData) => {
                 throw new Error(data.errorMessage)
             } else {
             localStorage.setItem('user', data.token)
-            resolve(true)
+            updateLoggedInUserData()
             }
         })
-      })
     }
 }

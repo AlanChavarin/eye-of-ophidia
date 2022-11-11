@@ -1,7 +1,7 @@
 import './styles/Login.css'
-import {useState, useContext, useEffect} from 'react'
+import {useState, useContext} from 'react'
 import UserContext from '../../context/UserContext'
-import { loginCall, registrationCall } from '../../service/LoginService'
+import { postLogin, postRegistration } from '../../service/LoginService'
 
 function Login() {
   const {updateLoggedInUserData} = useContext(UserContext)
@@ -12,10 +12,6 @@ function Login() {
     password: '',
     password2: ''
   })
-
-  useEffect(() => {
-    
-  }, [])
 
   const {name, email, password, password2} = formData
 
@@ -29,8 +25,7 @@ function Login() {
     
   const onSubmit = async (e) => {
     e.preventDefault()
-    registrationMode ? await registrationCall(formData) : await loginCall(formData)
-    updateLoggedInUserData()
+    registrationMode ? postRegistration(formData, updateLoggedInUserData) : await postLogin(formData, updateLoggedInUserData)
   }
 
   return (

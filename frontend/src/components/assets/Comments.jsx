@@ -1,30 +1,15 @@
 import {useState, useEffect, useContext} from 'react'
 import UserContext from '../../context/UserContext'
+import {getComments, postComment, deleteComment} from '../../service/CommentService'
 
 function Comments({matchid}) {
-  const API_URL = 'http://localhost:5000/api/comments/'
   const [comments, setComments] = useState()
   const [newCommentBody, setNewCommentBody] = useState('')
   const {userData} = useContext(UserContext)
 
   useEffect(() => {
-    getComments()
-  })
-
-  const getComments = () => {
-    if(matchid){
-      fetch(API_URL + matchid)
-      .then(res => res.json())
-      .then((data) => {
-          if(data.errorMessage){
-              throw new Error(data.errorMessage)
-          }
-          setComments(data)
-      })
-    } else {
-      throw new Error('matchid doesnt exist')
-    }
-  }
+    getComments(setComments, matchid)
+  }, [])
 
   const onChange = (e) => {
     setNewCommentBody(e.target.value)
@@ -32,49 +17,7 @@ function Comments({matchid}) {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    fetch(API_URL + matchid, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('user')
-      },
-      body: JSON.stringify({
-        body: newCommentBody
-      })
-    })
-    .then(res => res.json())
-    .then((data) => {
-      if(data.errorMessage){
-        throw new Error(data.errorMessage)
-      }
-      getComments()
-      setNewCommentBody('')
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-    
-  }
-
-  const deleteComment = (e) => {
-    const commentid = e.target.parentElement.getAttribute('commentid')
-    fetch(API_URL + commentid, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('user')
-      }
-    })
-    .then(res => res.json())
-    .then((data) => {
-      if(data.errorMessage){
-        throw new Error(data.errorMessage)
-      }
-      getComments()
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-
+    postComment(newCommentBody, getComments, setComments, setNewCommentBody, matchid)
   }
 
   return (
@@ -82,7 +25,7 @@ function Comments({matchid}) {
       {comments?.map((comment) => (
         <div key={comment._id} commentid={comment._id}>
           <div >{comment.body}</div>
-          {(userData?.privilege === 'admin') ? (<button onClick={deleteComment}>delete</button>) : <></>}
+          {(userData?.privilege === 'admin') ? (<button onClick={(e) => deleteComment(e, getComments, setComments, matchid)}>delete</button>) : <></>}
         </div>
       ))}
       {((userData?.name) ? (
