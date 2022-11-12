@@ -8,16 +8,24 @@ function Comments({matchid}) {
   const {userData} = useContext(UserContext)
 
   useEffect(() => {
-    getComments(setComments, matchid)
+    getComments(matchid)
+    .then(data => setComments(data))
   }, [])
 
   const onChange = (e) => {
     setNewCommentBody(e.target.value)
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
-    postComment(newCommentBody, getComments, setComments, setNewCommentBody, matchid)
+    await postComment(newCommentBody, matchid)
+    setComments(await getComments(matchid))
+    setNewCommentBody('')
+  }
+
+  const onDelete = async (e) => {
+    await deleteComment(e)
+    setComments(await getComments(matchid))
   }
 
   return (
@@ -25,7 +33,7 @@ function Comments({matchid}) {
       {comments?.map((comment) => (
         <div key={comment._id} commentid={comment._id}>
           <div >{comment.body}</div>
-          {(userData?.privilege === 'admin') ? (<button onClick={(e) => deleteComment(e, getComments, setComments, matchid)}>delete</button>) : <></>}
+          {(userData?.privilege === 'admin') ? (<button onClick={onDelete}>delete</button>) : <></>}
         </div>
       ))}
       {((userData?.name) ? (

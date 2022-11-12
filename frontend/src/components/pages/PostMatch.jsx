@@ -2,7 +2,7 @@ import './styles/PostMatch.css'
 import {useState, useEffect} from 'react'
 import HeroSelect from '../assets/HeroSelect'
 import {useParams} from 'react-router-dom'
-import {postMatch, fetchMatch} from '../../service/PostMatchService'
+import {getMatchForForm, postMatch} from '../../service/MatchService'
 
 function PostMatch() {
   const {matchid} = useParams()
@@ -24,7 +24,10 @@ function PostMatch() {
   const {player1Name, player1Hero, player1Deck, player2Name, player2Hero, player2Deck, event, link, date, description} = formData
 
   useEffect(() => {
-    fetchMatch(setFormData, matchid)
+    if(matchid){
+      getMatchForForm(matchid)
+      .then(data => setFormData(data)) 
+    }  
   }, [])
 
   const onChange = (e) => {
@@ -36,6 +39,7 @@ function PostMatch() {
 
   const onSubmit = (e) => {
     e.preventDefault()
+    console.log(formData)
     postMatch(formData, matchid)
   }
 

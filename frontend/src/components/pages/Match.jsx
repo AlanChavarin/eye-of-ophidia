@@ -10,9 +10,9 @@ function Match() {
     const [match, setMatch] = useState()
 
     useEffect(() => {
-        getMatch(setMatch, matchid)
+      getMatch(matchid)
+      .then(data => setMatch(data))
     }, [])
-
 
   return (
     <div className='matchresult-parent'>

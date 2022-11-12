@@ -12,7 +12,8 @@ function SearchResults() {
     const hero2 =  searchParams.get('hero2')
 
     useEffect(() => {
-        getMatches(text, hero1, hero2, setMatches)
+        getMatches(text, hero1, hero2)
+        .then(data => setMatches(data))
     }, [searchParams])
 
   return (

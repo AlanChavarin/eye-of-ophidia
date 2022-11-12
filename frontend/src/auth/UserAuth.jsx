@@ -7,7 +7,7 @@ function UserAuth({privilege}) {
 
     switch(privilege){
         case 'admin': {
-            console.log('admin')
+            //console.log('admin')
             if(userData?.privilege === 'admin'){
                 return <Outlet />
             } else {
@@ -15,7 +15,7 @@ function UserAuth({privilege}) {
             }
         }
         case 'user': {
-            console.log('user')
+            //console.log('user')
             if(userData?.privilege === 'admin' || userData?.privilege === 'user'){
                 return <Outlet />
             } else {
