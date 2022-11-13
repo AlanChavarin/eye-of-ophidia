@@ -1,9 +1,9 @@
 import {useEffect, useState, useContext} from 'react'
 import PropTypes from 'prop-types'
 import UserContext from '../../context/UserContext'
+import {getIssues, changeStatus, postIssue} from '../../service/IssueService'
 
 function Issues({matchid}) {
-    const API_URL = 'http://localhost:5000/api/issues/'
     const {userData} = useContext(UserContext)
     const [issues, setIssues] = useState()
     const [formData, setFormData] = useState({
@@ -14,22 +14,8 @@ function Issues({matchid}) {
     const {title, body} = formData
 
     useEffect(() => {
-        getIssues()
+        getIssues(matchid).then(data => setIssues(data))
     }, [])
-
-    const getIssues = () => {
-        fetch(API_URL + matchid)
-        .then(res => res.json())
-        .then((data) => {
-            if(data.errorMessage){
-                throw new Error(data.errorMessage)
-            }
-            setIssues(data)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-    }
 
     const onChange = (e) => {
         setFormData((prev) => ({
@@ -38,55 +24,20 @@ function Issues({matchid}) {
         }))
     }
 
-    const changeStatus = (e) => {
-        const issueid = e.target.parentElement.getAttribute('issueid')
+    const onChangeStatus = (e) => {
+        const issueid = e.target.parentElement.parentElement.getAttribute('issueid')
         const status = e.target.getAttribute('status')
-        fetch(API_URL + issueid, {
-            method: 'PUT',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('user')
-            },
-            body: JSON.stringify({
-                status: status
-            })
-        })
-        .then(res => res.json())
-        .then((data) => {
-            if(data.errorMessage){
-                throw new Error(data.errorMessage)
-            }
-            getIssues()
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+        changeStatus(issueid, status)
+        .then(() => getIssues(matchid))
+        .then(data => setIssues(data))
     }
 
     const onSubmit = (e) => {   
         e.preventDefault()
-        console.log(formData)
-        fetch(API_URL + matchid, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('user')
-            },
-            body: JSON.stringify({
-                title: title,
-                body: body
-            })
-        })
-        .then(res => res.json())
-        .then((data) => {
-            if(data.errorMessage){
-                throw new Error(data.errorMessage)
-            }
-            getIssues()
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+        postIssue(matchid, formData)
+        .then(() => getIssues(matchid))
+        .then(data => setIssues(data))
+        .then(() => setFormData({title: '', body: ''}))
     }
 
   return (
@@ -98,9 +49,9 @@ function Issues({matchid}) {
                 <div>{issue.status}</div>
                 {(userData?.privilege === 'admin') ? (
                     <div>
-                        <button status='pending' onClick={changeStatus}>Status: pending</button>
-                        <button status='fixed' onClick={changeStatus}>Status: fixed</button>
-                        <button status='closed' onClick={changeStatus}>Status: closed</button>
+                        <button status='pending' onClick={onChangeStatus}>Status: pending</button>
+                        <button status='fixed' onClick={onChangeStatus}>Status: fixed</button>
+                        <button status='closed' onClick={onChangeStatus}>Status: closed</button>
                     </div>
                 ) : <></>}
             </div>

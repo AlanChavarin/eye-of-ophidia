@@ -1,28 +1,13 @@
  import {useState, useEffect} from 'react'
+ import {getHeroes} from '../../service/HeroService'
 
 function HeroSelect({name, onChange, required, value}) {
-    const API_URL = 'http://localhost:5000/api/heroes'
-
     const [heroData, setHeroData] = useState([])
 
     useEffect(() => {
-        fetchHeroData()
+        getHeroes()
+        .then(data => setHeroData(data))
     }, [])
-
-    const fetchHeroData = () => {
-        fetch(API_URL)
-        .then(res => res.json())
-        .then((data) => {
-            if(data.errorMessage){
-                throw new Error(data.errorMessage)
-            }
-            let heroNames = []
-            data.map((hero) => {
-                heroNames.push(hero.name)
-            })
-            setHeroData(heroNames)
-        })
-    }
     
   return (
     <div>
