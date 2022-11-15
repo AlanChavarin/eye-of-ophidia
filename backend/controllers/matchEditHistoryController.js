@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler')
 const MatchEditHistory = require('../models/matchEditHistoryModel')
 
 const getMatchEditHistory = asyncHandler(async (req, res) => {
-    const matchEditHistory = await MatchEditHistory.find({targetMatch: req.params.matchid})
+    const matchEditHistory = await MatchEditHistory.find({parentMatch: req.params.matchid})
     res.status(200).json(matchEditHistory)
 })
 

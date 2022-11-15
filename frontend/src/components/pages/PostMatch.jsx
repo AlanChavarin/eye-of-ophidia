@@ -39,7 +39,6 @@ function PostMatch() {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    console.log(formData)
     postMatch(formData, matchid)
   }
 

@@ -42,8 +42,6 @@ function Comments({matchid}) {
           <input type='submit'/>
         </form>
       ) : <></>)}
-      
-      
     </div>
   )
 }

@@ -23,9 +23,11 @@ function Login() {
     }))
   }
     
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault()
-    registrationMode ? postRegistration(formData, updateLoggedInUserData) : await postLogin(formData, updateLoggedInUserData)
+    registrationMode ? 
+    postRegistration(formData, updateLoggedInUserData) : 
+    postLogin(formData, updateLoggedInUserData)
   }
 
   return (
