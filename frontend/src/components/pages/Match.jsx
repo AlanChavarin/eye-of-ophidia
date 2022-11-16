@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import MatchResult from '../assets/MatchResult'
 import Comments from '../assets/Comments'
 import Issues from '../assets/Issues'
-import EditHistory from '../assets/EditHistory'
+import EditHistories from '../assets/EditHistories'
 import {getMatch} from '../../service/MatchService'
 
 function Match() {
@@ -28,9 +28,9 @@ function Match() {
           <button value='issues' onClick={onClick}>Issues</button>
           <button value='history' onClick={onClick}>Edit History</button>
         </div>
-        {tab=='comments' && <Comments matchid={matchid}/>}
-        {tab=='issues' && <Issues matchid={matchid}/>}
-        {tab=='history' && <EditHistory matchid={matchid}/>}
+        {tab==='comments' && <Comments matchid={matchid}/>}
+        {tab==='issues' && <Issues matchid={matchid}/>}
+        {tab==='history' && <EditHistories matchid={matchid}/>}
     </div>
   )
 }

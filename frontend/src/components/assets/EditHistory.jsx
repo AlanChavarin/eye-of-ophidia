@@ -1,23 +1,16 @@
-import {useState, useEffect} from 'react'
-import { getMatchEditHistory } from '../../service/EditHistoryService'
+import {useEffect} from 'react'
 
-function EditHistory({matchid}) {
-    const [history, setHistory] = useState()
+function EditHistory({editHistory}) {
 
     useEffect(() => {
-        getMatchEditHistory(matchid)
-        .then(data => setHistory(data))
+        editHistory?.forEach(test => {
+            console.log(test)
+        })
     }, [])
-
-    useEffect(() => {
-        console.log(history)
-    }, [history])
 
   return (
     <div>
-        {history.map((history) => (
-            <div>{history.editor}</div>
-        ))}
+        {editHistory._id}
     </div>
   )
 }
