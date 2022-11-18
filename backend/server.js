@@ -5,6 +5,8 @@ const dotenv = require('dotenv').config()
 const cors = require('cors')
 const {errorHandler} = require('./middleware/errorMiddleware')
 
+const nodemailer = require('nodemailer')
+
 
 app.use(cors({
     origin: 'http://localhost:3000'
@@ -31,6 +33,27 @@ app.use('/api/comments', require('./routes/commentRoutes'))
 app.use('/api/matchedithistory', require('./routes/matchEditHistoryRoutes'))
 
 app.get('/api/test/', async (req, res) => {
+
+    let transporter = nodemailer.createTransport({
+        host: "smtp.zoho.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      })
+
+    let info = await transporter.sendMail({
+        from: '"Alan Chavarin" <eyeofophidia@zohomail.com>', 
+        to: "alanchavarin4@hotmail.com", // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: "Hello world?", // plain text body
+        html: "<b>Hello world?</b>", // html body
+      })
+
+      console.log("Message sent: %s", info.messageId)
+
     res.status(200).send('test')
 })
 
