@@ -25,7 +25,7 @@ export const postLogin = async (formData, updateLoggedInUserData) => {
     })
 }
 
-export const postRegistration = async (formData, updateLoggedInUserData) => {
+export const postRegistration = async (formData) => {
     const {name, email, password, password2} = formData
     //check if passwords match
     if(password !== password2){
@@ -46,10 +46,24 @@ export const postRegistration = async (formData, updateLoggedInUserData) => {
         .then((data) => {
             if(data.errorMessage){
                 throw new Error(data.errorMessage)
-            } else {
-            localStorage.setItem('user', data.token)
-            updateLoggedInUserData()
             }
         })
     }
+}
+
+export const putVerify = async (token) => {
+    fetch(API_URL + 'verify', {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    .then(res => res.json())
+    .then((data) => {
+        if(data.errorMessage){
+            throw new Error(data.errorMessage)
+        } else {
+            console.log(data.message)
+        }
+    })
 }

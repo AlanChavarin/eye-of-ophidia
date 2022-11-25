@@ -10,6 +10,7 @@ import Login from "./components/pages/Login"
 import Logout from "./components/pages/Logout"
 import Me from "./components/pages/Me"
 import PostMatch from "./components/pages/PostMatch"
+import Verify from "./components/pages/Verify"
 
 //tools
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
@@ -34,6 +35,7 @@ function App() {
               <Route path='/matches/:matchid' element={<Match />}/>
               <Route path='/login' element={<Login />}/>
               <Route path='/logout' element={<Logout />}/>
+              <Route path='/verify/:token' element={<Verify />}/>
               <Route element={<UserAuth privilege='user'/>}>
                 <Route path='/me' element={<Me />}/>
               </Route>

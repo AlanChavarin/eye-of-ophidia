@@ -32,29 +32,29 @@ app.use('/api/issues', require('./routes/issueRoutes'))
 app.use('/api/comments', require('./routes/commentRoutes'))
 app.use('/api/matchedithistory', require('./routes/matchEditHistoryRoutes'))
 
-app.get('/api/test/', async (req, res) => {
+// app.get('/api/test/', async (req, res) => {
 
-    let transporter = nodemailer.createTransport({
-        host: "smtp.zoho.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: process.env.EMAIL,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      })
+//     let transporter = nodemailer.createTransport({
+//         host: "smtp.zoho.com",
+//         port: 465,
+//         secure: true,
+//         auth: {
+//           user: process.env.EMAIL,
+//           pass: process.env.EMAIL_PASSWORD,
+//         },
+//       })
 
-    let info = await transporter.sendMail({
-        from: '"Alan Chavarin" <eyeofophidia@zohomail.com>', 
-        to: "alanchavarin4@hotmail.com", // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
-      })
+//     let info = await transporter.sendMail({
+//         from: '"eye of ophidia" <eyeofophidia@zohomail.com>', 
+//         to: "buddergeeii@gmail.com", // list of receivers
+//         subject: "this is a test from nodemailer", // Subject line
+//         text: "this is a test from nodemailer, thank you for testing!", // plain text body
+//         html: "<html><b>Hello world? I hope you recieved this message, its a test from nodemailer!</b></html>", // html body
+//       })
 
-      console.log("Message sent: %s", info.messageId)
+//     console.log("Message sent: %s", info.messageId)
 
-    res.status(200).send('test')
-})
+//     res.status(200).send('test')
+// })
 
 app.use(errorHandler)

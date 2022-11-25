@@ -20,6 +20,10 @@ const userSchema = mongoose.Schema({
     karma: {
         type: Number,
         required: true
+    },
+    verified: {
+        type: Boolean,
+        required: true
     }
 })
 

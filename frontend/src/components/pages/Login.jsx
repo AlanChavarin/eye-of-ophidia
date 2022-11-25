@@ -26,7 +26,7 @@ function Login() {
   const onSubmit = (e) => {
     e.preventDefault()
     registrationMode ? 
-    postRegistration(formData, updateLoggedInUserData) : 
+    postRegistration(formData) : 
     postLogin(formData, updateLoggedInUserData)
   }
 
