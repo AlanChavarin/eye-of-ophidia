@@ -1,26 +1,29 @@
 import {Link} from 'react-router-dom'
-import './styles/Navbar.css'
+import NavbarCSS from './styles/Navbar.module.css'
 import UserContext from '../../context/UserContext'
 import {useContext} from 'react'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye } from '@fortawesome/free-solid-svg-icons'
 
 function Navbar() {
 
   const {userData} = useContext(UserContext)
 
   return (
-    <div className='navbar-parent'>
-      <Link className='navbar-grid-item navbar-title' to='/'>
-        <div>Eye of Ophidia</div>
+    <div className={`${NavbarCSS.navbar}`}>
+      <Link to='/' className={NavbarCSS.item}>
+        <div><FontAwesomeIcon icon={faEye} />Eye of Ophidia</div>
       </Link>
-      <Link className='navbar-grid-item navbar-title' to='/login'>
+      <Link to='/login' className={NavbarCSS.item}>
         <div>Login/Register</div>
       </Link>
       {(userData.name) ? (
         <>
-          <Link className='navbar-grid-item navbar-title' to='/me'>
+          <Link to='/me' className={NavbarCSS.item}>
             <div>Me</div>
           </Link>
-          <Link className='navbar-grid-item navbar-title' to='/postmatch'>
+          <Link to='/postmatch' className={NavbarCSS.item}>
             <div>Submit a new match!</div>
           </Link>
         </>

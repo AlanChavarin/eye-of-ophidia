@@ -1,4 +1,4 @@
-import './styles/PostMatch.css'
+import PostMatchCSS from './styles/PostMatch.module.css'
 import {useState, useEffect} from 'react'
 import HeroSelect from '../assets/HeroSelect'
 import {useParams} from 'react-router-dom'
@@ -44,48 +44,48 @@ function PostMatch() {
 
 
   return (
-    <form onSubmit={onSubmit} className='postmatch-form'>
+    <form onSubmit={onSubmit} className={PostMatchCSS.form}>
       <h3>{(matchid) ? (<>edit mode</>):(<>post mode</>)}</h3>
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Event Name</label>
         <input type="text" name='event' value={event} onChange={onChange} required/>
       </div>
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Video Link</label>
         <input type="text" name='link' value={link} onChange={onChange} required/>
       </div>
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Date</label>
         <input type="date" name='date' value={date} onChange={onChange} required/>
       </div>
 
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Player 1 Hero</label>
         <HeroSelect name='player1Hero' value={player1Hero} onChange={onChange} required={true}/>
       </div>
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Player 1 Full Name</label>
         <input type="text" name='player1Name' value={player1Name} onChange={onChange} required/>
       </div>
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Player 1 Deck Link</label>
         <input type="text" name='player1Deck' value={player1Deck} onChange={onChange} required/>
       </div>
 
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Player 2 Hero</label>
         <HeroSelect name='player2Hero' value={player2Hero} onChange={onChange} required={true}/>
       </div>
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Player 2 Full Name</label>
         <input type="text" name='player2Name' value={player2Name} onChange={onChange} required/>
       </div>
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Player 2 Deck Link</label>
         <input type="text" name='player2Deck' value={player2Deck} onChange={onChange} required/>
       </div>
 
-      <div className='postmatch-form-container'>
+      <div className={PostMatchCSS.container}>
         <label>Description</label>
         <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}></textarea>
       </div>

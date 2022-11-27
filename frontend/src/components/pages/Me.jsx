@@ -1,4 +1,3 @@
-import './styles/Me.css'
 import UserContext from '../../context/UserContext'
 import {useContext} from 'react'
 
@@ -7,7 +6,7 @@ function Me() {
     const {name, email, karma, privilege} = userData
 
     return (
-        <div className='me-parent'>
+        <div>
             <div>
                 Name: {name}
             </div>

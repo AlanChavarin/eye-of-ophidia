@@ -17,9 +17,9 @@ function SearchResults() {
     }, [searchParams])
 
   return (
-    <div className='searchresults-parent'>
+    <div>
         <SearchForm />
-        <div className='searchresults-matchescontainer'>
+        <div>
           {matches?.map((match) => (
             <MatchResult key={match._id} match={match}/>
             ))}  

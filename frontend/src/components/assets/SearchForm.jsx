@@ -1,7 +1,9 @@
-import './styles/SearchForm.css'
+import SearchFormCSS from './styles/SearchForm.module.css'
 import {useState} from 'react'
 import HeroSelect from './HeroSelect'
 import {useNavigate} from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 function SearchForm() {
 
@@ -27,20 +29,21 @@ function SearchForm() {
 
     return (
         <div>
-            <form className='searchform-form' onSubmit={onSubmit}>
-                <div className='searchform-form-container'> 
-                    <label>Search</label>
-                    <input type='text' name='text' value={text} onChange={onChange}/>
+            <form className={SearchFormCSS.searchform} onSubmit={onSubmit}>
+                <div className={SearchFormCSS.searchBar}> 
+                    <button className={SearchFormCSS.searchButton}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
+                    <input className={SearchFormCSS.searchInput} type='text' name='text' value={text} onChange={onChange} placeholder="Search for a match"/>
                 </div>
-                <div className='searchform-form-container'>   
-                    <label>Select hero</label>
-                    <HeroSelect name='hero1' onChange={onChange}/>
+                
+                <div className={SearchFormCSS.hero}>
+                    <label>Hero matchup</label>
+                    <div className={SearchFormCSS.container}>   
+                        <HeroSelect name='hero1' onChange={onChange}/>
+                    </div>
+                    <div className={SearchFormCSS.container}>
+                        <HeroSelect name='hero2' onChange={onChange}/>
+                    </div>
                 </div>
-                <div className='searchform-form-container'>
-                    <label>Select hero</label>
-                    <HeroSelect name='hero2' onChange={onChange}/>
-                </div>
-                <input type='submit'/>
             </form>
         </div>
     )

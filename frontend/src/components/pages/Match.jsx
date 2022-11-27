@@ -21,7 +21,7 @@ function Match() {
     }
 
   return (
-    <div className='matchresult-parent'>
+    <div>
         <MatchResult match={match} />
         <div>
           <button value='comments' onClick={onClick}>Comments</button>

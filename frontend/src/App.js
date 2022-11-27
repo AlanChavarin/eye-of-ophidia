@@ -28,7 +28,7 @@ function App() {
     <UserProvider>
         <div className="app-parent">
           <Navbar />
-          <div className='app-container'>
+          <div className='app-container background-color'>
             <Routes>
               <Route path='/' element={<Home />}/>
               <Route path='/matches/' element={<SearchResults />}/>

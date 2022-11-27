@@ -1,0 +1,19 @@
+.footer{
+    display: flex;
+    gap: 10vw;
+    border: 0px;
+    border-top: 1px;
+    border-color: grey;
+    border-style: solid;
+}
+
+.logout{
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.logout:hover{
+    color: #1446A0;
+}

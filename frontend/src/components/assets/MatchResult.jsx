@@ -1,4 +1,4 @@
-import './styles/MatchResult.css'
+import MatchResultCSS from './styles/MatchResult.module.css'
 import {Link} from 'react-router-dom'
 import {useContext} from 'react'
 import UserContext from '../../context/UserContext'
@@ -6,7 +6,7 @@ import UserContext from '../../context/UserContext'
 function MatchResults({match}) {
   const {userData} = useContext(UserContext)
   return (
-    <div className='matchresult-parent'>
+    <div className={MatchResultCSS.match}>
       {match ? (
         <>
           <div>Player: {match.player1.name}</div>

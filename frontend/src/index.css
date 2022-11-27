@@ -12,24 +12,24 @@ code {
     monospace;
 }
 
+.app-container * {
+  font-size: large;
+}
+
 .app-parent{
   height: 100vh;
   display: grid;
-  grid-template-rows: 8vh auto 8vh;
+  grid-template-rows: 4vh auto 4vh;
 }
 
 .app-parent > *{
   display:flex;
   justify-content: center;
   align-items: center;
-
-  border-style: solid;
-  border-color: red;
-  border-width: 1px;
 }
 
-.app-container > * {
-  border-style: solid;
-  border-color: red;
-  border-width: 1px;
+
+
+.background-color{
+  background-color: #fffcf0;
 }

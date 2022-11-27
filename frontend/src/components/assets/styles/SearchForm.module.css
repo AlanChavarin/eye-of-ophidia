@@ -1,0 +1,48 @@
+.searchform{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+    margin: 2px;
+    padding: 2px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+}
+
+.searchBar{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px;
+    border: 1px solid grey;
+
+    width: 40vw;
+}
+
+.searchButton{
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.hero{
+    display: flex;
+    gap: 10px;
+}
+
+.searchInput{
+    border: none;
+    flex-grow: 1;
+}
+
+.searchInput:focus{
+    outline: none;
+}
+
