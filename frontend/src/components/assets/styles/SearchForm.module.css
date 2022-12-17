@@ -24,6 +24,7 @@
     border: 1px solid grey;
 
     width: 40vw;
+    max-width: 700px;
 }
 
 .searchButton{

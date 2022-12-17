@@ -16,6 +16,8 @@ const postHero = asyncHandler(async (req, res) => {
 
     const hero = await Hero.create({
         name: req.body.hero,
+        class: req.body.class,
+        talent: req.body.talent,
         young: req.body.young
     })
 

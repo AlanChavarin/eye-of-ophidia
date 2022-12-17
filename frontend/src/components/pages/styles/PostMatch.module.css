@@ -1,11 +1,4 @@
-.form{
+.h3{
     display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.container{
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    justify-content: center;
 }

@@ -31,6 +31,8 @@ app.use('/api/admin', require('./routes/adminRoutes'))
 app.use('/api/issues', require('./routes/issueRoutes'))
 app.use('/api/comments', require('./routes/commentRoutes'))
 app.use('/api/matchedithistory', require('./routes/matchEditHistoryRoutes'))
+app.use('/api/events', require('./routes/eventRoutes'))
+
 
 // app.get('/api/test/', async (req, res) => {
 

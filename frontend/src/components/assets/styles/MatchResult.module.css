@@ -1,8 +1,14 @@
 .match{
     display: flex;
     flex-direction: column;
-    border-color: blue;
-    border-width: 1px;
+
+    background-color: white;
+    padding: 15px 25px 15px 25px;
+    margin: 20px;
+
+    border-radius: 10px;
+    border-color: lightgray;
+    border-width: 2px;
     border-style: solid;
-    margin: 2px;
+
 }

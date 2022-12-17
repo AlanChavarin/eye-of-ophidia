@@ -2,4 +2,5 @@
     border: 1px grey solid;
     border-radius: 10px;
     width: 15vw;
+    max-width: 280px;
 }

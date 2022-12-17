@@ -1,11 +1,81 @@
+.parent{
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid grey;
+    box-shadow: 0px 0px 8px lightgray;
+}
+
 .form{
     display: flex;
     flex-direction: column;
     padding: 2px;
     gap: 5px;
+    padding: 15px;
 }
 
 .container{
     display: flex;
     flex-direction: column;
+}
+
+.registrationModeSection{
+    display: flex;
+}
+
+.button{
+    border: none;
+    font-weight: bold;
+
+    flex-grow: 1;
+    flex-basis: 0;
+
+    padding: 5px 0px 5px 0px;
+}
+
+.buttonLogin{
+    border-top-left-radius: 5px;
+}
+
+.buttonRegister{
+    border-top-right-radius: 5px;
+}
+
+.buttonUnselected{
+    background-color: lightgray;
+}
+
+.buttonUnselected:hover{
+    cursor: pointer;
+    background-color: rgb(163, 163, 163);
+}
+
+.buttonSelected{
+    background-color: white;
+}
+
+.submitButton{
+    margin-top: 5px;
+    background-color: #1446A0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.submitButton:hover{
+    cursor: pointer;
+    background-color: #0f357a;
+}
+
+.input{
+    border-radius: 5px;
+    border-color: grey;
+    border-style: solid;
+    border-width: 1px;
+    padding: 5px 8px 5px 8px;
+}
+
+.input:focus{
+    outline: none;
+    box-shadow: 0px 0px 5px #1446A0;
 }
