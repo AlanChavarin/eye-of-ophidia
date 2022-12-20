@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const {getHeroes, postHero, deleteHero, updateHero} = require('../controllers/heroController')
+const {getHeroes, getHero, postHero, deleteHero, updateHero} = require('../controllers/heroController')
 const {protect, protectModerator} = require('../middleware/authMiddleware')
 
 router.get('/', getHeroes)
+
+router.get('/:heroid', getHero)
 
 router.post('/', protect, protectModerator, postHero)
 

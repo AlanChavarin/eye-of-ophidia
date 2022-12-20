@@ -6,6 +6,12 @@ const getHeroes = asyncHandler(async (req, res) => {
     res.status(200).json(heroes)
 })
 
+const getHero = asyncHandler(async(req, res) => {
+    console.log(req.params)
+    const hero = await Hero.findOne({_id: req.params.heroid})
+    res.status(200).json(hero)
+})
+
 const postHero = asyncHandler(async (req, res) => {
     console.log(req.body.hero, req.body.young)
 
@@ -43,6 +49,7 @@ const deleteHero = asyncHandler(async (req, res) => {
 
 module.exports = {
     getHeroes,
+    getHero,
     postHero,
     deleteHero,
     updateHero

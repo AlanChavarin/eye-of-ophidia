@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Match = require('../models/matchModel')
+const Event = require('../models/eventModel')
 const {postMatchEdit} = require('./matchEditHistoryController') 
 
 const getMatches = asyncHandler(async (req, res) => {
@@ -50,7 +51,6 @@ const getMatches = asyncHandler(async (req, res) => {
 })
 
 const getMatch = asyncHandler(async (req, res) => {
-    //console.log(req.params.id)
     if(!req.recyclebin){req.recyclebin = false}
     const match = await Match.findOne({_id: req.params.id, deleted: req.recyclebin})
     if(!match){
@@ -65,6 +65,7 @@ const postMatch = asyncHandler(async (req, res) => {
         player2name, player2hero, player2deck,
         format, event, link, timeStamp, description
     } = req.body
+    const eventData = await Event.findOne({name: event})
     const match = await Match.create({
         player1name: player1name,
         player1hero: player1hero,
@@ -75,7 +76,7 @@ const postMatch = asyncHandler(async (req, res) => {
         player2deck: player2deck,
 
         format: format,
-        event: event,
+        event: eventData,
         link: link,
         timeStamp: timeStamp,
         description: description,

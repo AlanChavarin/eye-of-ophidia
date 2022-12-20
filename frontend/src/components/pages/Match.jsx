@@ -1,6 +1,5 @@
 import {useParams} from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import MatchResult from '../assets/MatchResult'
 import Comments from '../assets/Comments'
 import Issues from '../assets/Issues'
 import EditHistories from '../assets/EditHistories'
@@ -22,7 +21,8 @@ function Match() {
 
   return (
     <div>
-        <MatchResult match={match} />
+      test
+        {/* <MatchThumbnail match={match} />
         <div>
           <button value='comments' onClick={onClick}>Comments</button>
           <button value='issues' onClick={onClick}>Issues</button>
@@ -30,7 +30,7 @@ function Match() {
         </div>
         {tab==='comments' && <Comments matchid={matchid}/>}
         {tab==='issues' && <Issues matchid={matchid}/>}
-        {tab==='history' && <EditHistories matchid={matchid}/>}
+        {tab==='history' && <EditHistories matchid={matchid}/>} */}
     </div>
   )
 }

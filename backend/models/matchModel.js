@@ -1,23 +1,46 @@
 const mongoose = require('mongoose')
-const ObjectId = require('mongodb').ObjectId
-const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed']
+const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
+const Hero = require('../models/heroModel')
+
 
 const matchSchema = mongoose.Schema({
     player1name: {type: String, required: true},
-    player1hero: {type: ObjectId, required: true},
     player1deck: {type: String, required: true},
+    player1hero: {type: String, required: true, validate: v => heroEnum(v)},
 
     player2name: {type: String, required: true},
-    player2hero: {type: ObjectId, required: true},
     player2deck: {type: String, required: true},
+    player2hero: {type: String, required: true, validate: v => heroEnum(v)},
 
+    event: {
+        name: {
+            type: String,
+            required: true,
+        },
+        location: {
+            type: String,
+            required: true
+        },
+        format: {
+            type: String,
+            required: true,
+            enum: formats
+        },
+        startDate: Date,
+        endDate: Date,
+        description: String,
+    },
     format: {type: String, required: true, enum: formats},
-    event: {type: ObjectId, required: true},
     link: {type: String, required: true}, 
     timeStamp: {type: Number},
     description: String, 
     deleted: Boolean
 })
+
+const heroEnum = async (v) => {
+    return !!await Hero.findOne({name: v})
+}
+
 
 module.exports = mongoose.model('Match', matchSchema)
 

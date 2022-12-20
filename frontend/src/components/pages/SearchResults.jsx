@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {useSearchParams} from 'react-router-dom'
-import MatchResult from '../assets/MatchResult'
+import MatchThumbnail from '../assets/MatchThumbnail'
 import SearchForm from '../assets/SearchForm'
 import {getMatches} from '../../service/MatchService'
 
@@ -13,7 +13,9 @@ function SearchResults() {
 
     useEffect(() => {
         getMatches(text, hero1, hero2)
-        .then(data => setMatches(data))
+        .then(data => {
+          setMatches(data)
+        })
     }, [searchParams])
 
   return (
@@ -21,9 +23,9 @@ function SearchResults() {
         <SearchForm />
         <div>
           {matches?.map((match) => (
-            <MatchResult key={match._id} match={match}/>
-            ))}  
-        </div>
+            <MatchThumbnail key={match._id} match={match}/>
+          ))}  
+        </div> 
         
     </div>
   )

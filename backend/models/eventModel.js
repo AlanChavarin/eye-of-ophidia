@@ -4,7 +4,8 @@ const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
 const eventSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     location: {
         type: String,
