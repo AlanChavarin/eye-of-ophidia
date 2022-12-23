@@ -1,0 +1,54 @@
+.match{
+    display: flex;
+    flex-direction: row;
+
+    margin: 20px;
+
+    border-radius: 10px;
+    border-color: lightgray;
+    border-width: 2px;
+    border-style: solid;
+
+    width: 20vw;
+    height: 20vh;
+    min-width: 0px;
+
+    font-weight: 500;
+    color: white;
+    text-shadow: 3px 3px 2px black;
+}
+
+.info{
+    position: fixed;
+    margin-left: 10px;
+    margin-top: 5px;
+
+    justify-self: start;
+}
+
+.date{
+    font-size: small;
+}
+
+
+.imageContainer{  
+    overflow: hidden;
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+
+
+}
+
+.imageLeft{
+    border-top-left-radius: 9px;
+    border-bottom-left-radius: 9px;
+}
+
+.imageRight{
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+}

@@ -3,6 +3,7 @@ import {useSearchParams} from 'react-router-dom'
 import MatchThumbnail from '../assets/MatchThumbnail'
 import SearchForm from '../assets/SearchForm'
 import {getMatches} from '../../service/MatchService'
+import SearchResultsCSS from './styles/SearchResults.module.css'
 
 function SearchResults() {
     const [searchParams, setSearchParams] = useSearchParams()
@@ -21,7 +22,7 @@ function SearchResults() {
   return (
     <div>
         <SearchForm />
-        <div>
+        <div className={SearchResultsCSS.matchThumbnails}>
           {matches?.map((match) => (
             <MatchThumbnail key={match._id} match={match}/>
           ))}  
