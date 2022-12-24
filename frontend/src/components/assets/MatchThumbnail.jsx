@@ -7,7 +7,7 @@ import { heroImageUrls } from '../../service/ImageService'
 function MatchResults({match}) {
   const {userData} = useContext(UserContext)
   return (
-    <div className={MatchThumbnailCSS.match}>
+    <Link to={'/matches/' + match._id} className={MatchThumbnailCSS.match} >
 
       {match ? (
         <>
@@ -20,12 +20,10 @@ function MatchResults({match}) {
           </div>
         </div>
 
-        
-
         <div className={`${MatchThumbnailCSS.imageContainer} ${MatchThumbnailCSS.imageLeft}`} style={{
             backgroundImage: `url(${heroImageUrls[match.player1hero]})`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: '170%',
+            backgroundSize: '180%',
             backgroundPosition: '40% 10%',
           }}>
 
@@ -38,7 +36,7 @@ function MatchResults({match}) {
         <div className={`${MatchThumbnailCSS.imageContainer} ${MatchThumbnailCSS.imageRight}`} style={{
             backgroundImage: `url(${heroImageUrls[match.player2hero]})`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: '170%',
+            backgroundSize: '180%',
             backgroundPosition: '40% 10%',
           }}>
           
@@ -49,12 +47,11 @@ function MatchResults({match}) {
 
         </div>
           
-          {/* <Link to={'/matches/' + match._id}>Go to match page!</Link>
-          {(userData?.privilege === 'admin') ? <Link to={'/postmatch/' + match._id}>Edit this match</Link> : <></>} */}
+          {/* {(userData?.privilege === 'admin') ? <Link to={'/postmatch/' + match._id}>Edit this match</Link> : <></>} */}
         </>
       ): <></>}
       
-    </div>
+    </Link>
   )
 }
 export default MatchResults
