@@ -2,6 +2,7 @@ import MatchThumbnailCSS from './styles/MatchThumbnail.module.css'
 import {Link} from 'react-router-dom'
 import {useContext, useEffect} from 'react'
 import UserContext from '../../context/UserContext'
+import { heroImageUrls } from '../../service/ImageService'
 
 function MatchResults({match}) {
   const {userData} = useContext(UserContext)
@@ -22,7 +23,7 @@ function MatchResults({match}) {
         
 
         <div className={`${MatchThumbnailCSS.imageContainer} ${MatchThumbnailCSS.imageLeft}`} style={{
-            backgroundImage: `url('../../../images/${match.player1hero}.jpg')`,
+            backgroundImage: `url(${heroImageUrls[match.player1hero]})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: '170%',
             backgroundPosition: '40% 10%',
@@ -35,7 +36,7 @@ function MatchResults({match}) {
         </div>
 
         <div className={`${MatchThumbnailCSS.imageContainer} ${MatchThumbnailCSS.imageRight}`} style={{
-            backgroundImage: `url('../../../images/${match.player2hero}.jpg')`,
+            backgroundImage: `url(${heroImageUrls[match.player2hero]})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: '170%',
             backgroundPosition: '40% 10%',
