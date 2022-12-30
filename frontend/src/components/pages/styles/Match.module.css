@@ -1,11 +1,18 @@
 .container{
     width: 100%;
     display: flex;
-    gap: 20px;
+
+}
+
+.videoFeedbackContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .videoContainer{
-    position: relative;
+    position:relative;
     width: 100%;
     padding-bottom: 56.25%;
     height: 0%;
@@ -13,20 +20,89 @@
 
 .videoContainer iframe{
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 10px;
+    left: 10px;
     width: 100%;
-    height: 100%;
-}
-
-.detailsContainer{
-    margin: 20px;
-    padding: 10px;
-
-    background-color: white;
+    height: 95%;
 
     border-radius: 10px;
     border-color: lightgray;
     border-width: 2px;
     border-style: solid;
+}
+
+.detailsContainer{
+    margin: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    font-weight: 500;           
+    color: white;
+    text-shadow: 3px 3px 2px black;
+    text-decoration-line: none;
+
+    min-width: 20vw;
+}
+
+.playerContainer{
+    padding: 10px;
+
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: 40% 10%;
+    min-height: 20vh;
+
+    border-radius: 10px;
+
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.link{
+
+    background-color: #1446A0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+
+    text-decoration: none;
+    text-shadow: none;
+
+    box-shadow: 3px 3px 2px black;
+
+    align-self: flex-start;
+
+}
+
+.link:hover{
+    cursor: pointer;
+    background-color: #0f357a;
+}
+
+.playerName{
+    font-size: 1.4em;
+}
+
+.eventContainer{
+    min-height: 25vh;
+    border-radius: 10px;
+
+    background-repeat: no-repeat;
+    background-size: 120%;
+    background-position: 50% 0%;
+
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.eventName{
+    font-size: 1.5em;
+    align-self: center;
 }

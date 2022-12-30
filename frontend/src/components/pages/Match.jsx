@@ -5,6 +5,8 @@ import Issues from '../assets/Issues'
 import EditHistories from '../assets/EditHistories'
 import {getMatch} from '../../service/MatchService'
 import MatchCSS from './styles/Match.module.css'
+import { heroImageUrls } from '../../service/ImageService'
+import {Link} from 'react-router-dom'
 
 function Match() {
     const {matchid} = useParams()
@@ -24,34 +26,51 @@ function Match() {
     }
 
   return (
-    <div className={MatchCSS.container}>
-        <div className={MatchCSS.videoContainer}>
-          {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
-        </div>
+      <div className={MatchCSS.container}>
 
-        <div className={MatchCSS.detailsContainer}>
-          {(match) && <>
-          <div>{match.player1name}</div>
-          <div>{match.player1deck}</div>
-          <div>{match.player1hero}</div>
-          <div>{match.player2name}</div>
-          <div>{match.player2deck}</div>
-          <div>{match.player2hero}</div>
-            
-
-          </>}
+        <div className={MatchCSS.videoFeedbackContainer}>
+          <div className={MatchCSS.videoContainer}>
+            {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp}&rel=0`} title="YouTube video player" frameBorder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
+          </div>
+          {(matchid) && 
+            <div className={MatchCSS.feedbackContainer}>
+              <div> 
+                <button value='comments' onClick={onClick}>Comments</button>
+                <button value='issues' onClick={onClick}>Issues</button>
+                <button value='history' onClick={onClick}>Edit History</button>
+              </div>
+              {tab==='comments' && <Comments matchid={matchid}/>}
+              {tab==='issues' && <Issues matchid={matchid}/>}
+              {tab==='history' && <EditHistories matchid={matchid}/>}
+            </div>}
         </div>
-        
+          
 
-        {/* <div>
-          <button value='comments' onClick={onClick}>Comments</button>
-          <button value='issues' onClick={onClick}>Issues</button>
-          <button value='history' onClick={onClick}>Edit History</button>
-        </div>
-        {tab==='comments' && <Comments matchid={matchid}/>}
-        {tab==='issues' && <Issues matchid={matchid}/>}
-        {tab==='history' && <EditHistories matchid={matchid}/>} */}
-    </div>
+
+
+          <div className={MatchCSS.detailsContainer}>
+            {(match) && <>
+            <div className={MatchCSS.eventContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(https://storage.googleapis.com/fabmaster/media/images/toa_art_01.width-10000.jpg)`}}>
+              <div className={MatchCSS.eventName}>{match.event.name}</div>
+              <div>Date: {match.event.startDate.substr(0, 10)} to {match.event.endDate.substr(0, 10)} </div>
+              <div>Format: {match.event.format}</div>
+              <div>Location: {match.event.location}</div>
+              <div>Description: {match.event.description}</div>
+            </div>
+
+            <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroImageUrls[match.player1hero]})`}}>
+              <div className={MatchCSS.playerName}>{match.player1name}</div>
+              <a href={`http://${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a>
+            </div>
+            <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroImageUrls[match.player2hero]})`}}>
+              <div className={MatchCSS.playerName}>{match.player2name}</div>
+              <a href={`http://${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> 
+            </div>
+            </>}
+          </div>
+          
+      </div>
+      
   )
 }
 export default Match
