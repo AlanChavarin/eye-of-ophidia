@@ -30,7 +30,7 @@ export const postMatch = async (formData, matchid) => {
     if(!matchid){
         matchid = ''
     } 
-    const {player1Name, player1Hero, player1Deck, player2Name, player2Hero, player2Deck, event, link, date, description} = formData
+    const {player1Name, player1Hero, player1Deck, player2Name, player2Hero, player2Deck, event, link, date, timeStamp, format, description} = formData
     return new Promise(resolve => (
         fetch(API_URL + matchid, {
             method: matchid ? 'PUT' : 'POST',
@@ -39,19 +39,19 @@ export const postMatch = async (formData, matchid) => {
                 'Authorization': 'Bearer ' + localStorage.getItem('user')
             },
             body: JSON.stringify({
-            player1: {
-                name: player1Name,
-                hero: player1Hero,
-                deck: player1Deck,
-            },
-            player2: {
-                name: player2Name,
-                hero: player2Hero,
-                deck: player2Deck,
-            },
+            player1name: player1Name,
+            player1hero: player1Hero,
+            player1deck: player1Deck,
+
+            player2name: player2Name,
+            player2hero: player2Hero,
+            player2deck: player2Deck,
+
+            format: format,
             event: event,
             link: link,
             date: date,
+            timeStamp,
             description: description,
             })
         })
