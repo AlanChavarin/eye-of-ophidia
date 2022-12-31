@@ -1,0 +1,81 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px;
+}
+
+.issueContainer{
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 10px;
+    border-color: lightgray;
+    border-width: 2px;
+    border-style: solid;
+    margin: 10px;
+    background-color: white;
+
+}
+
+.issueTitle{
+    font-weight: 600;
+    background-color: lightgray;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    padding: 10px;
+}
+
+.statusButtons{
+    display: flex;
+    gap: 10px;
+}
+
+.hr{
+    border-color: lightgray;
+    border-width: 1px;
+    border-style: solid;
+    width: 80%;
+}
+
+.formContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.label{
+    font-weight: 600;
+}
+
+.input{
+    border-radius: 5px;
+    border-color: lightgray;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.textarea{
+    border-radius: 10px;
+    border-color: lightgray;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.submitButton{
+    background-color: #1446A0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+
+    max-width: min-content;
+
+    align-self: center;
+}
+
+.submitButton:hover{
+    cursor: pointer;
+    background-color: #0f357a;
+}
+

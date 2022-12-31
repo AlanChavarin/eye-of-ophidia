@@ -92,8 +92,8 @@
     border-radius: 10px;
 
     background-repeat: no-repeat;
-    background-size: 120%;
-    background-position: 50% 0%;
+    background-size: cover;
+    background-position: 70% 0%;
 
     padding: 10px;
 

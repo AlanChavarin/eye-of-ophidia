@@ -17,7 +17,6 @@ export const getIssues = async (matchid) => {
 }
 
 export const postIssue = async (matchid, formData) => {
-    console.log(formData)
     const {title, body} = formData
     return new Promise(resolve => (
         fetch(API_URL + matchid, {
@@ -45,6 +44,7 @@ export const postIssue = async (matchid, formData) => {
 }
 
 export const changeStatus = async (issueid, status) => {
+    console.log(issueid, status)
     return new Promise(resolve => (
         fetch(API_URL + issueid, {
             method: 'PUT',

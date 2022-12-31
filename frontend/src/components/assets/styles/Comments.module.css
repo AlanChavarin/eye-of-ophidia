@@ -1,0 +1,66 @@
+.parent{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comment{
+    display: flex;
+    flex-direction: column;
+}
+
+.commenter{
+    font-weight: 600;
+}
+
+.commentContainer{
+    display: flex;
+    gap: 10px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    margin: 15px;
+}
+
+.textarea {
+    border-radius: 10px;
+    border-color: lightgray;
+    border-width: 2px;
+    border-style: solid;
+
+    font-size: 1.5em;
+}
+
+.submitButton{
+    background-color: #1446A0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+
+    max-width: min-content;
+}
+
+.submitButton:hover{
+    cursor: pointer;
+    background-color: #0f357a;
+}
+
+.deleteButton{
+    background-color: #db3c30;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+}
+
+.deleteButton:hover{
+    cursor: pointer;
+    background-color: #b53228;
+}
+

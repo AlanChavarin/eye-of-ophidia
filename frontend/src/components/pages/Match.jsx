@@ -30,7 +30,7 @@ function Match() {
 
         <div className={MatchCSS.videoFeedbackContainer}>
           <div className={MatchCSS.videoContainer}>
-            {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp}&rel=0`} title="YouTube video player" frameBorder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
+            {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
           </div>
           {(matchid) && 
             <div className={MatchCSS.feedbackContainer}>
