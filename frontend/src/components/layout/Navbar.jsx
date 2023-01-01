@@ -26,6 +26,9 @@ function Navbar() {
           <Link to='/postmatch' className={NavbarCSS.item}>
             <div>Submit a new match!</div>
           </Link>
+          <Link to='/postevent' className={NavbarCSS.item}>
+            <div>Submit a new event</div>
+          </Link>
         </>
       ) : <></>}
       

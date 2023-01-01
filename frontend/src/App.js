@@ -10,6 +10,7 @@ import Login from "./components/pages/Login"
 import Logout from "./components/pages/Logout"
 import Me from "./components/pages/Me"
 import PostMatch from "./components/pages/PostMatch"
+import PostEvent from "./components/pages/PostEvent"
 import Verify from "./components/pages/Verify"
 
 //tools
@@ -42,6 +43,8 @@ function App() {
               <Route element={<UserAuth privilege='admin'/>}>
                 <Route path='/postmatch' element={<PostMatch />}/>
                 <Route path='/postmatch/:matchid' element={<PostMatch />}/>
+                <Route path='/postevent' element={<PostEvent />}/>
+                <Route path='/postevent/:eventid' element={<PostEvent />}/>
               </Route>
             </Routes>
           </div>

@@ -11,7 +11,7 @@ export const getMatch = async (matchid) => {
             resolve(data)
         })
         .catch((error) => {
-            console.log(error);
+            console.log(error)
         })
     })
 }
@@ -30,7 +30,7 @@ export const postMatch = async (formData, matchid) => {
     if(!matchid){
         matchid = ''
     } 
-    const {player1Name, player1Hero, player1Deck, player2Name, player2Hero, player2Deck, event, link, date, timeStamp, format, description} = formData
+    const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, date, timeStamp, format, description} = formData
     return new Promise(resolve => (
         fetch(API_URL + matchid, {
             method: matchid ? 'PUT' : 'POST',
@@ -39,13 +39,13 @@ export const postMatch = async (formData, matchid) => {
                 'Authorization': 'Bearer ' + localStorage.getItem('user')
             },
             body: JSON.stringify({
-            player1name: player1Name,
-            player1hero: player1Hero,
-            player1deck: player1Deck,
+            player1name: player1name,
+            player1hero: player1hero,
+            player1deck: player1deck,
 
-            player2name: player2Name,
-            player2hero: player2Hero,
-            player2deck: player2Deck,
+            player2name: player2name,
+            player2hero: player2hero,
+            player2deck: player2deck,
 
             format: format,
             event: event,
@@ -68,37 +68,37 @@ export const postMatch = async (formData, matchid) => {
     ))
 }
 
-export const getMatchForForm = async (matchid) => {
-    if(matchid){
-      return new Promise(resolve => (
-        fetch(API_URL + matchid)
-        .then(res => res.json())
-        .then((data) => {
-          console.log(data)
-          if(data.errorMessage){
-            throw new Error(data.errorMessage)
-          }
-          const {player1, player2, event, link, date, description} = data
-          resolve({
-            player1Name: player1.name,
-            player1Hero: player1.hero,
-            player1Deck: player1.deck,
+// export const getMatchForForm = async (matchid) => {
+//     if(matchid){
+//       return new Promise(resolve => (
+//         fetch(API_URL + matchid)
+//         .then(res => res.json())
+//         .then((data) => {
+//           console.log(data)
+//           if(data.errorMessage){
+//             throw new Error(data.errorMessage)
+//           }
+//           const {player1, player2, event, link, date, description} = data
+//           resolve({
+//             player1name: player1.name,
+//             player1hero: player1.hero,
+//             player1deck: player1.deck,
         
-            player2Name: player2.name,
-            player2Hero: player2.hero,
-            player2Deck: player2.deck,
+//             player2name: player2.name,
+//             player2hero: player2.hero,
+//             player2deck: player2.deck,
         
-            event: event,
-            link: link,
-            date: date.slice(0, 10),
-            description: description,
-          })
+//             event: event,
+//             link: link,
+//             date: date.slice(0, 10),
+//             description: description,
+//           })
   
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      ))
-    }
-}
+//         })
+//         .catch((error) => {
+//           console.log(error);
+//         })
+//       ))
+//     }
+// }
 

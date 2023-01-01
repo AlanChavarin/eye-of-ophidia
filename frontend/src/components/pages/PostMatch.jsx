@@ -4,38 +4,40 @@ import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
 import {useState, useEffect} from 'react'
 import HeroSelect from '../assets/HeroSelect'
 import {useParams} from 'react-router-dom'
-import {getMatchForForm, postMatch} from '../../service/MatchService'
-
+import {postMatch, getMatch} from '../../service/MatchService'
+import {getEvents} from '../../service/EventService'
 
 function PostMatch() {
   const {matchid} = useParams()
+  const [eventData, setEventData] = useState([])
   const [formData, setFormData] = useState({
-    player1Name: '',
-    player1Hero: '',
-    player1Deck: '',
+    player1name: '',
+    player1hero: '',
+    player1deck: '',
 
-    player2Name: '',
-    player2Hero: '',
-    player2Deck: '',
+    player2name: '',
+    player2hero: '',
+    player2deck: '',
 
-    format: '',
     event: '',
+    format: '',
     link: '',
     timeStamp: '', 
     description: '',
   })
 
-  const {player1Name, player1Hero, player1Deck, player2Name, player2Hero, player2Deck, event, link, description, format, timeStamp} = formData
+  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, description, format, timeStamp} = formData
 
   useEffect(() => {
     if(matchid){
-      getMatchForForm(matchid)
-      .then(data => setFormData(data)) 
-    }  
+      getMatch(matchid)
+      .then(data => setFormData(data))
+    }
+    getEvents()
+    .then(data => setEventData(data))
   }, [])
 
   const onChange = (e) => {
-    console.log('test')
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value
@@ -43,7 +45,6 @@ function PostMatch() {
   }
 
   const onSubmit = (e) => {
-    console.log(formData)
     e.preventDefault()
     postMatch(formData, matchid)
   }
@@ -54,8 +55,11 @@ function PostMatch() {
       <form onSubmit={onSubmit} className={LoginCSS.form}>
         <h3 className={PostMatchCSS.h3}>{(matchid) ? (<>Edit Match</>):(<>Post New Match</>)}</h3>
         <div className={LoginCSS.container}>
-          <label>Event Name</label>
-          <input type="text" name='event' value={event} onChange={onChange} required className={LoginCSS.input}/>
+          <label>Event</label>
+          <select required={true} name="event" className={HeroSelectCSS.select} onChange={onChange} value={event}>
+            <option value=''>None</option>
+            {eventData.map((event) => (<option value={event.name} key={event._id}>{event.name}</option>))}
+          </select>
         </div>
         <div className={LoginCSS.container}>
           <label>Youtube Video Link</label>
@@ -68,6 +72,7 @@ function PostMatch() {
         <div className={LoginCSS.container}>
           <label>Format</label>
           <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
+            <option value=''>None</option>
             <option value="Classic Constructed">Classic Constructed</option>
             <option value="Blitz">Blitz</option>
             <option value="Draft">Draft</option>
@@ -79,28 +84,28 @@ function PostMatch() {
 
         <div className={LoginCSS.container}>
           <label>Player 1 Hero</label>
-          <HeroSelect name='player1Hero' value={player1Hero} onChange={onChange} required={true} className={LoginCSS.input}/>
+          <HeroSelect name='player1hero' value={player1hero} onChange={onChange} required={true} className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
           <label>Player 1 Full Name</label>
-          <input type="text" name='player1Name' value={player1Name} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="text" name='player1name' value={player1name} onChange={onChange} required className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
           <label>Player 1 Deck Link</label>
-          <input type="text" name='player1Deck' value={player1Deck} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="text" name='player1deck' value={player1deck} onChange={onChange} required className={LoginCSS.input}/>
         </div>
 
         <div className={LoginCSS.container}>
           <label>Player 2 Hero</label>
-          <HeroSelect name='player2Hero' value={player2Hero} onChange={onChange} required={true} className={LoginCSS.input}/>
+          <HeroSelect name='player2hero' value={player2hero} onChange={onChange} required={true} className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
           <label>Player 2 Full Name</label>
-          <input type="text" name='player2Name' value={player2Name} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="text" name='player2name' value={player2name} onChange={onChange} required className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
           <label>Player 2 Deck Link</label>
-          <input type="text" name='player2Deck' value={player2Deck} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="text" name='player2deck' value={player2deck} onChange={onChange} required className={LoginCSS.input}/>
         </div>
 
         <div className={LoginCSS.container}>
