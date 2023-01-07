@@ -6,6 +6,7 @@ import HeroSelect from '../assets/HeroSelect'
 import {useParams} from 'react-router-dom'
 import {postMatch, getMatch} from '../../service/MatchService'
 import {getEvents} from '../../service/EventService'
+import { getYoutubeParams } from '../../service/YoutubeParams'
 
 function PostMatch() {
   const {matchid} = useParams()
@@ -24,9 +25,10 @@ function PostMatch() {
     link: '',
     timeStamp: '', 
     description: '',
+    fullLink: '',
   })
 
-  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, description, format, timeStamp} = formData
+  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, description, format, timeStamp, fullLink} = formData
 
   useEffect(() => {
     if(matchid){
@@ -36,6 +38,17 @@ function PostMatch() {
     getEvents()
     .then(data => setEventData(data))
   }, [])
+
+  useEffect(() => {
+    const params = getYoutubeParams(fullLink)
+    if(params){
+      setFormData((prevState) => ({
+        ...prevState,
+        link: params[0],
+        timeStamp: params[1]
+      }))
+    }
+  }, [fullLink])
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -63,12 +76,17 @@ function PostMatch() {
         </div>
         <div className={LoginCSS.container}>
           <label>Youtube Video Link</label>
-          <input type="text" name='link' value={link} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
           <label>Match Timestamp (in total seconds)</label>
           <input type="number" name='timeStamp' value={timeStamp} onChange={onChange} required className={LoginCSS.input}/>
         </div>
+        <div className={LoginCSS.container}>
+          <label>Youtube Video id</label>
+          <input type="text" name='link' value={link} onChange={onChange} required className={LoginCSS.input}/>
+        </div>
+
         <div className={LoginCSS.container}>
           <label>Format</label>
           <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
@@ -79,7 +97,6 @@ function PostMatch() {
             <option value="Sealed">Sealed</option>
           </select>
         </div>
-        
 
 
         <div className={LoginCSS.container}>
@@ -92,7 +109,7 @@ function PostMatch() {
         </div>
         <div className={LoginCSS.container}>
           <label>Player 1 Deck Link</label>
-          <input type="text" name='player1deck' value={player1deck} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="url" name='player1deck' value={player1deck} onChange={onChange} required className={LoginCSS.input}/>
         </div>
 
         <div className={LoginCSS.container}>
@@ -105,7 +122,7 @@ function PostMatch() {
         </div>
         <div className={LoginCSS.container}>
           <label>Player 2 Deck Link</label>
-          <input type="text" name='player2deck' value={player2deck} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="url" name='player2deck' value={player2deck} onChange={onChange} required className={LoginCSS.input}/>
         </div>
 
         <div className={LoginCSS.container}>
