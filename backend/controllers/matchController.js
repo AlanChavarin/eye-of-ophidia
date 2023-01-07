@@ -91,6 +91,7 @@ const updateMatch = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Match with that id does not exist or has been deleted')
     }
+    req.body.event = await Event.findOne({name: req.body.event})
     const match = await Match.findOneAndUpdate({_id: req.params.matchid, deleted: false}, req.body, {runValidators: true, new: true})
     postMatchEdit(match, req.user._id)
     res.status(200).json(match)

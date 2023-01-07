@@ -34,7 +34,7 @@ function PostMatch() {
   useEffect(() => {
     if(matchid){
       getMatch(matchid)
-      .then(data => setFormData(data))
+      .then(data => setFormData({...data, event: data.event.name}))
     }
     getEvents()
     .then(data => setEventData(data))
