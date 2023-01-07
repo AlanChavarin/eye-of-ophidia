@@ -33,7 +33,7 @@
     border-width: 2px;
     border-style: solid;
 
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 
 .submitButton{
@@ -42,6 +42,9 @@
     border: none;
     border-radius: 5px;
     padding: 5px 10px 5px 10px;
+
+    box-shadow: 3px 3px 2px black;
+
 
     max-width: min-content;
 }
@@ -56,7 +59,9 @@
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 5px 10px 5px 10px;
+    padding: 3px 5px 3px 5px;
+    font-size: smaller;
+    max-height: 25px;
 }
 
 .deleteButton:hover{

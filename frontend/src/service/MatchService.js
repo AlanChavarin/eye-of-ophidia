@@ -1,3 +1,4 @@
+import { redirect } from "react-router-dom"
 const API_URL = 'http://localhost:5000/api/matches/'
 
 export const getMatch = async (matchid) => {
@@ -45,7 +46,7 @@ export const postMatch = async (formData, matchid) => {
             if(data.errorMessage){
                 throw new Error(data.errorMessage)
             }
-            resolve(true)
+            resolve(data)
         })
         .catch((error) => {
             console.log(error)

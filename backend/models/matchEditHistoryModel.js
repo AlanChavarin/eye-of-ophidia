@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const ObjectId = require('mongodb').ObjectId
-const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed']
+const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
 
 const matchEditHistorySchema = mongoose.Schema({
     player1name: {type: String, required: true},

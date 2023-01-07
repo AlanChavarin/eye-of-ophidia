@@ -67,7 +67,8 @@ function Issues({matchid}) {
                 
             </div>
         ))}
-        <br/> 
+        <br/>
+        <hr className={IssuesCSS.hr}/>
         <form onSubmit={onSubmit} className={IssuesCSS.form}>
             <div style={{alignSelf: 'center', fontWeight: '600'}}>Is there an issue with this match? Submit an issue down below!</div>
             <div className={IssuesCSS.formContainer}>

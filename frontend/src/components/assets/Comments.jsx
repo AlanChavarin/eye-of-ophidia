@@ -42,7 +42,7 @@ function Comments({matchid}) {
       ))}
       {((userData?.name) ? (
         <form onSubmit={onSubmit} className={CommentsCSS.form}>
-          <textarea placeholder='Leave a comment on this match!' name="newCommentBody" rows='4' cols='40' value={newCommentBody} onChange={onChange} id=""  className={CommentsCSS.textarea}>Comment</textarea>
+          <textarea placeholder='Leave a comment on this match!' name="newCommentBody" rows='4' cols='30' value={newCommentBody} onChange={onChange} id=""  className={CommentsCSS.textarea}>Comment</textarea>
           <input type='submit' value='Comment' className={CommentsCSS.submitButton}/>
         </form>
       ) : <></>)}

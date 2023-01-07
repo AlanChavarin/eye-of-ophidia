@@ -1,5 +1,6 @@
 .container{
     width: 100%;
+    height: 100%;
     display: flex;
 
 }
@@ -8,7 +9,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .videoContainer{
@@ -32,18 +32,42 @@
 }
 
 .detailsContainer{
-    margin: 20px;
+    align-self: flex-start;
+    width: 25%;
+
+    margin: 0px 20px 20px 20px;
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    font-weight: 500;           
-    color: white;
-    text-shadow: 3px 3px 2px black;
-    text-decoration-line: none;
-
     min-width: 20vw;
+}
+
+.containerTab{
+    display: flex;
+    gap: 7px;
+    justify-content: space-between
+    
+}
+
+.containerTab > * {
+    background-color: lightgray;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+
+    text-decoration: none;
+    text-shadow: none;
+    font-weight: 550;
+
+    box-shadow: 3px 3px 2px black;
+}
+
+.containerTab > *:hover {
+    cursor: pointer;
+    background-color: rgb(156, 155, 155)
 }
 
 .playerContainer{
@@ -59,6 +83,11 @@
     display: flex;
     gap: 10px;
     flex-direction: column;
+
+    font-weight: 500;           
+    color: white;
+    text-shadow: 3px 3px 2px black;
+    text-decoration-line: none;
 }
 
 .link{
@@ -95,14 +124,28 @@
     background-size: cover;
     background-position: 70% 0%;
 
-    padding: 10px;
-
     display: flex;
     flex-direction: column;
-    gap: 10px;
+
+    font-weight: 500;           
+    color: white;
+    text-shadow: 3px 3px 2px black;
+    text-decoration-line: none;
 }
 
 .eventName{
-    font-size: 1.5em;
-    align-self: center;
+    font-size: 1.4em;
+    text-align: center;
+    background-color: rgba(0, 0, 0, .3);
+    padding: 10px 0px 10px 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    width: 100%;
+}
+
+.eventDetailsContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
 }
