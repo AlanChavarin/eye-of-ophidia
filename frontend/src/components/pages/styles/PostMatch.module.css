@@ -1,10 +1,44 @@
-.h3{
-    display: flex;
-    justify-content: center;
-}
-
 .form{
     display: flex;
     gap: 10px;
-    
 }
+
+.deleteButton{
+    background-color: #db3c30;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 6px 4px 6px;
+    font-size: larger;
+    border: 1px solid red;
+
+}
+
+.deleteButton:hover{
+    cursor: pointer;
+    background-color: #b53228;
+    border: 1px solid #b53228;
+}
+
+.cancelButton{
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+    font-size: larger;
+}
+
+.cancelButton:hover{
+    cursor: pointer;
+    background-color: lightgray;
+}
+
+.popupButtons{
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    padding: 10px;
+    justify-self: flex-end;
+}
+
+/* box-shadow: 3px 3px 2px black; */

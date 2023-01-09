@@ -1,5 +1,5 @@
-import { redirect } from "react-router-dom"
 const API_URL = 'http://localhost:5000/api/matches/'
+
 
 export const getMatch = async (matchid) => {
     return new Promise(resolve => {
@@ -54,37 +54,25 @@ export const postMatch = async (formData, matchid) => {
     ))
 }
 
-// export const getMatchForForm = async (matchid) => {
-//     if(matchid){
-//       return new Promise(resolve => (
-//         fetch(API_URL + matchid)
-//         .then(res => res.json())
-//         .then((data) => {
-//           console.log(data)
-//           if(data.errorMessage){
-//             throw new Error(data.errorMessage)
-//           }
-//           const {player1, player2, event, link, date, description} = data
-//           resolve({
-//             player1name: player1.name,
-//             player1hero: player1.hero,
-//             player1deck: player1.deck,
-        
-//             player2name: player2.name,
-//             player2hero: player2.hero,
-//             player2deck: player2.deck,
-        
-//             event: event,
-//             link: link,
-//             date: date.slice(0, 10),
-//             description: description,
-//           })
-  
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//         })
-//       ))
-//     }
-// }
+export const deleteMatch = async (matchid) => {
+    return new Promise(resolve => {
+        fetch(API_URL + matchid, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('user')
+            }
+        })
+        .then(res => res.json())
+        .then((data) => {
+            if(data.errorMessage){
+                throw new Error(data.errorMessage)
+            }
+            resolve(true)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    })
+}
 

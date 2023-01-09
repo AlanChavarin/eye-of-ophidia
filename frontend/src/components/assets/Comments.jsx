@@ -2,6 +2,8 @@ import {useState, useEffect, useContext} from 'react'
 import UserContext from '../../context/UserContext'
 import {getComments, postComment, deleteComment} from '../../service/CommentService'
 import CommentsCSS from './styles/Comments.module.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 function Comments({matchid}) {
   const [comments, setComments] = useState()
@@ -36,7 +38,7 @@ function Comments({matchid}) {
           <div className={CommentsCSS.commenter}>{comment.owner}</div>
           <div className={CommentsCSS.commentContainer}>
             <div className={CommentsCSS.commentBody}>{comment.body}</div>
-            {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={onDelete}>delete</button>) : <></>}
+            {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={onDelete}><FontAwesomeIcon icon={faTrash} /></button>) : <></>}
           </div>
         </div>
       ))}

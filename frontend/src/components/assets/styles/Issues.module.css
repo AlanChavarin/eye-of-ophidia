@@ -72,11 +72,11 @@
     max-width: min-content;
 
     align-self: center;
-    box-shadow: 3px 3px 2px black;
 }
 
 .submitButton:hover{
     cursor: pointer;
     background-color: #0f357a;
 }
+
 

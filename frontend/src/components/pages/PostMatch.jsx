@@ -4,9 +4,13 @@ import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
 import {useState, useEffect} from 'react'
 import HeroSelect from '../assets/HeroSelect'
 import {useParams, useNavigate} from 'react-router-dom'
-import {postMatch, getMatch} from '../../service/MatchService'
+import {postMatch, getMatch, deleteMatch} from '../../service/MatchService'
 import {getEvents} from '../../service/EventService'
 import { getYoutubeParams } from '../../service/YoutubeParams'
+import CommentsCSS from '../assets/styles/Comments.module.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import Popup from '../assets/Popup'
 
 function PostMatch() {
   const navigate = useNavigate()
@@ -28,6 +32,7 @@ function PostMatch() {
     description: '',
     fullLink: '',
   })
+  const [deletePopup, setDeletePopup] = useState(false)
 
   const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, description, format, timeStamp, fullLink} = formData
 
@@ -78,11 +83,19 @@ function PostMatch() {
     })
   }
 
+  const onDelete = (e) => {
+    e.preventDefault()
+    deleteMatch(matchid)
+    navigate('/')
+  }
 
   return (
     <div className={LoginCSS.parent}>
       <form onSubmit={onSubmit} className={LoginCSS.form}>
-        <h3 className={PostMatchCSS.h3}>{(matchid) ? (<>Edit Match</>):(<>Post New Match</>)}</h3>
+
+        <h3 style={{alignSelf: 'center'}}>{(matchid) ? (<>Edit Match</>):(<>Post New Match</>)}</h3>
+        {matchid && <button className={CommentsCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
+        
         <div className={LoginCSS.container}>
           <label>Event</label>
           <select required={true} name="event" className={HeroSelectCSS.select} onChange={onChange} value={event}>
@@ -147,6 +160,18 @@ function PostMatch() {
         </div>
         <input type="submit" className={LoginCSS.submitButton}/>
       </form>
+
+      <Popup trigger={deletePopup}>
+        <div>
+          <h1>Are you sure you want to <b style={{color: 'red'}}>delete</b> this match? </h1>
+        <div>It can be restored from the recycle bin at anytime if deleted.</div>
+        </div>
+        <div className={PostMatchCSS.popupButtons}>
+          <button className={PostMatchCSS.deleteButton} onClick={onDelete}>Delete</button>
+          <button className={PostMatchCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
+        </div>
+      </Popup>
+
     </div>
     
   )

@@ -79,7 +79,7 @@ function Issues({matchid}) {
                 <label className={IssuesCSS.label}>Body</label>
                 <textarea placeholder='Write the details of the issue with this match' name='body' id="" cols="60" rows="7" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
             </div>
-            <input type="submit" value='Submit Issue' className={IssuesCSS.submitButton}/>
+            <input type="submit" value='Submit Issue' className={IssuesCSS.submitButton} style={{boxShadow: '3px 3px 2px black'}}/>
         </form>
     </div>
   )

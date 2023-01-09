@@ -1,11 +1,11 @@
 .navbar{
     display: flex;
-    gap: 20vh;
     font-weight: bold;
     border: 0px;
     border-bottom: 1px;
     border-color: grey;
     border-style: solid;
+    justify-content: space-around;
 }
 
 .item{

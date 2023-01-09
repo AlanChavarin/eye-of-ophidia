@@ -1,0 +1,39 @@
+.popup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inner{
+    position: relative;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    max-height: 20vh;
+    max-width: 35vw;
+    min-height: 200px;
+    min-width: 300px;
+    background-color: white;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.closeButton{
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
