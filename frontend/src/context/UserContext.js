@@ -1,5 +1,4 @@
 import {createContext, useState, useEffect} from 'react'
-
 const UserContext = createContext()
 
 export const UserProvider = ({children}) => {
@@ -54,7 +53,8 @@ export const UserProvider = ({children}) => {
 
     return <UserContext.Provider value={{
         userData,
-        updateLoggedInUserData
+        updateLoggedInUserData,
+
     }}>
         {children}
     </UserContext.Provider>

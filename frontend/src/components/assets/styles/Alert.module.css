@@ -1,0 +1,7 @@
+.alert{
+    position: fixed;
+    top: 10vh;
+    right: 0;
+    
+    background-color: red;
+}

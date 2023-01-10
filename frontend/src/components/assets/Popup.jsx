@@ -1,6 +1,4 @@
 import PopupCSS from './styles/Popup.module.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faWindowClose } from '@fortawesome/free-solid-svg-icons'
 
 function Popup(props) {
   return (props.trigger) ? (

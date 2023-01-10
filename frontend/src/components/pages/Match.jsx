@@ -21,7 +21,6 @@ function Match() {
     useEffect(() => {
       getMatch(matchid)
       .then(data => {
-        console.log(data)
         setMatch(data)
       })
     }, [])

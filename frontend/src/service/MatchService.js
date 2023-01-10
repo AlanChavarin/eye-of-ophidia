@@ -1,5 +1,5 @@
-const API_URL = 'http://localhost:5000/api/matches/'
 
+const API_URL = 'http://localhost:5000/api/matches/'
 
 export const getMatch = async (matchid) => {
     return new Promise(resolve => {
@@ -13,6 +13,7 @@ export const getMatch = async (matchid) => {
         })
         .catch((error) => {
             console.log(error)
+            //trigger alert
         })
     })
 }
@@ -28,10 +29,7 @@ export const getMatches = async (text, hero1, hero2) => {
 }
 
 export const postMatch = async (formData, matchid) => {
-    if(!matchid){
-        matchid = ''
-    } 
-    
+    !matchid && (matchid='')
     return new Promise(resolve => (
         fetch(API_URL + matchid, {
             method: matchid ? 'PUT' : 'POST',
@@ -75,4 +73,3 @@ export const deleteMatch = async (matchid) => {
         })
     })
 }
-
