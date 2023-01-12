@@ -1,10 +1,11 @@
 import {useEffect, useState, useContext} from 'react'
 import PropTypes from 'prop-types'
 import UserContext from '../../context/UserContext'
-import {getIssues, changeStatus, postIssue} from '../../service/IssueService'
 import IssuesCSS from './styles/Issues.module.css'
+import useIssueService from '../../service/useIssueService'
 
 function Issues({matchid}) {
+    const {getIssues, changeStatus, postIssue} = useIssueService()
     const {userData} = useContext(UserContext)
     const [issues, setIssues] = useState()
     const [formData, setFormData] = useState({

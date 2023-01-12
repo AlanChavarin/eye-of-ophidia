@@ -1,8 +1,9 @@
  import {useState, useEffect} from 'react'
- import {getHeroes} from '../../service/HeroService'
  import HeroSelectCSS from './styles/HeroSelect.module.css'
+ import useHeroService from '../../service/useHeroService'
 
 function HeroSelect({name, onChange, required, value}) {
+    const {getHeroes} = useHeroService()
     const [heroData, setHeroData] = useState([])
 
     useEffect(() => {

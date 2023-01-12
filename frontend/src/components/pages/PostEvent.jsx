@@ -1,12 +1,12 @@
 import LoginCSS from './styles/Login.module.css'
 import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
-import PostMatchCSS from './styles/PostMatch.module.css'
 import {useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
-import {postEvent, getEvent} from '../../service/EventService'
+import useEventService from '../../service/useEventService'
 
 function PostEvent() {
   const {eventid} = useParams()
+  const {getEvent, postEvent} = useEventService()
   const [formData, setFormData] = useState({
     name: '',
     location: '',

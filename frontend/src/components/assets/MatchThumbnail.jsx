@@ -2,7 +2,7 @@ import MatchThumbnailCSS from './styles/MatchThumbnail.module.css'
 import {Link} from 'react-router-dom'
 import {useContext, useEffect} from 'react'
 import UserContext from '../../context/UserContext'
-import { heroImageUrls } from '../../service/ImageService'
+import { heroImageUrls } from '../../helpers/HeroImageUrls'
 
 function MatchResults({match}) {
   const {userData} = useContext(UserContext)

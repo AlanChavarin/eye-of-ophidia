@@ -1,10 +1,19 @@
-import {createContext, useState} from 'react'
+import {createContext, useState, useEffect} from 'react'
 const AlertContext = createContext()
 
 export const AlertProvider = ({children}) => {
-    const [message, setMessage] = useState('Default message')
+    const [alerts, setAlerts] = useState([])
 
-    return <AlertContext.Provider value={{message, setMessage}}>
+    const addAlert = async (message, type) => {
+        const id = crypto.randomUUID()
+        setAlerts([...alerts, {message: message, type: type, id: id}])
+    }
+
+    const deleteAlert = (id) => {
+        setAlerts([...alerts.filter(alert => alert.id !== id)])
+    }
+
+    return <AlertContext.Provider value={{alerts, addAlert, deleteAlert}}>
         {children}
     </AlertContext.Provider>
 }

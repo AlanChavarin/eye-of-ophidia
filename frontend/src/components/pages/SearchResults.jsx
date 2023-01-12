@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import {useSearchParams} from 'react-router-dom'
 import MatchThumbnail from '../assets/MatchThumbnail'
 import SearchForm from '../assets/SearchForm'
-import {getMatches} from '../../service/MatchService'
 import SearchResultsCSS from './styles/SearchResults.module.css'
+import useMatchService from '../../service/useMatchService'
 
 function SearchResults() {
+    const {getMatches} = useMatchService()
     const [searchParams, setSearchParams] = useSearchParams()
     const [matches, setMatches] = useState()
     const text = searchParams.get('text')

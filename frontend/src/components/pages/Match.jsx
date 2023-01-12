@@ -3,16 +3,17 @@ import { useEffect, useState } from 'react'
 import Comments from '../assets/Comments'
 import Issues from '../assets/Issues'
 import EditHistories from '../assets/EditHistories'
-import {getMatch} from '../../service/MatchService'
 import MatchCSS from './styles/Match.module.css'
-import { heroImageUrls } from '../../service/ImageService'
+import { heroImageUrls } from '../../helpers/HeroImageUrls'
 import {Link} from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import UserContext from '../../context/UserContext'
 import {useContext} from 'react'
+import useMatchService from '../../service/useMatchService'
 
 function Match() {
+    const {getMatch} = useMatchService()
     const {matchid} = useParams()
     const [match, setMatch] = useState()
     const [tab, setTab] = useState('details')

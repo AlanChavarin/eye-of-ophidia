@@ -1,10 +1,11 @@
 import LoginCSS from './styles/Login.module.css'
 import {useState, useContext} from 'react'
 import UserContext from '../../context/UserContext'
-import { postLogin, postRegistration } from '../../service/LoginService'
+import useLoginService from '../../service/useLoginService'
 
 
 function Login() {
+  const {postLogin, postRegistration} = useLoginService()
   const {updateLoggedInUserData} = useContext(UserContext)
   const [registrationMode, setRegistrationMode] = useState(false)
   const [formData, setFormData] = useState({

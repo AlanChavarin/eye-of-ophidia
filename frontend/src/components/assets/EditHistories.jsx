@@ -1,8 +1,9 @@
 import {useState, useEffect} from 'react'
-import { getMatchEditHistory } from '../../service/EditHistoryService'
 import EditHistory from './EditHistory'
+import useEditHistoryService from '../../service/useEditHistoryService'
 
 function EditHistories({matchid}) {
+    const {getMatchEditHistory} = useEditHistoryService()
     const [history, setHistory] = useState()
 
     useEffect(() => {

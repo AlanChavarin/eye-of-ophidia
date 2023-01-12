@@ -4,15 +4,17 @@ import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
 import {useState, useEffect} from 'react'
 import HeroSelect from '../assets/HeroSelect'
 import {useParams, useNavigate} from 'react-router-dom'
-import {postMatch, getMatch, deleteMatch} from '../../service/MatchService'
-import {getEvents} from '../../service/EventService'
-import { getYoutubeParams } from '../../service/YoutubeParams'
+import { getYoutubeParams } from '../../helpers/YoutubeParams'
 import CommentsCSS from '../assets/styles/Comments.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import Popup from '../assets/Popup'
+import useEventService from '../../service/useEventService'
+import useMatchService from '../../service/useMatchService'
 
 function PostMatch() {
+  const {postMatch, getMatch, deleteMatch} = useMatchService()
+  const {getEvents} = useEventService()
   const navigate = useNavigate()
   const {matchid} = useParams()
   const [eventData, setEventData] = useState([])

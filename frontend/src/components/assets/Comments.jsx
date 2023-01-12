@@ -1,11 +1,12 @@
 import {useState, useEffect, useContext} from 'react'
 import UserContext from '../../context/UserContext'
-import {getComments, postComment, deleteComment} from '../../service/CommentService'
 import CommentsCSS from './styles/Comments.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import useCommentService from '../../service/useCommentService'
 
 function Comments({matchid}) {
+  const {getComments, postComment, deleteComment} = useCommentService()
   const [comments, setComments] = useState()
   const [newCommentBody, setNewCommentBody] = useState('')
   const {userData} = useContext(UserContext)
