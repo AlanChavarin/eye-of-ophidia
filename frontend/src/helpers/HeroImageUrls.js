@@ -1,5 +1,5 @@
  export const heroImageUrls = {
-        "Ira, Crimson Haze": 'https://storage.googleapis.com/fabmaster/media/images/ira.width-10000.jpg',
+        "Ira, Crimson Haze": './images/Ira, Crimson Haze.jpg',
 
         "Bravo, Showstopper": 'https://storage.googleapis.com/fabmaster/media/images/bravo_hero.width-10000.jpg', 
 

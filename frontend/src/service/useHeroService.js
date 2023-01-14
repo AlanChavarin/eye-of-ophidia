@@ -19,6 +19,10 @@ const useHeroService = () => {
                 })
                 resolve(heroNames)
             })
+            .catch(error => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
         ))
     }
 
@@ -33,7 +37,8 @@ const useHeroService = () => {
                 resolve(data)
             })
             .catch((error) => {
-                console.log(error)
+                console.error(error)
+                addAlert(error.message, 'error')
             })
         })
     }

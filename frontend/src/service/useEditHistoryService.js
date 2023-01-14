@@ -16,7 +16,10 @@ const useEditHistoryService = () => {
                 }
                 resolve(data)
             })
-            .catch((error) => console.log(error))
+            .catch(error => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
         ))
     }
 

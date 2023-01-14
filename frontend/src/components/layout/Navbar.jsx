@@ -15,9 +15,7 @@ function Navbar() {
       <Link to='/' className={NavbarCSS.item}>
         <div><FontAwesomeIcon icon={faEye} />Eye of Ophidia</div>
       </Link>
-      <Link to='/login' className={NavbarCSS.item}>
-        <div>Login/Register</div>
-      </Link>
+      
       {(userData.name) ? (
         <>
           <Link to='/me' className={NavbarCSS.item}>
@@ -30,7 +28,11 @@ function Navbar() {
             <div>Submit a new event</div>
           </Link>
         </>
-      ) : <></>}
+      ) : <>
+        <Link to='/login' className={NavbarCSS.item}>
+          <div>Login/Register</div>
+        </Link>
+      </>}
       
     </div>
   )

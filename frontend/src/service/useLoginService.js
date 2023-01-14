@@ -26,7 +26,7 @@ const useLoginService = () => {
                 }
                 localStorage.setItem('user', data.token)
                 updateLoggedInUserData()
-                addAlert(`Login as ${data.name} Successful!`, 'success')
+                addAlert(`Login Successful!`, 'success')
                 resolve(true)
             })
             .catch(error => {

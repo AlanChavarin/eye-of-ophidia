@@ -2,9 +2,11 @@ import LoginCSS from './styles/Login.module.css'
 import {useState, useContext} from 'react'
 import UserContext from '../../context/UserContext'
 import useLoginService from '../../service/useLoginService'
+import { useNavigate } from 'react-router-dom'
 
 
 function Login() {
+  const navigate = useNavigate()
   const {postLogin, postRegistration} = useLoginService()
   const {updateLoggedInUserData} = useContext(UserContext)
   const [registrationMode, setRegistrationMode] = useState(false)
@@ -25,11 +27,12 @@ function Login() {
     }))
   }
     
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
     registrationMode ? 
-    postRegistration(formData) : 
-    postLogin(formData, updateLoggedInUserData)
+    await postRegistration(formData) : 
+    await postLogin(formData, updateLoggedInUserData)
+    navigate('/')
   }
 
   return (

@@ -17,7 +17,7 @@ const useEventService = () => {
             })
             .catch(error => {
                 console.error(error)
-                addAlert(`Error fetching event`, 'error')
+                addAlert(error.message, 'error')
             })
         })
     }
@@ -31,7 +31,7 @@ const useEventService = () => {
             })
             .catch(error => {
                 console.error(error)
-                addAlert(`Error fetching events`, 'error')
+                addAlert(error.message, 'error')
             })
         ))
     }

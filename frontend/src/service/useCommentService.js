@@ -12,9 +12,13 @@ const useCommentService = () => {
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){
-                    throw new Error(data.errorMessage)
+                  throw new Error(data.errorMessage)
                 }
                 resolve(data)
+            })
+            .catch(error => {
+              console.error(error)
+              addAlert(error.message, 'error')
             })
           ))
         } else {
@@ -39,16 +43,17 @@ const useCommentService = () => {
             if(data.errorMessage){
               throw new Error(data.errorMessage)
             }
+            addAlert('Comment successfully posted', 'success')
             resolve(true)
           })
-          .catch((error) => {
-            console.log(error)
+          .catch(error => {
+            console.error(error)
+            addAlert(error.message, 'error')
           })
       ))
   }
 
-  const deleteComment = (e) => {
-      const commentid = e.target.parentElement.getAttribute('commentid')
+  const deleteComment = (commentid) => {
       return new Promise(resolve => (
         fetch(API_URL + commentid, {
           method: 'DELETE',
@@ -61,10 +66,12 @@ const useCommentService = () => {
           if(data.errorMessage){
             throw new Error(data.errorMessage)
           }
+          addAlert('Comment successfully deleted', 'success')
           resolve(true)
         })
-        .catch((error) => {
-          console.log(error)
+        .catch(error => {
+          console.error(error)
+          addAlert(error.message, 'error')
         })
       ))
     }

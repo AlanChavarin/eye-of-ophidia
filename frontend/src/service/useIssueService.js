@@ -1,10 +1,7 @@
 import {useContext} from 'react'
 import AlertContext from '../context/AlertContext'
 
-
-
 const useIssueService = () => {
-
     const API_URL = 'http://localhost:5000/api/issues/'
     const {addAlert} = useContext(AlertContext)
 
@@ -19,7 +16,8 @@ const useIssueService = () => {
                 resolve(data)
             })
             .catch((error) => {
-                console.log(error)
+                console.error(error)
+                addAlert(error.message, 'error')
             })
         ))
     }
@@ -43,10 +41,12 @@ const useIssueService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                addAlert('Issue successfully posted!', 'success')
                 resolve(true)
             })
             .catch((error) => {
-                console.log(error)
+                console.error(error)
+                addAlert(error.message, 'error')
             })
         ))
     }
@@ -69,10 +69,12 @@ const useIssueService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                addAlert('Issue status successfully changed!', 'success')
                 resolve(true)
             })
             .catch((error) => {
-                console.log(error)
+                console.error(error)
+                addAlert(error.message, 'error')
             })
         ))
     }

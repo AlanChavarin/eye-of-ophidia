@@ -26,6 +26,10 @@ function Match() {
       })
     }, [])
 
+    const heroURL = (hero) => {
+      return window.location.origin + `/images/${encodeURI(hero)}.jpg`
+    }
+
     const onClick = (e) => {
       setTab(e.target.value)
     }
@@ -66,11 +70,11 @@ function Match() {
             </div>
           </div>
 
-          <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroImageUrls[match.player1hero]})`}}>
+          <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player1hero)})`}}>
             <div className={MatchCSS.playerName}>{match.player1name}</div>
             <a href={`http://${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a>
           </div>
-          <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroImageUrls[match.player2hero]})`}}>
+          <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player2hero)})`}}>
             <div className={MatchCSS.playerName}>{match.player2name}</div>
             <a href={`http://${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> 
           </div> </>}
