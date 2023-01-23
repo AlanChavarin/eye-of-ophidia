@@ -24,7 +24,7 @@ import {AlertProvider} from './context/AlertContext'
 import UserAuth from "./auth/UserAuth"
 
 //alert
-import Alert from "./components/assets/Alert"
+import Alert from "./components/assets/AlertsContainer"
 
 function App() {
   return (

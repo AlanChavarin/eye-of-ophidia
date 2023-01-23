@@ -12,7 +12,7 @@ function MatchResults({match}) {
         <>
         <div className={MatchThumbnailCSS.info}>
           <div className={MatchThumbnailCSS.eventTitle}>
-            {match.event.name} - Finals
+            {match.event.name}
           </div>
           <div className={MatchThumbnailCSS.date}>
             {match.event.startDate.substr(0, 10)}
