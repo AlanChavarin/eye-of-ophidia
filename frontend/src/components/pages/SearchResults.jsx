@@ -14,21 +14,20 @@ function SearchResults() {
     const hero2 =  searchParams.get('hero2')
 
     useEffect(() => {
-        getMatches(text, hero1, hero2)
-        .then(data => {
-          setMatches(data)
-        })
+      getMatches(text, hero1, hero2)
+      .then(data => {
+        setMatches(data)
+      })
     }, [searchParams])
 
   return (
     <div>
-        <SearchForm />
-        <div className={SearchResultsCSS.matchThumbnails}>
-          {matches?.map((match) => (
-            <MatchThumbnail key={match._id} match={match}/>
-          ))}  
-        </div> 
-        
+      <SearchForm />
+      <div className={SearchResultsCSS.matchThumbnails}>
+        {matches?.map((match) => (
+          <MatchThumbnail key={match._id} match={match}/>
+        ))}  
+      </div> 
     </div>
   )
 }

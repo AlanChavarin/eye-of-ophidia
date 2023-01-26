@@ -50,6 +50,12 @@ const getMatches = asyncHandler(async (req, res) => {
     res.status(200).json(matches)
 })
 
+const getMatchesByEventName = asyncHandler(async (req, res) => {
+    if(!req.recyclebin){req.recyclebin = false}
+    const matches = await Match.find({'event.name': req.params.eventName})
+    res.status(200).json(matches)
+})
+
 const getMatch = asyncHandler(async (req, res) => {
     if(!req.recyclebin){req.recyclebin = false}
     const match = await Match.findOne({_id: req.params.id, deleted: req.recyclebin})
@@ -111,6 +117,7 @@ const restoreMatch = asyncHandler(async (req, res) => {
 module.exports = {
     getMatches,
     getMatch,
+    getMatchesByEventName,
     postMatch,
     updateMatch,
     deleteMatch,

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const asyncHandler = require('express-async-handler')
-const {getMatch, getMatches, postMatch, updateMatch, deleteMatch, restoreMatch} = require('../controllers/matchController')
+const {getMatch, getMatches, getMatchesByEventName, postMatch, updateMatch, deleteMatch, restoreMatch} = require('../controllers/matchController')
 const {protect, protectAdmin, protectModerator, protectHelper} = require('../middleware/authMiddleware')
 
 const recycleBin = asyncHandler(async (req, res, next) => {
@@ -19,13 +19,12 @@ router.get('/', getMatches)
 
 router.get('/:id', getMatch)
 
+router.get('/byeventname/:eventName', getMatchesByEventName)
+
 router.post('/', protect, postMatch)
 
 router.put('/:matchid', protect, protectHelper, updateMatch)
 
 router.delete('/:id', protect, protectModerator, deleteMatch)
-
-
-
 
 module.exports = router

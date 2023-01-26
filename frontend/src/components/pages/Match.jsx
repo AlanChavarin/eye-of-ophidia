@@ -4,8 +4,7 @@ import Comments from '../assets/Comments'
 import Issues from '../assets/Issues'
 import EditHistories from '../assets/EditHistories'
 import MatchCSS from './styles/Match.module.css'
-import { heroImageUrls } from '../../helpers/HeroImageUrls'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import UserContext from '../../context/UserContext'
@@ -21,9 +20,7 @@ function Match() {
 
     useEffect(() => {
       getMatch(matchid)
-      .then(data => {
-        setMatch(data)
-      })
+      .then(data => setMatch(data))
     }, [])
 
     const heroURL = (hero) => {
@@ -51,7 +48,7 @@ function Match() {
               <button value='comments' onClick={onClick} style={{backgroundColor: (tab==='comments') && '#1446A0', color: (tab==='comments') && 'white'}}>Comments</button>
               <button value='issues' onClick={onClick} style={{backgroundColor: (tab==='issues') && '#1446A0', color: (tab==='issues') && 'white'}}>Issues</button>
               <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
-              {(userData.name) && <Link className={MatchCSS.editLink} to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
+              {(userData.name) && <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
             </div>
             
             {tab==='comments' && <Comments matchid={matchid}/>}

@@ -15,6 +15,10 @@ function Navbar() {
       <Link to='/' className={NavbarCSS.item}>
         <div><FontAwesomeIcon icon={faEye} />Eye of Ophidia</div>
       </Link>
+
+      <Link to='/events' className={NavbarCSS.item}>
+        <div>Events</div>
+      </Link>
       
       {(userData.name) ? (
         <>

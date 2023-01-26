@@ -63,7 +63,7 @@ const useEventService = () => {
                     throw new Error(data.errorMessage)
                 }
                 addAlert(`${data.name} event posted!`, 'success')
-                resolve(true)
+                resolve(data)
             })
             .catch((error) => {
                 console.error(error.message)

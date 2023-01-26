@@ -40,6 +40,23 @@ const useMatchService = () => {
         ))
     }
 
+    const getMatchesByEventName = async (eventName) => {
+        return new Promise(resolve => (
+            fetch(API_URL + 'byeventname/' + eventName)
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                resolve(data)
+            })
+            .catch(error => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
+        ))
+    }
+
     const postMatch = async (formData, matchid) => {
         !matchid && (matchid='')
         return new Promise(resolve => (
@@ -89,7 +106,7 @@ const useMatchService = () => {
         })
     }
 
-    return {getMatch, getMatches, postMatch, deleteMatch}
+    return {getMatch, getMatches, getMatchesByEventName, postMatch, deleteMatch}
 }
 
 export default useMatchService

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
 const Hero = require('../models/heroModel')
+const ObjectId = require('mongodb').ObjectId
 
 
 const matchSchema = mongoose.Schema({
@@ -28,7 +29,7 @@ const matchSchema = mongoose.Schema({
         },
         startDate: Date,
         endDate: Date,
-        description: String,
+        description: String
     },
     format: {type: String, required: true, enum: formats},
     link: {type: String, required: true}, 

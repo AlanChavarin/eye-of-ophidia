@@ -1,10 +1,11 @@
 import LoginCSS from './styles/Login.module.css'
 import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
 import {useState, useEffect} from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams, useNavigate} from 'react-router-dom'
 import useEventService from '../../service/useEventService'
 
 function PostEvent() {
+  const navigate = useNavigate()
   const {eventid} = useParams()
   const {getEvent, postEvent} = useEventService()
   const [formData, setFormData] = useState({
@@ -40,6 +41,10 @@ function PostEvent() {
     e.preventDefault()
     console.log(formData)
     postEvent(formData, eventid)
+    .then(event => {
+      console.log(event)
+      navigate(`/events/${event._id}`)
+    })
   }
 
   return (

@@ -80,7 +80,6 @@ function PostMatch() {
     e.preventDefault()
     postMatch(formData, matchid)
     .then(match => {
-      console.log(match)
       navigate(`/matches/${match._id}`)
     })
   }

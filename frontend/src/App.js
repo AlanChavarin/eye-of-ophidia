@@ -12,6 +12,8 @@ import Me from "./components/pages/Me"
 import PostMatch from "./components/pages/PostMatch"
 import PostEvent from "./components/pages/PostEvent"
 import Verify from "./components/pages/Verify"
+import Events from "./components/pages/Events"
+import Event from "./components/pages/Event"
 
 //tools
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
@@ -37,6 +39,8 @@ function App() {
               <Route path='/' element={<Home />}/>
               <Route path='/matches/' element={<SearchResults />}/>
               <Route path='/matches/:matchid' element={<Match />}/>
+              <Route path='/events' element={<Events />}/>
+              <Route path='/events/:eventid' element={<Event />}/>
               <Route path='/login' element={<Login />}/>
               <Route path='/logout' element={<Logout />}/>
               <Route path='/verify/:token' element={<Verify />}/>
