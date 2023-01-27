@@ -2,7 +2,8 @@ const asyncHandler = require('express-async-handler')
 const Event = require('../models/eventModel')
 
 const getEvent = asyncHandler(async (req, res) => {
-    const event = await Event.findOne({_id: req.params.eventid})
+    if(!req.recyclebin){req.recyclebin = false}
+    const event = await Event.findOne({_id: req.params.eventid, deleted: req.recyclebin})
     if(!event){
         res.status(400)
         throw new Error('Event with that id not found')
@@ -11,7 +12,8 @@ const getEvent = asyncHandler(async (req, res) => {
 })
 
 const getEvents = asyncHandler(async (req, res) => {
-    const events = await Event.find()
+    if(!req.recyclebin){req.recyclebin = false}
+    const events = await Event.find({deleted: req.recyclebin})
     res.status(200).json(events)
 })
 

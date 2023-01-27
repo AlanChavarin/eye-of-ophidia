@@ -72,7 +72,31 @@ const useEventService = () => {
         ))
     }
 
-    return {getEvent, getEvents, postEvent}
+    const deleteEvent = async (eventid) => {
+        return new Promise(resolve => (
+            fetch(API_URL + eventid, {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('user')
+                }
+            })
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                addAlert(`${data.name} event deleted!`, 'success')
+                resolve(data)
+            })
+            .catch((error) => {
+                console.error(error.message)
+                addAlert(error.message, 'error')
+            })
+        ))
+    }
+
+    return {getEvent, getEvents, postEvent, deleteEvent}
 }
 
 export default useEventService
