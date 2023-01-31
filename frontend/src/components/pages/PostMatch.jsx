@@ -11,12 +11,15 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import Popup from '../assets/Popup'
 import useEventService from '../../service/useEventService'
 import useMatchService from '../../service/useMatchService'
+import SearchableDropdown from '../assets/SearchableDropdown'
 
 function PostMatch() {
   const {postMatch, getMatch, deleteMatch} = useMatchService()
   const {getEvents} = useEventService()
+
   const navigate = useNavigate()
   const {matchid} = useParams()
+
   const [eventData, setEventData] = useState([])
   const [formData, setFormData] = useState({
     player1name: '',
@@ -27,6 +30,10 @@ function PostMatch() {
     player2hero: '',
     player2deck: '',
 
+    top8: '',
+    swissRound: null,
+    top8Round: 'None',
+
     event: '',
     format: '',
     link: '',
@@ -35,8 +42,9 @@ function PostMatch() {
     fullLink: '',
   })
   const [deletePopup, setDeletePopup] = useState(false)
+  const [heroType, setHeroType] = useState('')
 
-  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, description, format, timeStamp, fullLink} = formData
+  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, description, format, timeStamp, fullLink, top8, swissRound, top8Round} = formData
 
   useEffect(() => {
     if(matchid){
@@ -44,7 +52,11 @@ function PostMatch() {
       .then(data => setFormData({...data, event: data.event.name}))
     }
     getEvents()
-    .then(data => setEventData(data))
+    .then(data => {
+      let eventNames = []
+      data.map((event) => eventNames.push(event.name))
+      setEventData(eventNames)
+    })
   }, [])
 
   useEffect(() => {
@@ -68,6 +80,18 @@ function PostMatch() {
       }
     })
   }, [event])
+
+  useEffect(() => {
+    if(format==='Classic Constructed'){
+      setHeroType('adult')
+    }
+    if(format==='Blitz' || format==='Draft' || format==='Sealed'){
+      setHeroType('young')
+    }
+    if(format===''){
+      setHeroType('')
+    }
+  }, [format])
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -98,14 +122,11 @@ function PostMatch() {
         {matchid && <button className={CommentsCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
         
         <div className={LoginCSS.container}>
-          <label>Event</label>
-          <select required={true} name="event" className={HeroSelectCSS.select} onChange={onChange} value={event}>
-            <option value=''>None</option>
-            {eventData.map((event) => (<option value={event.name} value2={event.format} key={event._id}>{event.name}</option>))}
-          </select>
+          <label>Event <span style={{color: 'red'}}>*</span></label>
+          <SearchableDropdown items={eventData} onChange={onChange} value={event} name='event'/>
         </div>
         <div className={LoginCSS.container}>
-          <label>Format</label>
+          <label>Format <span style={{color: 'red'}}>*</span></label>
           <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
             <option value=''>None</option>
             <option value="Classic Constructed">Classic Constructed</option>
@@ -114,44 +135,76 @@ function PostMatch() {
             <option value="Sealed">Sealed</option>
           </select>
         </div>
+
+        <div className={PostMatchCSS.top8OrSwissContainer}>
+          <div className={LoginCSS.container}>
+            <div onChange={onChange}>
+              <label>Top 8</label>
+              <input type="radio" name="top8" value={true} required/>
+            </div>
+            <div onChange={onChange}>
+              <label>Swiss</label>
+              <input type="radio" name="top8" value={false} required/>
+            </div>
+          </div>
+          
+          {top8==='true' && 
+            <div className={LoginCSS.container}>
+              <label>Top 8 Round <span style={{color: 'red'}}>*</span></label>
+              <select name="top8Round" className={HeroSelectCSS.select} onChange={onChange} value={top8Round}>
+                <option>None</option>
+                <option value="Quarter">Quarter</option>
+                <option value="Semi">Semi</option>
+                <option value="Finals">Finals</option>
+              </select>
+            </div>
+          }
+          {top8==='false' &&
+            <div className={LoginCSS.swissRoundContainer}>
+              <label><span style={{color: 'red'}}>*</span>Swiss Round:</label>
+              <input type="number" name='swissRound' value={swissRound} onChange={onChange} className={LoginCSS.input} style={{width: '30px'}}/>
+            </div>
+          }
+        </div>
+
         <div className={LoginCSS.container}>
           <label>Youtube Video Link</label>
           <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
-          <label>Match Timestamp (in total seconds)</label>
-          <input type="number" name='timeStamp' value={timeStamp} onChange={onChange} required className={LoginCSS.input}/>
+          <label>Match Timestamp (in total seconds) <span style={{color: 'red'}}>*</span></label>
+          <input type="number" name='timeStamp' value={timeStamp} onChange={onChange} required className={LoginCSS.input} style={{width: '60px'}}/>
         </div>
         <div className={LoginCSS.container}>
-          <label>Youtube Video id</label>
+          <label>Youtube Video id <span style={{color: 'red'}}>*</span></label>
           <input type="text" name='link' value={link} onChange={onChange} required className={LoginCSS.input}/>
         </div>
         
       
 
         <div className={LoginCSS.container}>
-          <label>Player 1 Hero</label>
-          <HeroSelect name='player1hero' value={player1hero} onChange={onChange} required={true} className={LoginCSS.input}/>
+          <label>Player 1 Hero <span style={{color: 'red'}}>*</span></label>
+          <HeroSelect name='player1hero' value={player1hero} onChange={onChange} required={true} type={heroType} className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
-          <label>Player 1 Full Name</label>
+          <label>Player 1 Full Name <span style={{color: 'red'}}>*</span></label>
           <input type="text" name='player1name' value={player1name} onChange={onChange} required className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
-          <label>Player 1 Deck Link</label>
+          <label>Player 1 Deck Link <span style={{color: 'red'}}>*</span></label>
           <input type="url" name='player1deck' value={player1deck} onChange={onChange} required className={LoginCSS.input}/>
         </div>
 
         <div className={LoginCSS.container}>
-          <label>Player 2 Hero</label>
-          <HeroSelect name='player2hero' value={player2hero} onChange={onChange} required={true} className={LoginCSS.input}/>
+          <label>Player 2 Hero <span style={{color: 'red'}}>*</span></label>
+          <HeroSelect name='player2hero' value={player2hero} onChange={onChange} required={true} type={heroType} className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
-          <label>Player 2 Full Name</label>
+          <label>Player 2 Full Name <span style={{color: 'red'}}>*</span></label>
           <input type="text" name='player2name' value={player2name} onChange={onChange} required className={LoginCSS.input}/>
         </div>
         <div className={LoginCSS.container}>
-          <label>Player 2 Deck Link</label>
+          <label>Player 2 Deck Link <span style={{color: 'red'}}>*</span></label>
           <input type="url" name='player2deck' value={player2deck} onChange={onChange} required className={LoginCSS.input}/>
         </div>
       
@@ -161,6 +214,7 @@ function PostMatch() {
         </div>
         <input type="submit" className={LoginCSS.submitButton}/>
       </form>
+
 
       <Popup trigger={deletePopup}>
         <div>
@@ -179,7 +233,18 @@ function PostMatch() {
 }
 export default PostMatch
 
-{/* <div className={LoginCSS.container}>
+/* <div className={LoginCSS.container}>
   <label>Date</label>
   <input type="date" name='date' value={date} onChange={onChange} required className={LoginCSS.input}/>
-</div> */}
+</div> */
+
+/* <select required={true} name="event" className={HeroSelectCSS.select} onChange={onChange} value={event}>
+  <option value=''>None</option>
+  {eventData.map((event) => (<option value={event.name} value2={event.format} key={event._id}>{event.name}</option>))}
+</select> */
+
+{/* <input type="text" list='event' name='event' onChange={onChange} value={event}/>
+<datalist id='event'>
+  <option value=''>None</option>
+  {eventData.map((event) => (<option value={event.name} value2={event.format} key={event._id}>{event.name}</option>))}
+</datalist> */}

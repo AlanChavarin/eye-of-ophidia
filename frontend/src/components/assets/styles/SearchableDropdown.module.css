@@ -1,0 +1,22 @@
+.parent{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.dropdown{
+    overflow-y:scroll;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 4px;
+    
+    position: absolute;
+    height: 25vh;
+    width: 100%;
+    transform: translate(0px, 34px);
+    z-index: 2;
+}
+
+.dropdown > *:hover {
+    background-color: lightgray;
+}

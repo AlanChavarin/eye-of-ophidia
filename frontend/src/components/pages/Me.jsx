@@ -1,5 +1,6 @@
 import UserContext from '../../context/UserContext'
 import {useContext} from 'react'
+import SearchableDropdown from '../assets/SearchableDropdown'
 
 function Me() {
     const {userData} = useContext(UserContext)
@@ -19,6 +20,7 @@ function Me() {
             <div>
                 privilege: {privilege}
             </div>
+            <SearchableDropdown items={['Apples', 'Oranges', 'Fortnite', 'asedrfgjuhsdf']} height='20vh'/>
         </div>
     )
 }

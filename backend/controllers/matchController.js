@@ -52,7 +52,7 @@ const getMatches = asyncHandler(async (req, res) => {
 
 const getMatchesByEventName = asyncHandler(async (req, res) => {
     if(!req.recyclebin){req.recyclebin = false}
-    const matches = await Match.find({'event.name': req.params.eventName})
+    const matches = await Match.find({'event.name': req.params.eventName, deleted: req.recyclebin})
     res.status(200).json(matches)
 })
 
@@ -69,7 +69,7 @@ const getMatch = asyncHandler(async (req, res) => {
 const postMatch = asyncHandler(async (req, res) => {
     const {player1name, player1hero, player1deck, 
         player2name, player2hero, player2deck,
-        format, event, link, timeStamp, description
+        format, event, link, timeStamp, description, top8, swissRound, top8Round,
     } = req.body
     const eventData = await Event.findOne({name: event})
     const match = await Match.create({
@@ -80,6 +80,10 @@ const postMatch = asyncHandler(async (req, res) => {
         player2name: player2name,
         player2hero: player2hero,
         player2deck: player2deck,
+
+        top8: top8,
+        swissRound: swissRound,
+        top8Round: top8Round,
 
         format: format,
         event: eventData,

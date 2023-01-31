@@ -6,8 +6,28 @@ const getHeroes = asyncHandler(async (req, res) => {
     res.status(200).json(heroes)
 })
 
+const getAdultHeroes = asyncHandler(async (req, res) => {
+    const heroes = await Hero.find({young: false})
+    res.status(200).json(heroes)
+})
+
+const getYoungHeroes = asyncHandler(async (req, res) => {
+    const heroes = await Hero.find({young: true})
+    res.status(200).json(heroes)
+})
+
 const getHeroNames = asyncHandler(async (req, res) => {
     const heroes = await Hero.find({}, {'name': 1, _id: 0})
+    res.status(200).json(heroes)
+})
+
+const getAdultHeroNames = asyncHandler(async (req, res) => {
+    const heroes = await Hero.find({young: false}, {'name': 1, _id: 0})
+    res.status(200).json(heroes)
+})
+
+const getYoungHeroNames = asyncHandler(async (req, res) => {
+    const heroes = await Hero.find({young: true}, {'name': 1, _id: 0})
     res.status(200).json(heroes)
 })
 
@@ -58,5 +78,9 @@ module.exports = {
     getHero,
     postHero,
     deleteHero,
-    updateHero
+    updateHero,
+    getAdultHeroes, 
+    getYoungHeroes, 
+    getAdultHeroNames,
+    getYoungHeroNames
 }

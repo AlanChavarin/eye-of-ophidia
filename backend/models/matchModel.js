@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
+const top8Rounds = ['Quarter', 'Semi', 'Finals', 'None']
 const Hero = require('../models/heroModel')
-const ObjectId = require('mongodb').ObjectId
 
 
 const matchSchema = mongoose.Schema({
@@ -31,6 +31,27 @@ const matchSchema = mongoose.Schema({
         endDate: Date,
         description: String
     },
+
+    top8: {type: Boolean, required: true},
+    swissRound: {type: Number, validate: function(v){
+        if(this._update){
+            if(!this._update.$set.top8 && v){return true}
+            else if(this._update.$set.top8 && !v){return true}
+            else {return false}
+        } else if(!this.top8 && v){return true}
+        else if(this.top8 && !v){return false}
+        else {return false}
+    }},
+    top8Round: {type: String, enum: top8Rounds, validate: function(v){
+        if(this._update){
+            if(this._update.$set.top8 && v!=='None'){return true}
+            else if(!this._update.$set.top8 && v==='None') {return true}
+            else {return false}
+        } else if (this.top8 && v!=='None'){return true}
+        else if(!this.top8 && v==='None'){return true}
+        else {return false}
+    }},
+
     format: {type: String, required: true, enum: formats},
     link: {type: String, required: true}, 
     timeStamp: {type: Number},
@@ -41,7 +62,6 @@ const matchSchema = mongoose.Schema({
 const heroEnum = async (v) => {
     return !!await Hero.findOne({name: v})
 }
-
 
 module.exports = mongoose.model('Match', matchSchema)
 

@@ -38,10 +38,10 @@ function SearchForm() {
                 <div className={SearchFormCSS.hero}>
                     <label>Hero matchup</label>
                     <div className={SearchFormCSS.container}>   
-                        <HeroSelect name='hero1' onChange={onChange}/>
+                        <HeroSelect name='hero1' onChange={onChange} value={hero1}/>
                     </div>
                     <div className={SearchFormCSS.container}>
-                        <HeroSelect name='hero2' onChange={onChange}/>
+                        <HeroSelect name='hero2' onChange={onChange} value={hero2}/>
                     </div>
                 </div>
             </form>

@@ -41,4 +41,18 @@
     justify-self: flex-end;
 }
 
+.top8OrSwissContainer{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.swissRoundContainer{
+    display: flex;
+}
+
+datalist{
+    background-color: red;
+}
+
 /* box-shadow: 3px 3px 2px black; */

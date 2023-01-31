@@ -26,6 +26,48 @@ const useHeroService = () => {
         ))
     }
 
+    const getAdultHeroNames = async () => {
+        return new Promise(resolve => (
+            fetch(API_URL + 'adultnames')
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                let heroNames = []
+                data.map((hero) => {
+                    heroNames.push(hero.name)
+                })
+                resolve(heroNames)
+            })
+            .catch(error => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
+        ))
+    }
+
+    const getYoungHeroNames = async () => {
+        return new Promise(resolve => (
+            fetch(API_URL + 'youngnames')
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                let heroNames = []
+                data.map((hero) => {
+                    heroNames.push(hero.name)
+                })
+                resolve(heroNames)
+            })
+            .catch(error => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
+        ))
+    }
+
     const getHero = async (heroid) => {
         return new Promise(resolve => {
             fetch(API_URL + heroid)
@@ -43,7 +85,7 @@ const useHeroService = () => {
         })
     }
 
-    return {getHeroes, getHero}
+    return {getHeroes, getHero, getAdultHeroNames, getYoungHeroNames}
 }
 
 export default useHeroService
