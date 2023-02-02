@@ -4,7 +4,7 @@ import UserContext from '../../context/UserContext'
 import IssuesCSS from './styles/Issues.module.css'
 import useIssueService from '../../service/useIssueService'
 
-function Issues({matchid}) {
+function Issues({targetid}) {
     const {getIssues, changeStatus, postIssue} = useIssueService()
     const {userData} = useContext(UserContext)
     const [issues, setIssues] = useState()
@@ -16,7 +16,7 @@ function Issues({matchid}) {
     const {title, body} = formData
 
     useEffect(() => {
-        getIssues(matchid).then(data => setIssues(data))
+        getIssues(targetid).then(data => setIssues(data))
     }, [])
 
     const onChange = (e) => {
@@ -30,14 +30,14 @@ function Issues({matchid}) {
         const issueid = e.target.parentElement.parentElement.parentElement.getAttribute('issueid')
         const status = e.target.getAttribute('status')
         changeStatus(issueid, status)
-        .then(() => getIssues(matchid))
+        .then(() => getIssues(targetid))
         .then(data => setIssues(data))
     }
 
     const onSubmit = (e) => {   
         e.preventDefault()
-        postIssue(matchid, formData)
-        .then(() => getIssues(matchid))
+        postIssue(targetid, formData)
+        .then(() => getIssues(targetid))
         .then(data => setIssues(data))
         .then(() => setFormData({title: '', body: ''}))
     }
@@ -71,14 +71,14 @@ function Issues({matchid}) {
         <br/>
         <hr className={IssuesCSS.hr}/>
         <form onSubmit={onSubmit} className={IssuesCSS.form}>
-            <div style={{alignSelf: 'center', fontWeight: '600'}}>Is there an issue with this match? Submit an issue down below!</div>
+            <div style={{alignSelf: 'center', fontWeight: '600'}}>Is there an issue with this match/event? Submit an issue down below!</div>
             <div className={IssuesCSS.formContainer}>
                 <label className={IssuesCSS.label}>Title</label>
                 <input placeholder='Issue title' name='title' type="text" onChange={onChange} value={title} className={IssuesCSS.input}/>
             </div>
             <div className={IssuesCSS.formContainer}>
                 <label className={IssuesCSS.label}>Body</label>
-                <textarea placeholder='Write the details of the issue with this match' name='body' id="" cols="60" rows="7" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
+                <textarea placeholder='Write the details of the issue with this match/event' name='body' id="" cols="60" rows="7" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
             </div>
             <input type="submit" value='Submit Issue' className={IssuesCSS.submitButton} style={{boxShadow: '3px 3px 2px black'}}/>
         </form>
@@ -87,7 +87,7 @@ function Issues({matchid}) {
 }
 
 Issues.propTypes = {
-    matchid: PropTypes.string.isRequired
+    targetid: PropTypes.string.isRequired
 }
 
 export default Issues

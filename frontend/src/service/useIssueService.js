@@ -22,10 +22,10 @@ const useIssueService = () => {
         ))
     }
 
-    const postIssue = async (matchid, formData) => {
+    const postIssue = async (targetid, formData) => {
         const {title, body} = formData
         return new Promise(resolve => (
-            fetch(API_URL + matchid, {
+            fetch(API_URL + targetid, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',

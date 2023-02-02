@@ -6,20 +6,22 @@ import useMatchService from '../../service/useMatchService'
 import MatchThumbnail from '../assets/MatchThumbnail'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import UserContext from '../../context/UserContext'
 import {useContext} from 'react'
 import { Link } from 'react-router-dom'
+import Issues from '../assets/Issues'
+
 
 function Event() {
     const {userData} = useContext(UserContext)
-
     const {getEvent} = useEventService()
     const {eventid} = useParams()
     const [event, setEvent] = useState()
     const {getMatchesByEventName} = useMatchService()
     const [matches, setMatches] = useState()
-
     const [backgroundImage, setBackgroundImage] = useState()
+    const [issueTab, setIssueTab] = useState(false)
 
 
     useEffect(() => {
@@ -34,13 +36,18 @@ function Event() {
 
     useEffect(() => {
         event && (setBackgroundImage(window.location.origin + `/backgroundImages/${event.startDate.substring(5, 7)}.jpg`))
-    }, [event]) 
+    }, [event])
+
+    const onClick = (e) => {
+        (issueTab) ? setIssueTab(false) : setIssueTab(true)
+    }
 
   return (
     <div className={EventCSS.parent}>
-        {event && ( <>
+        {event && (<>
             <div className={EventCSS.eventContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${backgroundImage})`}}>
-                {(userData.name) && <Link className={EventCSS.editLink} to={`/postevent/${eventid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
+                {(userData.name) && <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`} style={{right: '70px', top: '2px'}}><FontAwesomeIcon icon={faEdit} /></Link>}
+                <button onClick={onClick} className={EventCSS.cornerItem} style={{right: '5px', top: '2px'}}>Issues</button>
                 <div className={EventCSS.eventName}>{event.name}</div>
                 <div className={EventCSS.div1}>
                     <div className={EventCSS.eventDetails}>
@@ -54,10 +61,14 @@ function Event() {
                     </div>
                 </div>
             </div>
-            <div className={EventCSS.matchThumbnailContainer}>
+            {(issueTab) ? (<>
+            <button onClick={onClick} className={EventCSS.cornerItem} style={{position: 'relative'}}>Back to event matches <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
+            <Issues targetid={event._id} />
+            </>
+            ) :  (<div className={EventCSS.matchThumbnailContainer}>
                 {matches?.map((match) => (<MatchThumbnail key={match._id} match={match}/>))}  
-            </div> 
-           
+            </div> )}
+
         </>)}
     </div>
   )

@@ -38,7 +38,7 @@ function PostMatch() {
     format: '',
     link: '',
     timeStamp: '', 
-    description: '',
+    // description: '',
     fullLink: '',
   })
   const [deletePopup, setDeletePopup] = useState(false)
@@ -153,8 +153,8 @@ function PostMatch() {
               <label>Top 8 Round <span style={{color: 'red'}}>*</span></label>
               <select name="top8Round" className={HeroSelectCSS.select} onChange={onChange} value={top8Round}>
                 <option>None</option>
-                <option value="Quarter">Quarter</option>
-                <option value="Semi">Semi</option>
+                <option value="Quarter Finals">Quarter Finals</option>
+                <option value="Semi Finals">Semi Finals</option>
                 <option value="Finals">Finals</option>
               </select>
             </div>
@@ -208,10 +208,10 @@ function PostMatch() {
           <input type="url" name='player2deck' value={player2deck} onChange={onChange} required className={LoginCSS.input}/>
         </div>
       
-        <div className={LoginCSS.container}>
+        {/* <div className={LoginCSS.container}>
           <label>Description</label>
           <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={LoginCSS.input}></textarea>
-        </div>
+        </div> */}
         <input type="submit" className={LoginCSS.submitButton}/>
       </form>
 

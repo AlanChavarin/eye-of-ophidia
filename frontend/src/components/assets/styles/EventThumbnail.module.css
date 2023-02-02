@@ -1,10 +1,4 @@
 .container{
-    height: 25vh;
-    width: 30vw;
-    min-width: 250px;
-    max-width: 400px;
-    min-height: 200px;
-
 
     border-radius: 10px;
     border: 1px solid lightgray;
@@ -23,8 +17,6 @@
     text-shadow: 3px 3px 2px black;
 
     text-decoration-line: none;
-
-    margin: 10px;
 }
 
 .container:hover{
@@ -53,3 +45,14 @@ a{
     text-decoration: none;
 }
 
+.forEventsPage{
+    height: 25vh;
+    width: 30vw;
+    min-width: 250px;
+    max-width: 400px;
+    min-height: 200px;
+}
+
+.forMatchPage{
+    height: 23vh;
+}

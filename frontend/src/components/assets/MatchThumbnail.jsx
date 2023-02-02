@@ -15,6 +15,9 @@ function MatchResults({match}) {
             {match.event.name}
           </div>
           <div className={MatchThumbnailCSS.date}>
+            {(match.top8) ? (`${match?.top8Round}`) : `Swiss Round ${match?.swissRound}`}
+          </div>
+          <div className={MatchThumbnailCSS.date}>
             {match.event.startDate.substr(0, 10)}
           </div>
         </div>

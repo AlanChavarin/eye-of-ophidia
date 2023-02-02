@@ -31,6 +31,8 @@
     text-decoration-line: none;
 
     margin: 10px;
+
+    position: relative;
 }
 
 .eventName{
@@ -79,7 +81,7 @@
     justify-content: center;
 }
 
-.editLink{
+.cornerItem{
     position: absolute;
 
     background-color: lightgray;
@@ -97,7 +99,31 @@
     
 }
 
-.editLink:hover{
+.cornerItem:hover{
     cursor: pointer;
     background-color: rgb(156, 155, 155)
 }
+
+/* .issueButton{
+    position: absolute;
+    right: 50px;
+
+    background-color: lightgray;
+    color: black;
+    border: none;
+    border-radius: 5px;
+
+    text-decoration: none;
+    text-shadow: none;
+    font-weight: 550;
+    font-size: small;
+
+    box-shadow: 2px 2px 2px black;
+
+    align-self: center;
+}
+
+.issueButton:hover{
+    cursor: pointer;
+    background-color: rgb(156, 155, 155)
+} */

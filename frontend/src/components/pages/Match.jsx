@@ -10,6 +10,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import UserContext from '../../context/UserContext'
 import {useContext} from 'react'
 import useMatchService from '../../service/useMatchService'
+import EventThumbnail from '../assets/EventThumbnail'
 
 function Match() {
     const {getMatch} = useMatchService()
@@ -52,29 +53,25 @@ function Match() {
             </div>
             
             {tab==='comments' && <Comments matchid={matchid}/>}
-            {tab==='issues' && <Issues matchid={matchid}/>}
+            {tab==='issues' && <Issues targetid={matchid}/>}
             {tab==='history' && <EditHistories matchid={matchid}/>}
           </div>
 
           {tab==='details' && <>
-          <div className={MatchCSS.eventContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(https://storage.googleapis.com/fabmaster/media/images/toa_art_01.width-10000.jpg)`}}>
-            <div className={MatchCSS.eventName}>{match.event.name}</div>
-            <div className={MatchCSS.eventDetailsContainer}>
-              <div>Date: {match.event.startDate.substr(0, 10)} to {match.event.endDate.substr(0, 10)} </div>
-              <div>Format: {match.event.format}</div>
-              <div>Location: {match.event.location}</div>
-              <div>Description: {match.event.description}</div>
-            </div>
-          </div>
+
+          <EventThumbnail event={match.event} type={'matchPage'} details={`${(match.top8) ? (`${match?.top8Round}`) : `Swiss Round ${match?.swissRound}`}`}/>
 
           <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player1hero)})`}}>
             <div className={MatchCSS.playerName}>{match.player1name}</div>
             <a href={`http://${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a>
           </div>
+
           <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player2hero)})`}}>
             <div className={MatchCSS.playerName}>{match.player2name}</div>
             <a href={`http://${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> 
-          </div> </>}
+          </div> 
+
+          </>}
             </>}
           </div>
           
@@ -83,3 +80,13 @@ function Match() {
   )
 }
 export default Match
+
+/* <div className={MatchCSS.eventContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(https://storage.googleapis.com/fabmaster/media/images/toa_art_01.width-10000.jpg)`}}>
+  <div className={MatchCSS.eventName}>{match.event.name}</div>
+  <div className={MatchCSS.eventDetailsContainer}>
+    <div>Date: {match.event.startDate.substr(0, 10)} to {match.event.endDate.substr(0, 10)} </div>
+    <div>Format: {match.event.format}</div>
+    <div>Location: {match.event.location}</div>
+    <div>Description: {match.event.description}</div>
+  </div>
+</div> */

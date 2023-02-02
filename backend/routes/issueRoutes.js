@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const {getMatchIssues, postIssue, changeIssueStatus, deleteIssue} = require('../controllers/issueController')
+const {getIssues, postIssue, changeIssueStatus, deleteIssue} = require('../controllers/issueController')
 const {protect, protectAdmin, protectModerator, protectHelper} = require('../middleware/authMiddleware')
 
-router.get('/:matchid', getMatchIssues)
+router.get('/:targetid', getIssues)
 
-router.post('/:matchid', protect, postIssue)
+router.post('/:targetid', protect, postIssue)
 
 router.put('/:issueid', protect, protectHelper, changeIssueStatus)
 

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const ObjectId = require('mongodb').ObjectId
 const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
+const top8Rounds = ['Quarter Finals', 'Semi Finals', 'Finals', 'None']
 
 const matchEditHistorySchema = mongoose.Schema({
     player1name: {type: String, required: true},
@@ -12,6 +13,10 @@ const matchEditHistorySchema = mongoose.Schema({
     player2hero: {type: String, required: true},
 
     event: {
+        _id: {
+            type: ObjectId,
+            required: true
+        },
         name: {
             type: String,
             required: true,
@@ -29,7 +34,10 @@ const matchEditHistorySchema = mongoose.Schema({
         endDate: Date,
         description: String,
     },
-    
+
+    top8: {type: Boolean, required: true},
+    swissRound: {type: Number},
+    top8Round: {type: String, enum: top8Rounds},
     format: {type: String, required: true, enum: formats},
     link: {type: String, required: true}, 
     timeStamp: {type: Number},

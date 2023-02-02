@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
-const top8Rounds = ['Quarter', 'Semi', 'Finals', 'None']
+const top8Rounds = ['Quarter Finals', 'Semi Finals', 'Finals', 'None']
 const Hero = require('../models/heroModel')
+const ObjectId = require('mongodb').ObjectId
 
 
 const matchSchema = mongoose.Schema({
@@ -13,7 +14,13 @@ const matchSchema = mongoose.Schema({
     player2deck: {type: String, required: true},
     player2hero: {type: String, required: true, validate: v => heroEnum(v)},
 
+    // winner: {type: string, required: true},
+
     event: {
+        _id: {
+            type: ObjectId,
+            required: true
+        },
         name: {
             type: String,
             required: true,
@@ -38,8 +45,9 @@ const matchSchema = mongoose.Schema({
             if(!this._update.$set.top8 && v){return true}
             else if(this._update.$set.top8 && !v){return true}
             else {return false}
-        } else if(!this.top8 && v){return true}
-        else if(this.top8 && !v){return false}
+        } 
+        else if(!this.top8 && v){return true}
+        else if(this.top8 && !v){return true}
         else {return false}
     }},
     top8Round: {type: String, enum: top8Rounds, validate: function(v){

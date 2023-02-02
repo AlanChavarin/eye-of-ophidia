@@ -2,8 +2,8 @@ const asyncHandler = require('express-async-handler')
 const Issue = require('../models/issueModel')
 const User = require('../models/userModel')
 
-const getMatchIssues = asyncHandler(async (req, res) => {
-    const issues = await Issue.find({match: req.params.matchid})
+const getIssues = asyncHandler(async (req, res) => {
+    const issues = await Issue.find({target: req.params.targetid})
     res.status(200).json(issues)
 })
 
@@ -11,7 +11,7 @@ const postIssue = asyncHandler(async (req, res) => {
     const issue = await Issue.create({
         title: req.body.title,
         body: req.body.body,
-        match: req.params.matchid,
+        target: req.params.targetid,
         creator: req.user._id,
         status: 'pending'
     })
@@ -32,7 +32,7 @@ const deleteIssue = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
-    getMatchIssues, 
+    getIssues, 
     postIssue, 
     changeIssueStatus, 
     deleteIssue

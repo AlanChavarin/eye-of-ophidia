@@ -19,7 +19,7 @@ function Events() {
   return (
     <div className={EventsCSS.eventThumbnails}>
       {events?.map((event) => (
-        <EventThumbnail event={event} key={event._id}/>
+        <EventThumbnail event={event} key={event._id} type={'eventPage'}/>
       ))}  
     </div>
   )

@@ -19,7 +19,7 @@ const getMatchEdit = asyncHandler(async (req, res) => {
 //used internally
 const postMatchEdit = asyncHandler(async (freshlyEditedMatch, editor) => {
     const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, 
-    format, date, event, link, timeStamp, description, deleted, _id} = freshlyEditedMatch
+    format, date, event, link, timeStamp, description, deleted, _id, top8, top8Round, swissRound} = freshlyEditedMatch
     
     const matchEdit = await MatchEditHistory.create({
         player1name: player1name,
@@ -30,6 +30,9 @@ const postMatchEdit = asyncHandler(async (freshlyEditedMatch, editor) => {
         player2hero: player2hero,
         player2deck: player2deck,
 
+        top8: top8,
+        top8Round: top8Round,
+        swissRound: swissRound,
         format: format,
         event: event,
         date: date,

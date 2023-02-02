@@ -40,6 +40,23 @@ const useMatchService = () => {
         ))
     }
 
+    const getMatchesByEventId = async (eventId) => {
+        return new Promise(resolve => (
+            fetch(API_URL + 'byeventid/' + eventId)
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                resolve(data)
+            })
+            .catch(error => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
+        ))
+    }
+
     const getMatchesByEventName = async (eventName) => {
         return new Promise(resolve => (
             fetch(API_URL + 'byeventname/' + eventName)
@@ -106,7 +123,7 @@ const useMatchService = () => {
         })
     }
 
-    return {getMatch, getMatches, getMatchesByEventName, postMatch, deleteMatch}
+    return {getMatch, getMatches, getMatchesByEventName, postMatch, deleteMatch, getMatchesByEventId}
 }
 
 export default useMatchService

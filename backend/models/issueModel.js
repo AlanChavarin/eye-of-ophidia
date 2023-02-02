@@ -7,7 +7,7 @@ const issueSchema = mongoose.Schema({
         required: true
     },
     body: String,
-    match: {
+    target: {
         type: ObjectId,
         required: true
     },

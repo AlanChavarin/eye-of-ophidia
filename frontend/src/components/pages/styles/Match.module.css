@@ -119,8 +119,8 @@
     font-size: 1.4em;
 }
 
-.eventContainer{
-    min-height: 25vh;
+.matchDetailsContainer{
+    min-height: 23vh;
     border-radius: 10px;
 
     background-repeat: no-repeat;
@@ -136,19 +136,24 @@
     text-decoration-line: none;
 }
 
-.eventName{
+.matchDetailsHeader{
     font-size: 1.4em;
     text-align: center;
-    background-color: rgba(0, 0, 0, .3);
+    background-color: rgba(0, 0, 0, .5);
     padding: 10px 0px 10px 0px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     width: 100%;
 }
 
-.eventDetailsContainer{
+.matchDetails{
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 10px;
+}
+
+.matchDetailsDescription{
+    font-size: 1.2em;
+    text-align: center;
 }

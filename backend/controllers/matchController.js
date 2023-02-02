@@ -56,6 +56,12 @@ const getMatchesByEventName = asyncHandler(async (req, res) => {
     res.status(200).json(matches)
 })
 
+const getMatchesByEventId = asyncHandler(async (req, res) => {
+    if(!req.recyclebin){req.recyclebin = false}
+    const matches = await Match.find({'event._id': req.params.eventId, deleted: req.recyclebin})
+    res.status(200).json(matches)
+})
+
 const getMatch = asyncHandler(async (req, res) => {
     if(!req.recyclebin){req.recyclebin = false}
     const match = await Match.findOne({_id: req.params.id, deleted: req.recyclebin})
@@ -72,6 +78,11 @@ const postMatch = asyncHandler(async (req, res) => {
         format, event, link, timeStamp, description, top8, swissRound, top8Round,
     } = req.body
     const eventData = await Event.findOne({name: event})
+    if(top8 === 'true'){
+        delete swissRound
+    } else {
+        top8Round='None'
+    }
     const match = await Match.create({
         player1name: player1name,
         player1hero: player1hero,
@@ -102,6 +113,11 @@ const updateMatch = asyncHandler(async (req, res) => {
         throw new Error('Match with that id does not exist or has been deleted')
     }
     req.body.event = await Event.findOne({name: req.body.event})
+    if(req.body.top8 === 'true'){
+        delete req.body.swissRound
+    } else {
+        req.body.top8Round='None'
+    }
     const match = await Match.findOneAndUpdate({_id: req.params.matchid, deleted: false}, req.body, {runValidators: true, new: true})
     postMatchEdit(match, req.user._id)
     res.status(200).json(match)
@@ -125,5 +141,6 @@ module.exports = {
     postMatch,
     updateMatch,
     deleteMatch,
-    restoreMatch
+    restoreMatch,
+    getMatchesByEventId
 }
