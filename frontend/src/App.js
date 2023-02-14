@@ -14,6 +14,7 @@ import PostEvent from "./components/pages/PostEvent"
 import Verify from "./components/pages/Verify"
 import Events from "./components/pages/Events"
 import Event from "./components/pages/Event"
+import IssuePage from './components/pages/IssuePage'
 
 //tools
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
@@ -30,8 +31,8 @@ import Alert from "./components/assets/AlertsContainer"
 
 function App() {
   return (
-    <UserProvider>
-      <AlertProvider>
+    <AlertProvider>
+      <UserProvider>
         <div className="app-parent">
           <Navbar />
           <div className='app-container background-color'>
@@ -44,6 +45,7 @@ function App() {
               <Route path='/login' element={<Login />}/>
               <Route path='/logout' element={<Logout />}/>
               <Route path='/verify/:token' element={<Verify />}/>
+              <Route path='/issuepage' element={<IssuePage />}/>
               <Route element={<UserAuth privilege='user'/>}>
                 <Route path='/me' element={<Me />}/>
               </Route>
@@ -58,8 +60,8 @@ function App() {
           <Footer />
           <Alert />
         </div>
-      </AlertProvider>
-    </UserProvider>
+      </UserProvider>
+    </AlertProvider>
     
   );
 }

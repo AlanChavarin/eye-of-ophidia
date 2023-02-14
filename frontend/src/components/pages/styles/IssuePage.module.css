@@ -1,0 +1,48 @@
+.parent{
+   background-color: white;
+   height: 100%;
+   width: 50vw;
+   min-width: 800px;
+   padding: 0px 30px 0px 30px;
+   border-right: 1px solid lightgrey;
+   border-left: 1px solid lightgrey;
+
+}
+
+.issuesContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.button{
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+    max-width: min-content;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.buttonSelected{
+    background-color: #e24840;
+    color: white;
+    box-shadow: 3px 3px 2px #552e01;
+}
+
+.buttonUnselected{
+    background-color: lightgray;
+    color: black;
+    box-shadow: 3px 3px 2px #272727;
+}
+
+.buttonUnselected:hover{
+    background-color: #cab1b0;
+}

@@ -1,14 +1,15 @@
 import {createContext, useState, useEffect} from 'react'
+import useLoginService from '../service/useLoginService'
 const UserContext = createContext()
 
 export const UserProvider = ({children}) => {
-    const API_URL = 'http://localhost:5000/api/users/me'
     const [userData, setUserData] = useState({
         name:'',
         email: '',
         karma: 0,
         privilege: ''
     })
+    const {getMe} = useLoginService()
 
     useEffect(() => {
         updateLoggedInUserData()
@@ -17,30 +18,14 @@ export const UserProvider = ({children}) => {
     const updateLoggedInUserData = () => {
         const userToken = localStorage.getItem('user')
         if(userToken){
-            fetch(API_URL, {
-                method: 'GET',
-                headers: {
-                    'authorization': 'Bearer ' + userToken
-                }
-            })
-            .then((res) => {
-                return res.json()
-            })
-            .then((data) => {
-                if(data.errorMessage){
-                    throw new Error(data.errorMessage)
-                } else {
-                    setUserData({
-                        name: data.name,
-                        email: data.email,
-                        karma: data.karma,
-                        privilege: data.privilege
-                    })
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+            getMe(userToken)
+            .then(data => setUserData({
+                name: data.name,
+                email: data.email,
+                karma: 0,
+                privilege: data.privilege,
+                picture: data.picture
+            }))
         } else {
             setUserData({
                 name:'',

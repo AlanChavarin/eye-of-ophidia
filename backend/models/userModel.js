@@ -21,6 +21,11 @@ const userSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    picture: {
+        type: String,
+        required: true,
+        enum: ['bauble', 'blood', 'eye', 'grand', 'heart', 'shard', 'tit']
+    },
     verified: {
         type: Boolean,
         required: true

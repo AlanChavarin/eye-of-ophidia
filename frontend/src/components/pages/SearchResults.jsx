@@ -22,7 +22,7 @@ function SearchResults() {
 
   return (
     <div>
-      <SearchForm />
+      <SearchForm/>
       <div className={SearchResultsCSS.matchThumbnails}>
         {matches?.map((match) => (
           <MatchThumbnail key={match._id} match={match}/>

@@ -1,15 +1,22 @@
 import MatchThumbnailCSS from './styles/MatchThumbnail.module.css'
 import {Link} from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
-function MatchResults({match}) {
+function MatchResults({match, page}) {
   const hero1url = window.location.origin + `/images/${encodeURI(match.player1hero)}.jpg`
   const hero2url = window.location.origin + `/images/${encodeURI(match.player2hero)}.jpg`
 
   return (
-    <Link to={'/matches/' + match._id} className={MatchThumbnailCSS.match} >
-
+    <Link to={'/matches/' + match._id} className={`
+    ${MatchThumbnailCSS.match} 
+    ${!page && MatchThumbnailCSS.default}
+    ${page==='issue' && MatchThumbnailCSS.issuePage}
+    `}>
       {match && (
         <>
+        {page==='issue' && <Link to={`/postmatch/${match._id}`} className={MatchThumbnailCSS.editButton}><FontAwesomeIcon icon={faEdit} /></Link>}
+
         <div className={MatchThumbnailCSS.info}>
           <div className={MatchThumbnailCSS.eventTitle}>
             {match.event.name}

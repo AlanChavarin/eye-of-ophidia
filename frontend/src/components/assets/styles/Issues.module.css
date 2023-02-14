@@ -1,8 +1,20 @@
+.parent{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+}
+
 .form{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin: 10px;
+    padding: 10px;
+
+    background-color: white;
+    border: 1px solid lightgrey;
+    border-radius: 7px;
+
 }
 
 .issueContainer{
@@ -13,9 +25,9 @@
     border-color: lightgray;
     border-width: 2px;
     border-style: solid;
-    margin: 10px;
     background-color: white;
-
+    
+    width: 100%;
 }
 
 .issueTitle{

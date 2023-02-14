@@ -5,9 +5,45 @@ const useIssueService = () => {
     const API_URL = 'http://localhost:5000/api/issues/'
     const {addAlert} = useContext(AlertContext)
 
-    const getIssues = async (matchid) => {
+    const getIssues = async (targetid, status) => {
         return new Promise(resolve => (
-            fetch(API_URL + matchid)
+            fetch(API_URL + targetid + '?status=' + status)
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                resolve(data)
+            })
+            .catch((error) => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
+        ))
+    }
+
+    const getIssue = async (issueid) => {
+        console.log(issueid)
+        return new Promise(resolve => {
+            fetch(API_URL + 'singleissue/' + issueid)
+            .then(res => res.json())
+            .then(data => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                resolve(data)
+            })
+            .catch(error => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
+        })
+    }
+
+    const getAllIssues = async (targetType, status) => {
+        if(!status)(status='')
+        return new Promise(resolve => (
+            fetch(API_URL + '?status=' + status + '&targetType=' + targetType)
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){
@@ -52,7 +88,6 @@ const useIssueService = () => {
     }
 
     const changeStatus = async (issueid, status) => {
-        console.log(issueid, status)
         return new Promise(resolve => (
             fetch(API_URL + issueid, {
                 method: 'PUT',
@@ -79,7 +114,7 @@ const useIssueService = () => {
         ))
     }
 
-    return {getIssues, postIssue, changeStatus}
+    return {getIssues, getIssue, getAllIssues, postIssue, changeStatus}
 }
 
 export default useIssueService

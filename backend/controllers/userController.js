@@ -24,6 +24,7 @@ const registerUser = asyncHandler(async (req, res) => {
         password: hashedPassword,
         privilege: 'user',
         karma: 0,
+        picture: 'bauble',
         verified: false,
     })
 
@@ -74,6 +75,7 @@ const getMe = asyncHandler(async (req, res) => {
         name: req.user.name,
         email: req.user.email,
         karma: req.user.karma,
+        picture: req.user.picture,
         privilege: req.user.privilege
     })
 })

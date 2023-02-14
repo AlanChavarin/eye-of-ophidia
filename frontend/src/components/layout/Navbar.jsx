@@ -31,6 +31,9 @@ function Navbar() {
           <Link to='/postevent' className={NavbarCSS.item}>
             <div>Submit a new event</div>
           </Link>
+          <Link to='/issuepage' className={NavbarCSS.item}>
+            <div>Issues</div>
+          </Link>
         </>
       ) : <>
         <Link to='/login' className={NavbarCSS.item}>

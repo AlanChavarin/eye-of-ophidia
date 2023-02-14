@@ -1,10 +1,10 @@
 import UserContext from '../../context/UserContext'
 import {useContext} from 'react'
-import SearchableDropdown from '../assets/SearchableDropdown'
 
 function Me() {
     const {userData} = useContext(UserContext)
-    const {name, email, karma, privilege} = userData
+    const {name, email, karma, privilege, picture} = userData
+    const img = window.location.origin + `/profilePics/${picture}.png`
 
     return (
         <div>
@@ -20,7 +20,9 @@ function Me() {
             <div>
                 privilege: {privilege}
             </div>
-            <SearchableDropdown items={['Apples', 'Oranges', 'Fortnite', 'asedrfgjuhsdf']} height='20vh'/>
+            <div style={{backgroundImage: `url(${img})`, height: '200px'}}>
+                picture: {picture}
+            </div>
         </div>
     )
 }

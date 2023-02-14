@@ -1,37 +1,39 @@
-import {useEffect, useState, useContext} from 'react'
+import {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
-import UserContext from '../../context/UserContext'
 import IssuesCSS from './styles/Issues.module.css'
+import IssuePageCSS from '../pages/styles/IssuePage.module.css'
 import useIssueService from '../../service/useIssueService'
+import Issue from './Issue'
 
-function Issues({targetid}) {
-    const {getIssues, changeStatus, postIssue} = useIssueService()
-    const {userData} = useContext(UserContext)
+function Issues({targetid, status}) {
+    const {getIssues, postIssue, getAllIssues} = useIssueService()
     const [issues, setIssues] = useState()
     const [formData, setFormData] = useState({
         title: '',
         body: '',
     })
+    const [statusFilter, setStatusFilter] = useState('pending')
 
     const {title, body} = formData
 
     useEffect(() => {
-        getIssues(targetid).then(data => setIssues(data))
-    }, [])
+        console.log(1)
+        fetchIssues()
+    }, [statusFilter])
+
+    const fetchIssues = () => {
+        if(targetid){
+            getIssues(targetid, statusFilter).then(data => setIssues(data))
+        } else {
+            getAllIssues(status).then(data => setIssues(data))
+        }
+    }
 
     const onChange = (e) => {
         setFormData((prev) => ({
             ...prev,
             [e.target.name]: e.target.value 
         }))
-    }
-
-    const onChangeStatus = (e) => {
-        const issueid = e.target.parentElement.parentElement.parentElement.getAttribute('issueid')
-        const status = e.target.getAttribute('status')
-        changeStatus(issueid, status)
-        .then(() => getIssues(targetid))
-        .then(data => setIssues(data))
     }
 
     const onSubmit = (e) => {   
@@ -43,45 +45,50 @@ function Issues({targetid}) {
     }
 
   return (
-    <div>
-        {issues?.map((issue) => (
-            <div key={issue._id} issueid={issue._id} className={IssuesCSS.issueContainer}>
-                <div className={IssuesCSS.issueTitle}>Subject: {issue.title}</div>
-                <div style={{padding: '10px'}}>{issue.body}</div>
-                <hr className={IssuesCSS.hr}/>
-                <div style={{padding: '10px'}}>
-                    {(issue.status === 'pending') && <div>Current Status:  <b style={{fontWeight: '600', color: '#db3c30'}}>{issue.status}</b></div>}
-                    {(issue.status === 'fixed') && <div>Current Status:  <b style={{fontWeight: '600', color: '#54e356'}}>{issue.status}</b></div>}
-                    {(issue.status === 'closed') && <div>Current Status:  <b style={{fontWeight: '600', color: '#5469e3'}}>{issue.status}</b></div>}
+    <div className={IssuesCSS.parent}>
+        <div className={IssuePageCSS.buttonContainer}>
+            <button onClick={() => setStatusFilter('')} className={`
+                ${IssuePageCSS.button}
+                ${statusFilter==='' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
+            `}>All</button>
 
-                    {(userData?.privilege === 'admin') ? (
-                        <>
-                            <div>Change issue status: </div>
-                            <div className={IssuesCSS.statusButtons}>
-                                <button className={IssuesCSS.submitButton} status='pending' onClick={onChangeStatus}>pending</button>
-                                <button className={IssuesCSS.submitButton} status='fixed' onClick={onChangeStatus}>fixed</button>
-                                <button className={IssuesCSS.submitButton} status='closed' onClick={onChangeStatus}>closed</button>
-                            </div>
-                        </>
-                    ) : <></>}
-                </div>
-                
-            </div>
+            <button onClick={() => setStatusFilter('pending')} className={`
+                ${IssuePageCSS.button}
+                ${statusFilter==='pending' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
+            `}>Pending</button>
+
+            <button onClick={() => setStatusFilter('fixed')} className={`
+                ${IssuePageCSS.button}
+                ${statusFilter==='fixed' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
+            `}>Fixed</button>
+
+            <button onClick={() => setStatusFilter('closed')} className={`
+                ${IssuePageCSS.button}
+                ${statusFilter==='closed' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
+            `}>Closed</button>
+
+        </div>
+        {issues?.map((issue) => (
+            <Issue issue={issue}/>
         ))}
-        <br/>
-        <hr className={IssuesCSS.hr}/>
-        <form onSubmit={onSubmit} className={IssuesCSS.form}>
-            <div style={{alignSelf: 'center', fontWeight: '600'}}>Is there an issue with this match/event? Submit an issue down below!</div>
-            <div className={IssuesCSS.formContainer}>
-                <label className={IssuesCSS.label}>Title</label>
-                <input placeholder='Issue title' name='title' type="text" onChange={onChange} value={title} className={IssuesCSS.input}/>
-            </div>
-            <div className={IssuesCSS.formContainer}>
-                <label className={IssuesCSS.label}>Body</label>
-                <textarea placeholder='Write the details of the issue with this match/event' name='body' id="" cols="60" rows="7" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
-            </div>
-            <input type="submit" value='Submit Issue' className={IssuesCSS.submitButton} style={{boxShadow: '3px 3px 2px black'}}/>
-        </form>
+        {(targetid) && <>
+            <br/>
+            <hr className={IssuesCSS.hr}/>
+            <form onSubmit={onSubmit} className={IssuesCSS.form}>
+                <div style={{alignSelf: 'center', fontWeight: '600'}}>Is there an issue with this match/event? Submit an issue down below!</div>
+                <div className={IssuesCSS.formContainer}>
+                    <label className={IssuesCSS.label}>Title</label>
+                    <input placeholder='Issue title' name='title' type="text" onChange={onChange} value={title} className={IssuesCSS.input}/>
+                </div>
+                <div className={IssuesCSS.formContainer}>
+                    <label className={IssuesCSS.label}>Body</label>
+                    <textarea placeholder='Write the details of the issue with this match/event' name='body' id="" cols="60" rows="7" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
+                </div>
+                <input type="submit" value='Submit Issue' className={IssuesCSS.submitButton} style={{boxShadow: '3px 3px 2px black'}}/>
+            </form>
+            </>}
+            
+        
     </div>
   )
 }

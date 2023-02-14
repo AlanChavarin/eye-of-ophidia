@@ -1,7 +1,6 @@
 import {useContext} from 'react'
 import AlertContext from '../context/AlertContext'
 
-
 const useLoginService = () => {
     const API_URL = 'http://localhost:5000/api/users/'
     const {addAlert} = useContext(AlertContext)
@@ -97,7 +96,29 @@ const useLoginService = () => {
             
     }
 
-    return {postLogin, postRegistration, putVerify}
+    const getMe = async(token) => {
+        return new Promise(resolve => {
+            fetch(API_URL + 'me', {
+                method: 'GET',
+                headers: {
+                    'authorization': 'Bearer ' + token
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                resolve(data)
+            })
+            .catch(error => {
+                console.error(error.message)
+                addAlert(error.message, 'error')
+            })
+        })
+    }
+
+    return {postLogin, postRegistration, putVerify, getMe}
 }
 
 export default useLoginService
