@@ -7,7 +7,6 @@ const protect = asyncHandler(async (req, res, next) => {
         try {
             const decodedUserId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)
             req.user = await User.findById(decodedUserId)
-            //console.log('try from authMiddleware {protect}: ',req.user)
             next()
         } catch (error) {
             console.log(error)

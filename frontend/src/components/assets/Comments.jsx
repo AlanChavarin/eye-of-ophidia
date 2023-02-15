@@ -50,11 +50,11 @@ function Comments({matchid}) {
 
   return (
     <div className={CommentsCSS.parent}>
-      <hr />
+      <hr className={CommentsCSS.hr}/>
       {comments?.map((comment) => (<>
         <div key={comment._id} commentid={comment._id} className={CommentsCSS.comment}>
           {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={(e) => promptDelete(e)} commentid={comment._id}><FontAwesomeIcon icon={faTrash} /></button>) : <></>}
-          <img src={window.location.origin + `/profilePics/${comment.ownerDetails?.picture}.png`}/>
+          <img src={window.location.origin + `/profilePics/${comment.ownerDetails?.picture}.png`} className={CommentsCSS.img}/>
           <div>
             <div className={CommentsCSS.commenter}>{comment.ownerDetails?.name}</div>
             <div className={CommentsCSS.commentContainer}>
@@ -62,7 +62,7 @@ function Comments({matchid}) {
             </div>
           </div>
         </div>
-        <hr />
+        <hr className={CommentsCSS.hr}/>
       </>))}
       {((userData?.name) ? (
         <form onSubmit={onSubmit} className={CommentsCSS.form}>

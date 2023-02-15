@@ -118,7 +118,30 @@ const useLoginService = () => {
         })
     }
 
-    return {postLogin, postRegistration, putVerify, getMe}
+    const changepfp = async(token, picture) => {
+        return new Promise(resolve => {
+            fetch(API_URL + 'changepfp?picture=' + picture, {
+                method: 'PUT',
+                headers: {
+                    'authorization': 'Bearer ' + token
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                resolve(true)
+            })
+            .catch(error => {
+                console.error(error.message)
+                addAlert(error.message, 'error')
+            })
+        })
+    }
+    
+
+    return {postLogin, postRegistration, putVerify, getMe, changepfp}
 }
 
 export default useLoginService

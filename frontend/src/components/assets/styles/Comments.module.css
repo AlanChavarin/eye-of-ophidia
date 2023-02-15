@@ -72,14 +72,14 @@
     background-color: #b53228;
 }
 
-hr{
+.hr{
     border-color: lightgray;
     border-width: 1px;
     border-style: solid;
     width: 90%;
 }
 
-img{
+.img{
     height: 50px;
     width: 50px;
     align-self: center;

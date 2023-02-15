@@ -22,9 +22,6 @@ function Navbar() {
       
       {(userData.name) ? (
         <>
-          <Link to='/me' className={NavbarCSS.item}>
-            <div>Me</div>
-          </Link>
           <Link to='/postmatch' className={NavbarCSS.item}>
             <div>Submit a new match!</div>
           </Link>
@@ -33,6 +30,9 @@ function Navbar() {
           </Link>
           <Link to='/issuepage' className={NavbarCSS.item}>
             <div>Issues</div>
+          </Link>
+          <Link to='/me' className={NavbarCSS.item}>
+            <div>Me</div>
           </Link>
         </>
       ) : <>

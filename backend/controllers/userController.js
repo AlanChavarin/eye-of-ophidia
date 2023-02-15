@@ -80,6 +80,11 @@ const getMe = asyncHandler(async (req, res) => {
     })
 })
 
+const changepfp = asyncHandler(async (req, res) => {
+    const user = await User.findOneAndUpdate({_id: req.user._id}, {picture: req.query.picture}, {runValidators: true, new: true})
+    res.status(200).json(user)
+})
+
 
 
 //internal use only
@@ -128,5 +133,6 @@ module.exports = {
     registerUser,
     loginUser,
     getMe,
-    verifyUser
+    verifyUser,
+    changepfp
 }
