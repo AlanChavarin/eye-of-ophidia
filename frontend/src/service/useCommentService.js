@@ -5,10 +5,10 @@ const useCommentService = () => {
   const API_URL = 'http://localhost:5000/api/comments/'
   const {addAlert} = useContext(AlertContext)
 
-  const getComments = async (matchid) => {
+  const getComments = async (matchid, ownerDetails) => {
         if(matchid){
           return new Promise( resolve => (
-            fetch(API_URL + matchid)
+            fetch(API_URL + matchid + '?ownerdetails=' + ownerDetails)
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){

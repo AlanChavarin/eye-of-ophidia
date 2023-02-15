@@ -1,18 +1,16 @@
-import LoginCSS from './styles/Login.module.css'
 import PostMatchCSS from './styles/PostMatch.module.css'
 import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
+import PopupCSS from '../assets/styles/Popup.module.css'
 import {useState, useEffect} from 'react'
 import HeroSelect from '../assets/HeroSelect'
 import {useParams, useNavigate} from 'react-router-dom'
 import { getYoutubeParams } from '../../helpers/YoutubeParams'
-import CommentsCSS from '../assets/styles/Comments.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import Popup from '../assets/Popup'
 import useEventService from '../../service/useEventService'
 import useMatchService from '../../service/useMatchService'
 import SearchableDropdown from '../assets/SearchableDropdown'
-
 function PostMatch() {
   const {postMatch, getMatch, deleteMatch} = useMatchService()
   const {getEvents} = useEventService()
@@ -115,17 +113,16 @@ function PostMatch() {
   }
 
   return (
-    <div className={LoginCSS.parent}>
-      <form onSubmit={onSubmit} className={LoginCSS.form}>
-
+    <div className={PostMatchCSS.parent}>
+      <form onSubmit={onSubmit} className={PostMatchCSS.form}>
         <h3 style={{alignSelf: 'center'}}>{(matchid) ? (<>Edit Match</>):(<>Post New Match</>)}</h3>
-        {matchid && <button className={CommentsCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
+        {matchid && <button className={PostMatchCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
         
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Event <span style={{color: 'red'}}>*</span></label>
           <SearchableDropdown items={eventData} onChange={onChange} value={event} name='event'/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Format <span style={{color: 'red'}}>*</span></label>
           <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
             <option value=''>None</option>
@@ -137,7 +134,7 @@ function PostMatch() {
         </div>
 
         <div className={PostMatchCSS.top8OrSwissContainer}>
-          <div className={LoginCSS.container}>
+          <div className={PostMatchCSS.container}>
             <div onChange={onChange}>
               <label>Top 8</label>
               <input type="radio" name="top8" value={true} required/>
@@ -149,7 +146,7 @@ function PostMatch() {
           </div>
           
           {top8==='true' && 
-            <div className={LoginCSS.container}>
+            <div className={PostMatchCSS.container}>
               <label>Top 8 Round <span style={{color: 'red'}}>*</span></label>
               <select name="top8Round" className={HeroSelectCSS.select} onChange={onChange} value={top8Round}>
                 <option>None</option>
@@ -160,59 +157,59 @@ function PostMatch() {
             </div>
           }
           {top8==='false' &&
-            <div className={LoginCSS.swissRoundContainer}>
+            <div className={PostMatchCSS.swissRoundContainer}>
               <label><span style={{color: 'red'}}>*</span>Swiss Round:</label>
-              <input type="number" name='swissRound' value={swissRound} onChange={onChange} className={LoginCSS.input} style={{width: '30px'}}/>
+              <input type="number" name='swissRound' value={swissRound} onChange={onChange} className={PostMatchCSS.input} style={{width: '30px'}}/>
             </div>
           }
         </div>
 
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Youtube Video Link</label>
-          <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={LoginCSS.input}/>
+          <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Match Timestamp (in total seconds) <span style={{color: 'red'}}>*</span></label>
-          <input type="number" name='timeStamp' value={timeStamp} onChange={onChange} required className={LoginCSS.input} style={{width: '60px'}}/>
+          <input type="number" name='timeStamp' value={timeStamp} onChange={onChange} required className={PostMatchCSS.input} style={{width: '60px'}}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Youtube Video id <span style={{color: 'red'}}>*</span></label>
-          <input type="text" name='link' value={link} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="text" name='link' value={link} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
         
       
 
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Player 1 Hero <span style={{color: 'red'}}>*</span></label>
-          <HeroSelect name='player1hero' value={player1hero} onChange={onChange} required={true} type={heroType} className={LoginCSS.input}/>
+          <HeroSelect name='player1hero' value={player1hero} onChange={onChange} required={true} type={heroType} className={PostMatchCSS.input}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Player 1 Full Name <span style={{color: 'red'}}>*</span></label>
-          <input type="text" name='player1name' value={player1name} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="text" name='player1name' value={player1name} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Player 1 Deck Link <span style={{color: 'red'}}>*</span></label>
-          <input type="url" name='player1deck' value={player1deck} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="url" name='player1deck' value={player1deck} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
 
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Player 2 Hero <span style={{color: 'red'}}>*</span></label>
-          <HeroSelect name='player2hero' value={player2hero} onChange={onChange} required={true} type={heroType} className={LoginCSS.input}/>
+          <HeroSelect name='player2hero' value={player2hero} onChange={onChange} required={true} type={heroType} className={PostMatchCSS.input}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Player 2 Full Name <span style={{color: 'red'}}>*</span></label>
-          <input type="text" name='player2name' value={player2name} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="text" name='player2name' value={player2name} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Player 2 Deck Link <span style={{color: 'red'}}>*</span></label>
-          <input type="url" name='player2deck' value={player2deck} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="url" name='player2deck' value={player2deck} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
       
         {/* <div className={LoginCSS.container}>
           <label>Description</label>
           <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={LoginCSS.input}></textarea>
         </div> */}
-        <input type="submit" className={LoginCSS.submitButton}/>
+        <input type="submit" className={PostMatchCSS.submitButton}/>
       </form>
 
 
@@ -222,8 +219,8 @@ function PostMatch() {
         <div>It can be restored from the recycle bin at anytime if deleted.</div>
         </div>
         <div className={PostMatchCSS.popupButtons}>
-          <button className={PostMatchCSS.deleteButton} onClick={onDelete}>Delete</button>
-          <button className={PostMatchCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
+          <button className={PopupCSS.deleteButton} onClick={onDelete}>Delete</button>
+          <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
         </div>
       </Popup>
 

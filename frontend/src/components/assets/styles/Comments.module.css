@@ -6,7 +6,9 @@
 
 .comment{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    position: relative;
+    gap: 10px;
 }
 
 .commenter{
@@ -23,7 +25,6 @@
     flex-direction: column;
     align-items: center;
     gap: 15px;
-
     margin: 15px;
 }
 
@@ -62,6 +63,8 @@
     padding: 3px 5px 3px 5px;
     font-size: smaller;
     max-height: 25px;
+    position: absolute;
+    right: 0;
 }
 
 .deleteButton:hover{
@@ -69,3 +72,16 @@
     background-color: #b53228;
 }
 
+hr{
+    border-color: lightgray;
+    border-width: 1px;
+    border-style: solid;
+    width: 90%;
+}
+
+img{
+    height: 50px;
+    width: 50px;
+    align-self: center;
+    border: 2px solid lightgrey;
+}

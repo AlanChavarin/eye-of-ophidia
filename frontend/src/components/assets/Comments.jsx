@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import useCommentService from '../../service/useCommentService'
 import Popup from './Popup'
-import PostMatchCSS from '../pages/styles/PostMatch.module.css'
+import PopupCSS from '../assets/styles/Popup.module.css'
 
 function Comments({matchid}) {
   const {getComments, postComment, deleteComment} = useCommentService()
@@ -16,7 +16,7 @@ function Comments({matchid}) {
   const [currDelCommentId, setCurrDelCommentId] = useState('')
 
   useEffect(() => {
-    getComments(matchid)
+    getComments(matchid, true)
     .then(data => setComments(data))
   }, [])
 
@@ -27,19 +27,19 @@ function Comments({matchid}) {
   const onSubmit = async (e) => {
     e.preventDefault()
     await postComment(newCommentBody, matchid)
-    setComments(await getComments(matchid))
+    setComments(await getComments(matchid, true))
     setNewCommentBody('')
   }
 
   const onDelete = async () => {
     setPopup(false)
     await deleteComment(currDelCommentId)
-    setComments(await getComments(matchid))
+    setComments(await getComments(matchid, true))
   }
 
   const promptDelete = (e) => {
     setPopup(true)
-    setCurrDelCommentId(e.target.parentElement.parentElement.getAttribute('commentid'))
+    setCurrDelCommentId(e.target.parentElement.getAttribute('commentid'))
   }
 
   const cancelDelete = (e) => {
@@ -50,15 +50,20 @@ function Comments({matchid}) {
 
   return (
     <div className={CommentsCSS.parent}>
-      {comments?.map((comment) => (
+      <hr />
+      {comments?.map((comment) => (<>
         <div key={comment._id} commentid={comment._id} className={CommentsCSS.comment}>
-          <div className={CommentsCSS.commenter}>{comment.owner}</div>
-          <div className={CommentsCSS.commentContainer}>
-            <div className={CommentsCSS.commentBody}>{comment.body}</div>
-            {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={(e) => promptDelete(e)} commentid={comment._id}><FontAwesomeIcon icon={faTrash} /></button>) : <></>}
+          {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={(e) => promptDelete(e)} commentid={comment._id}><FontAwesomeIcon icon={faTrash} /></button>) : <></>}
+          <img src={window.location.origin + `/profilePics/${comment.ownerDetails?.picture}.png`}/>
+          <div>
+            <div className={CommentsCSS.commenter}>{comment.ownerDetails?.name}</div>
+            <div className={CommentsCSS.commentContainer}>
+              <div className={CommentsCSS.commentBody}>{comment.body}</div>
+            </div>
           </div>
         </div>
-      ))}
+        <hr />
+      </>))}
       {((userData?.name) ? (
         <form onSubmit={onSubmit} className={CommentsCSS.form}>
           <textarea placeholder='Leave a comment on this match!' name="newCommentBody" rows='4' cols='30' value={newCommentBody} onChange={onChange} id=""  className={CommentsCSS.textarea}>Comment</textarea>
@@ -70,9 +75,9 @@ function Comments({matchid}) {
           <h1>Are you sure you want to <b style={{color: 'red'}}>delete</b> this comment? </h1>
           <div>It cannot be restored</div>
         </div>
-        <div className={PostMatchCSS.popupButtons}>
-          <button className={PostMatchCSS.deleteButton} onClick={() => onDelete()}>Delete</button>
-          <button className={PostMatchCSS.cancelButton} onClick={(e) => cancelDelete(e)}>Cancel</button>
+        <div className={PopupCSS.popupButtons}>
+          <button className={PopupCSS.deleteButton} onClick={() => onDelete()}>Delete</button>
+          <button className={PopupCSS.cancelButton} onClick={(e) => cancelDelete(e)}>Cancel</button>
         </div>
       </Popup>
     </div>

@@ -28,6 +28,35 @@
     justify-content: space-between;
 }
 
+.cancelButton{
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+    font-size: larger;
+}
+
+.cancelButton:hover{
+    cursor: pointer;
+    background-color: lightgray;
+}
+
+.deleteButton{
+    background-color: #db3c30;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+    font-size: larger;
+}
+
+.deleteButton:hover{
+    cursor: pointer;
+    background-color: #b53228;
+}
+
+
+
 .closeButton{
     position: absolute;
     right: 16px;

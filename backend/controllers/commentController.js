@@ -1,9 +1,20 @@
 const asyncHandler = require('express-async-handler')
 const Comment = require('../models/commentModel')
+const User = require('../models/userModel')
 
 const getComments = asyncHandler(async(req, res) => {
-    const comment = await Comment.find({match: req.params.matchid})
-    res.status(200).json(comment)
+    var comments = await Comment.find({match: req.params.matchid})
+    if(req.query.ownerdetails==='true'){
+        let ids = []
+        comments.map(comment => ids.push(comment.owner))
+        const users = await User.find({_id: {$in: ids}})
+        users.map(user => comments.map(comment => {
+            if(user._id.equals(comment.owner)){
+                comment.ownerDetails = user
+            }
+        }))
+    }
+    res.status(200).json(comments)
 })
 
 const postComment = asyncHandler(async(req, res) => {

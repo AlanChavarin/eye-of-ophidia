@@ -1,12 +1,11 @@
-import LoginCSS from './styles/Login.module.css'
 import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
+import PopupCSS from '../assets/styles/Popup.module.css'
 import {useState, useEffect} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 import useEventService from '../../service/useEventService'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import Popup from '../assets/Popup'
-import CommentsCSS from '../assets/styles/Comments.module.css'
 import PostMatchCSS from './styles/PostMatch.module.css'
 
 function PostEvent() {
@@ -61,20 +60,20 @@ function PostEvent() {
   }
 
   return (
-    <div className={LoginCSS.parent}>
-      <form onSubmit={onSubmit} className={LoginCSS.form}>
+    <div className={PostMatchCSS.parent}>
+      <form onSubmit={onSubmit} className={PostMatchCSS.form}>
         <h3 style={{alignSelf: 'center'}}>{(eventid) ? (<>Edit Event</>):(<>Post New Event</>)}</h3>
-        {eventid && <button className={CommentsCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
+        {eventid && <button className={PostMatchCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
 
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Event Name</label>
-          <input type="text" name='name' value={name} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="text" name='name' value={name} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Location Name</label>
-          <input type="text" name='location' value={location} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="text" name='location' value={location} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Format</label>
           <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
             <option value="Classic Constructed">Classic Constructed</option>
@@ -84,19 +83,19 @@ function PostEvent() {
             <option value="Mixed">Mixed</option>
           </select>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Start Date</label>
-          <input type="date" name='startDate' value={startDate} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="date" name='startDate' value={startDate} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>End Date</label>
-          <input type="date" name='endDate' value={endDate} onChange={onChange} required className={LoginCSS.input}/>
+          <input type="date" name='endDate' value={endDate} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
-        <div className={LoginCSS.container}>
+        <div className={PostMatchCSS.container}>
           <label>Description</label>
-          <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={LoginCSS.input}></textarea>
+          <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={PostMatchCSS.input}></textarea>
         </div>
-        <input type="submit" className={LoginCSS.submitButton}/>
+        <input type="submit" className={PostMatchCSS.submitButton}/>
       </form>
 
       <Popup trigger={deletePopup}>
@@ -105,8 +104,8 @@ function PostEvent() {
         <div>It can be restored from the recycle bin at anytime if deleted.</div>
         </div>
         <div className={PostMatchCSS.popupButtons}>
-          <button className={PostMatchCSS.deleteButton} onClick={onDelete}>Delete</button>
-          <button className={PostMatchCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
+          <button className={PopupCSS.deleteButton} onClick={onDelete}>Delete</button>
+          <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
         </div>
       </Popup>
 
