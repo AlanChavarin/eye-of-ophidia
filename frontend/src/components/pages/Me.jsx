@@ -1,5 +1,5 @@
 import UserContext from '../../context/UserContext'
-import {useContext, useState} from 'react'
+import {useContext, useState, useEffect} from 'react'
 import MeCSS from './styles/Me.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
@@ -14,9 +14,21 @@ function Me() {
     const {changepfp} = useLoginService()
 
     const onClick = (e) => {
+        setDropdown(false)
         const userToken = localStorage.getItem('user')
         changepfp(userToken, e.target.getAttribute('imgkey'))
         .then(data => updateLoggedInUserData())
+    }
+
+    useEffect(() => {
+        document.addEventListener('mousedown', outsideClick)
+    }, [dropdown])
+
+    const outsideClick = (e) => {
+        if(dropdown && !(e.target.getAttribute('dropdownelement')==='true')){
+            setDropdown(false)
+        }
+        document.removeEventListener('mousedown', outsideClick)
     }
 
 
@@ -32,13 +44,13 @@ function Me() {
                             <button className={MeCSS.editButton} onClick={() => setDropdown(!dropdown)}><FontAwesomeIcon icon={faEdit} /></button>
                     </div>
                     {dropdown && 
-                        <div className={MeCSS.dropdown}>
-                            {images.map(image => <img key={image} imgkey={image} src={window.location.origin + `/profilePics/${image}.png`} className={`${MeCSS.img} ${MeCSS.dropdownImg}`} onClick={onClick}/>)}
+                        <div className={MeCSS.dropdown} dropdownelement='true'>
+                            {images.map(image => <img dropdownelement='true' key={image} imgkey={image} src={window.location.origin + `/profilePics/${image}.png`} className={`${MeCSS.img} ${MeCSS.dropdownImg}`} onClick={onClick}/>)}
                         </div>}
                     <div style={{fontWeight: '500'}}>Avatar - {picture}</div>
                 </div>
-                <div className={MeCSS.entry}>{name}</div>
-                <div className={MeCSS.entry}>{email}</div>
+                <div className={MeCSS.entry}>Username: {name}</div>
+                <div className={MeCSS.entry}>Email: {email}</div>
                 <div className={MeCSS.entry}>Privileges: {privilege}</div>
             </div>
         </div>
