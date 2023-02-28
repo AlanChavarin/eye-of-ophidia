@@ -3,7 +3,7 @@ const Comment = require('../models/commentModel')
 const User = require('../models/userModel')
 
 const getComments = asyncHandler(async(req, res) => {
-    var comments = await Comment.find({match: req.params.matchid})
+    var comments = await Comment.find({match: req.params.matchid}).skip(req.query.page*req.query.limit).limit(req.query.limit)
     if(req.query.ownerdetails==='true'){
         let ids = []
         comments.map(comment => ids.push(comment.owner))
@@ -39,9 +39,15 @@ const deleteComment = asyncHandler(async(req, res) => {
     res.status(200).json(comment)
 })
 
+const getCount = asyncHandler(async(req, res) => {
+    const num = await Comment.find({match: req.params.matchid}).count()
+    res.status(200).json(num)
+})
+
 module.exports = {
     getComments, 
     postComment, 
     editComment, 
-    deleteComment
+    deleteComment,
+    getCount
 }

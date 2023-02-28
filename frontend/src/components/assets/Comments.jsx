@@ -8,38 +8,48 @@ import Popup from './Popup'
 import PopupCSS from '../assets/styles/Popup.module.css'
 
 function Comments({matchid}) {
-  const {getComments, postComment, deleteComment} = useCommentService()
+  const {getComments, postComment, deleteComment, getCount} = useCommentService()
   const [comments, setComments] = useState()
   const [newCommentBody, setNewCommentBody] = useState('')
   const {userData} = useContext(UserContext)
   const [popup, setPopup] = useState(false)
   const [currDelCommentId, setCurrDelCommentId] = useState('')
 
+  const limit = 7
+  const [page, setPage] = useState(0)
+  const [count, setCount] = useState('')
+
   useEffect(() => {
-    getComments(matchid, true)
-    .then(data => setComments(data))
-  }, [])
+    runGetComments()
+  }, [page])
 
   const onChange = (e) => {
     setNewCommentBody(e.target.value)
   }
 
+  const runGetComments = () => {
+    getComments(matchid, true, page, limit)
+    .then(data => setComments(data))
+    getCount(matchid)
+    .then(data => setCount(data))
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault()
     await postComment(newCommentBody, matchid)
-    setComments(await getComments(matchid, true))
+    runGetComments()
     setNewCommentBody('')
   }
 
   const onDelete = async () => {
     setPopup(false)
     await deleteComment(currDelCommentId)
-    setComments(await getComments(matchid, true))
+    runGetComments()
   }
 
-  const promptDelete = (e) => {
+  const promptDelete = (e, commentid) => {
     setPopup(true)
-    setCurrDelCommentId(e.target.parentElement.getAttribute('commentid'))
+    setCurrDelCommentId(commentid)
   }
 
   const cancelDelete = (e) => {
@@ -50,10 +60,12 @@ function Comments({matchid}) {
 
   return (
     <div className={CommentsCSS.parent}>
-      <hr className={CommentsCSS.hr}/>
+      <div className={CommentsCSS.pageButtons}>
+        {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => setPage(i)}>{i+1}</button>)}
+      </div>
       {comments?.map((comment) => (<>
-        <div key={comment._id} commentid={comment._id} className={CommentsCSS.comment}>
-          {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={(e) => promptDelete(e)} commentid={comment._id}><FontAwesomeIcon icon={faTrash} /></button>) : <></>}
+        <div key={comment._id} className={CommentsCSS.comment}>
+          {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={(e) => promptDelete(e, comment._id)}><FontAwesomeIcon icon={faTrash} /></button>) : <></>}
           <img src={window.location.origin + `/profilePics/${comment.ownerDetails?.picture}.png`} className={CommentsCSS.img}/>
           <div>
             <div className={CommentsCSS.commenter}>{comment.ownerDetails?.name}</div>

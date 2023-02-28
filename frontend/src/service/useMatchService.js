@@ -22,9 +22,11 @@ const useMatchService = () => {
         })
     }
 
-    const getMatches = async (text, hero1, hero2) => {
+    const getMatches = async (text, hero1, hero2, page, limit) => {
+        !page && (page=0)
+        !limit && (limit=20)
         return new Promise(resolve => (
-            fetch(API_URL + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)
+            fetch(API_URL + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2 + '&page=' + page + '&limit=' + limit)
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){
@@ -123,7 +125,25 @@ const useMatchService = () => {
         })
     }
 
-    return {getMatch, getMatches, getMatchesByEventName, postMatch, deleteMatch, getMatchesByEventId}
+    const getCount = async (text, hero1, hero2) => {
+        return new Promise(resolve => (
+            fetch(API_URL + 'count/' + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                resolve(data)
+            })
+            .catch(error => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
+
+        ))
+    }
+
+    return {getMatch, getMatches, getMatchesByEventName, postMatch, deleteMatch, getMatchesByEventId, getCount}
 }
 
 export default useMatchService
