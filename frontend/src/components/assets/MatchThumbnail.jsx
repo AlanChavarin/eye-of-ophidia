@@ -1,7 +1,13 @@
-import MatchThumbnailCSS from './styles/MatchThumbnail.module.css'
+//react
 import {Link} from 'react-router-dom'
+
+//font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
+
+//css
+import MatchThumbnailCSS from './styles/MatchThumbnail.module.css'
+
 
 function MatchResults({match, page}) {
   const hero1url = window.location.origin + `/images/${encodeURI(match.player1hero)}.jpg`

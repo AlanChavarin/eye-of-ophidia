@@ -1,9 +1,16 @@
+//react
 import {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
+
+//service
+import useIssueService from '../../service/useIssueService'
+
+//assets
+import Issue from './Issue'
+
+//css
 import IssuesCSS from './styles/Issues.module.css'
 import IssuePageCSS from '../pages/styles/IssuePage.module.css'
-import useIssueService from '../../service/useIssueService'
-import Issue from './Issue'
 
 function Issues({targetid, status}) {
     const {getIssues, postIssue, getAllIssues} = useIssueService()

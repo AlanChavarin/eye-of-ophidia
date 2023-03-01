@@ -1,11 +1,20 @@
+//react
 import {useState, useEffect, useContext} from 'react'
 import UserContext from '../../context/UserContext'
-import CommentsCSS from './styles/Comments.module.css'
+
+//font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import useCommentService from '../../service/useCommentService'
+
+//assets
 import Popup from './Popup'
+
+//service
+import useCommentService from '../../service/useCommentService'
+
+//css
 import PopupCSS from '../assets/styles/Popup.module.css'
+import CommentsCSS from './styles/Comments.module.css'
 
 function Comments({matchid}) {
   const {getComments, postComment, deleteComment, getCount} = useCommentService()

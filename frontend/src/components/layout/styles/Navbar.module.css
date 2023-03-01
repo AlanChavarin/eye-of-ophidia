@@ -17,3 +17,29 @@
 .item:hover{
     color: #1446A0;
 }
+
+.bars{
+    display: none;
+    padding: 10px;
+    font-size: 3em;
+    background: none;
+    border: none;
+}
+
+.bars:hover{
+    background-color: lightgray;
+}
+
+@media(orientation: portrait){
+    .item{
+        display: none;
+    }
+
+    .navbar{
+        justify-content: flex-start;
+    }
+
+    .bars{
+        display:block;
+    }
+}

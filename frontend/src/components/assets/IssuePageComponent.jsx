@@ -1,9 +1,16 @@
-import Issue from '../assets/Issue'
-import useMatchService from '../../service/useMatchService'
-import useEventService from '../../service/useEventService'
+//react
+import { useEffect, useState } from 'react'
+
+//assets
 import MatchThumbnail from '../assets/MatchThumbnail'
 import EventThumbnail from '../assets/EventThumbnail'
-import { useEffect, useState } from 'react'
+import Issue from '../assets/Issue'
+
+//service
+import useMatchService from '../../service/useMatchService'
+import useEventService from '../../service/useEventService'
+
+//css
 import IssuePageComponentCSS from './styles/IssuePageComponent.module.css'
 
 function IssuePageComponent({issue}) {

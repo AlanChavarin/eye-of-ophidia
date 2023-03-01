@@ -1,16 +1,25 @@
-import {useParams} from 'react-router-dom'
-import { useEffect, useState } from 'react'
+//react
+import {useParams, Link} from 'react-router-dom'
+import { useEffect, useState, useContext } from 'react'
+
+//component imports
 import Comments from '../assets/Comments'
 import Issues from '../assets/Issues'
 import EditHistories from '../assets/EditHistories'
-import MatchCSS from './styles/Match.module.css'
-import { Link } from 'react-router-dom'
+import EventThumbnail from '../assets/EventThumbnail'
+
+//context
+import UserContext from '../../context/UserContext'
+
+//service
+import useMatchService from '../../service/useMatchService'
+
+//font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
-import UserContext from '../../context/UserContext'
-import {useContext} from 'react'
-import useMatchService from '../../service/useMatchService'
-import EventThumbnail from '../assets/EventThumbnail'
+
+//css
+import MatchCSS from './styles/Match.module.css'
 
 function Match() {
     const {getMatch} = useMatchService()

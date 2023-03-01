@@ -1,7 +1,14 @@
+//react
 import { useEffect, useState } from 'react'
 import {useSearchParams} from 'react-router-dom'
+
+//service
 import useEventService from "../../service/useEventService"
+
+//assets
 import EventThumbnail from '../assets/EventThumbnail'
+
+//css
 import EventsCSS from './styles/Events.module.css'
 
 function Events() {

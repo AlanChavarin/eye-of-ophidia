@@ -3,6 +3,7 @@ import useLoginService from '../service/useLoginService'
 const UserContext = createContext()
 
 export const UserProvider = ({children}) => {
+    const [sidebar, setSidebar] = useState(false)
     const [userData, setUserData] = useState({
         name:'',
         email: '',
@@ -39,7 +40,8 @@ export const UserProvider = ({children}) => {
     return <UserContext.Provider value={{
         userData,
         updateLoggedInUserData,
-
+        sidebar,
+        setSidebar
     }}>
         {children}
     </UserContext.Provider>

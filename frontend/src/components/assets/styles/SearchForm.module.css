@@ -25,6 +25,7 @@
 
     width: 40vw;
     max-width: 700px;
+    min-width: 500px;
 }
 
 .searchButton{
@@ -45,5 +46,16 @@
 
 .searchInput:focus{
     outline: none;
+}
+
+@media (orientation: portrait){
+    .searchBar{
+        width: 75vw;
+        min-width: 100px;
+    }
+
+    .hero{
+        flex-direction: column;
+    }
 }
 

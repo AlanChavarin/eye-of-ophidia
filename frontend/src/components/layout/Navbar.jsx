@@ -1,17 +1,25 @@
-import {Link} from 'react-router-dom'
-import NavbarCSS from './styles/Navbar.module.css'
-import UserContext from '../../context/UserContext'
+//react
 import {useContext} from 'react'
+import UserContext from '../../context/UserContext'
+import {Link} from 'react-router-dom'
 
+//font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faBars } from '@fortawesome/free-solid-svg-icons'
+
+//css
+import NavbarCSS from './styles/Navbar.module.css'
 
 function Navbar() {
 
-  const {userData} = useContext(UserContext)
+  const {userData, setSidebar} = useContext(UserContext)
 
   return (
     <div className={`${NavbarCSS.navbar}`}>
+      <button className={NavbarCSS.bars} onClick={() => setSidebar(true)}> 
+        <div><FontAwesomeIcon icon={faBars}/></div>
+      </button>
+
       <Link to='/' className={NavbarCSS.item}>
         <div><FontAwesomeIcon icon={faEye} />Eye of Ophidia</div>
       </Link>

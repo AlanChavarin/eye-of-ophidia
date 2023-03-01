@@ -1,16 +1,28 @@
+//react
+import {useState, useEffect} from 'react'
+import {useParams, useNavigate} from 'react-router-dom'
+
+//font awesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+
+//assets
+import Popup from '../assets/Popup'
+import SearchableDropdown from '../assets/SearchableDropdown'
+import HeroSelect from '../assets/HeroSelect'
+
+//service
+import useEventService from '../../service/useEventService'
+import useMatchService from '../../service/useMatchService'
+
+//css
 import PostMatchCSS from './styles/PostMatch.module.css'
 import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
 import PopupCSS from '../assets/styles/Popup.module.css'
-import {useState, useEffect} from 'react'
-import HeroSelect from '../assets/HeroSelect'
-import {useParams, useNavigate} from 'react-router-dom'
+
+//tools
 import { getYoutubeParams } from '../../helpers/YoutubeParams'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import Popup from '../assets/Popup'
-import useEventService from '../../service/useEventService'
-import useMatchService from '../../service/useMatchService'
-import SearchableDropdown from '../assets/SearchableDropdown'
+
 function PostMatch() {
   const {postMatch, getMatch, deleteMatch} = useMatchService()
   const {getEvents} = useEventService()

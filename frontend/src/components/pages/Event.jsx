@@ -1,16 +1,23 @@
-import {useParams} from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import EventCSS from './styles/Event.module.css'
+//react
+import {useParams, Link} from 'react-router-dom'
+import { useEffect, useState, useContext } from 'react'
+import UserContext from '../../context/UserContext'
+
+//service
 import useEventService from '../../service/useEventService'
 import useMatchService from '../../service/useMatchService'
+
+//assets
+import Issues from '../assets/Issues'
 import MatchThumbnail from '../assets/MatchThumbnail'
+
+//font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
-import UserContext from '../../context/UserContext'
-import {useContext} from 'react'
-import { Link } from 'react-router-dom'
-import Issues from '../assets/Issues'
+
+//css
+import EventCSS from './styles/Event.module.css'
 
 
 function Event() {

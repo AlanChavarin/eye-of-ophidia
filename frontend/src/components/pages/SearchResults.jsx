@@ -1,10 +1,17 @@
+//react
 import { useEffect, useState } from 'react'
 import {useSearchParams} from 'react-router-dom'
+
+//assets
 import MatchThumbnail from '../assets/MatchThumbnail'
 import SearchForm from '../assets/SearchForm'
-import SearchResultsCSS from './styles/SearchResults.module.css'
+
+//service
 import useMatchService from '../../service/useMatchService'
+
+//css
 import CommentsCSS from '../assets/styles/Comments.module.css'
+import SearchResultsCSS from './styles/SearchResults.module.css'
 
 function SearchResults() {
     const {getMatches, getCount} = useMatchService()

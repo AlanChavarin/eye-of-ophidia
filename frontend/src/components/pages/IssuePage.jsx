@@ -1,6 +1,13 @@
+//react
 import {useState, useEffect} from 'react'
-import useIssueService from '../../service/useIssueService'
+
+//assets
 import IssuePageComponent from '../assets/IssuePageComponent'
+
+//service
+import useIssueService from '../../service/useIssueService'
+
+//css
 import IssuePageCSS from './styles/IssuePage.module.css'
 
 function IssuePage() {

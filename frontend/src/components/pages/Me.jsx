@@ -1,9 +1,16 @@
+//react
 import UserContext from '../../context/UserContext'
 import {useContext, useState, useEffect} from 'react'
-import MeCSS from './styles/Me.module.css'
+
+//font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
+
+//service
 import useLoginService from '../../service/useLoginService'
+
+//css
+import MeCSS from './styles/Me.module.css'
 
 function Me() {
     const images = ['bauble', 'blood', 'eye', 'grand', 'heart', 'shard', 'tit']

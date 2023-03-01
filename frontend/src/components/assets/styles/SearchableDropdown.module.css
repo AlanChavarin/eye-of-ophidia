@@ -20,3 +20,7 @@
 .dropdown > *:hover {
     background-color: lightgray;
 }
+
+@media (orientation: portrait){
+    
+}

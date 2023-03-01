@@ -1,8 +1,14 @@
-import IssuesCSS from './styles/Issues.module.css'
-import IssuePageCSS from '../pages/styles/IssuePage.module.css'
+//react
 import { useState, useContext, useEffect } from 'react'
 import UserContext from '../../context/UserContext'
+
+//service
 import useIssueService from '../../service/useIssueService'
+
+//css
+import IssuesCSS from './styles/Issues.module.css'
+import IssuePageCSS from '../pages/styles/IssuePage.module.css'
+
 
 function Issue({issue}) {
     const {userData} = useContext(UserContext)

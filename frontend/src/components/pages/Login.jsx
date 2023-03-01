@@ -1,9 +1,13 @@
-import LoginCSS from './styles/Login.module.css'
+//react
 import {useState, useContext} from 'react'
 import UserContext from '../../context/UserContext'
-import useLoginService from '../../service/useLoginService'
 import { useNavigate } from 'react-router-dom'
 
+//service
+import useLoginService from '../../service/useLoginService'
+
+//css
+import LoginCSS from './styles/Login.module.css'
 
 function Login() {
   const navigate = useNavigate()

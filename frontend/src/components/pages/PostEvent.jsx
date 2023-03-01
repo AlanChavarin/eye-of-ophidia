@@ -1,12 +1,21 @@
-import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
-import PopupCSS from '../assets/styles/Popup.module.css'
+//react
 import {useState, useEffect} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
+
+//service
 import useEventService from '../../service/useEventService'
+
+//font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+
+//assets
 import Popup from '../assets/Popup'
+
+//css
 import PostMatchCSS from './styles/PostMatch.module.css'
+import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
+import PopupCSS from '../assets/styles/Popup.module.css'
 
 function PostEvent() {
   const navigate = useNavigate()

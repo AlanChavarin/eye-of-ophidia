@@ -1,7 +1,11 @@
+//react
 import {useContext} from 'react'
-import UserContext from '../../context/UserContext'
-import FooterCSS from './styles/Footer.module.css'
 import {Link} from 'react-router-dom'
+import UserContext from '../../context/UserContext'
+
+//css
+import FooterCSS from './styles/Footer.module.css'
+
 
 function Footer() {
   const {userData} = useContext(UserContext)

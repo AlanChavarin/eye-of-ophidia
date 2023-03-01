@@ -1,9 +1,16 @@
-import SearchFormCSS from './styles/SearchForm.module.css'
+//react
 import {useState} from 'react'
-import HeroSelect from './HeroSelect'
 import {useNavigate} from 'react-router-dom'
+
+//assets
+import HeroSelect from './HeroSelect'
+
+//font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+
+//css
+import SearchFormCSS from './styles/SearchForm.module.css'
 
 function SearchForm() {
 
@@ -36,10 +43,10 @@ function SearchForm() {
                 </div>
                 
                 <div className={SearchFormCSS.hero}>
-                    <label>Hero matchup</label>
                     <div className={SearchFormCSS.container}>   
                         <HeroSelect name='hero1' onChange={onChange} value={hero1}/>
                     </div>
+                    <label style={{fontWeight: '500', alignSelf: 'center'}}>VS</label>
                     <div className={SearchFormCSS.container}>
                         <HeroSelect name='hero2' onChange={onChange} value={hero2}/>
                     </div>

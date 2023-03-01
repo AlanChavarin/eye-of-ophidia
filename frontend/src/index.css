@@ -28,8 +28,12 @@ code {
   align-items: center;
 }
 
-
-
 .background-color{
   background-color: #fffcf0;
+}
+
+@media(orientation: portrait){
+  .app-parent{
+    grid-template-rows: 6vh auto 4vh;
+  }
 }

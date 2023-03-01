@@ -1,6 +1,7 @@
 //layout
 import Navbar from "./components/layout/Navbar"
 import Footer from "./components/layout/Footer"
+import Sidebar from './components/layout/Sidebar'
 
 //pages
 import Home from "./components/pages/Home"
@@ -35,6 +36,7 @@ function App() {
       <UserProvider>
         <div className="app-parent">
           <Navbar />
+          <Sidebar />
           <div className='app-container background-color'>
             <Routes>
               <Route path='/' element={<Home />}/>
