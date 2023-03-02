@@ -24,9 +24,7 @@ function Sidebar() {
                 setSidebar(false)
                 document.removeEventListener('mousedown', outsideClick)
             }, 75)
-           
         }
-        
     }
 
   return (

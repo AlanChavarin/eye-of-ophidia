@@ -9,17 +9,15 @@
 .sidebar{
     position: absolute;
     height: 100%;
-    width: 60%;
+    width: 70%;
     background-color: white;
     left:0;
 }
 
 .sidebarContainer{
     margin: 30px;
-
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 
 .xbutton{
@@ -30,4 +28,9 @@
 
 .item{
     font-size: 1.8em;
+    padding: 15px 10px 15px 10px;
+}
+
+.item:hover{
+    background-color: lightgrey;
 }

@@ -48,12 +48,14 @@
     outline: none;
 }
 
-@media (orientation: portrait){
+@media (orientation: portrait), (width < 900px){
     .searchBar{
         width: 75vw;
         min-width: 100px;
     }
+}
 
+@media(width < 600px){
     .hero{
         flex-direction: column;
     }

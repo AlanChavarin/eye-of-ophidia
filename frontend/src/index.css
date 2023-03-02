@@ -32,8 +32,8 @@ code {
   background-color: #fffcf0;
 }
 
-@media(orientation: portrait){
+@media(oritentation: portrait),(max-width: 900px){
   .app-parent{
-    grid-template-rows: 6vh auto 4vh;
+    grid-template-rows: 50px auto 4vh;
   }
 }

@@ -1,5 +1,4 @@
 .container{
-
     border-radius: 10px;
     border: 1px solid lightgray;
 
@@ -46,13 +45,29 @@ a{
 }
 
 .forEventsPage{
-    height: 25vh;
+    height: 270px;
     width: 30vw;
-    min-width: 250px;
-    max-width: 400px;
-    min-height: 200px;
+    min-width: 400px;
+    max-width: 500px;
 }
 
 .forMatchPage{
-    height: 23vh;
+    height: 250px;
+}
+
+@media(landscape: portrait), (width < 900px){
+    .forEventsPage{
+        min-width: 450px;
+        max-width: 500px;
+    }
+
+}
+
+@media(orientation: portrait),(width < 1200px){
+    .forMatchPage{
+        width: 83%;
+        align-self: center;
+        max-width: 630px;
+        min-width: 400px;
+    }
 }

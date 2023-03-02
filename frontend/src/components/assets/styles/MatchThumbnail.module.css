@@ -54,8 +54,8 @@
 
 .default{
     width: 20vw;
-    height: 20vh;
-    min-width: 250px;
+    height: 200px;
+    min-width: 350px;
     max-width: 400px;
 }
 
@@ -88,4 +88,10 @@
 .editButton:hover{
     cursor: pointer;
     background-color: rgb(156, 155, 155)
+}
+
+@media(orientation: portrait),(width < 900px){
+    .default{
+        width: 80vw;
+    }
 }

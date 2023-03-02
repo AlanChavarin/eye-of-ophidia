@@ -30,7 +30,7 @@
     background-color: lightgray;
 }
 
-@media(orientation: portrait){
+@media(orientation: portrait),(max-width: 900px){
     .item{
         display: none;
     }
