@@ -37,6 +37,7 @@ const postIssue = asyncHandler(async (req, res) => {
         title: req.body.title,
         body: req.body.body,
         target: req.params.targetid,
+        targetType: req.body.targetType,
         creator: req.user._id,
         status: 'pending'
     })

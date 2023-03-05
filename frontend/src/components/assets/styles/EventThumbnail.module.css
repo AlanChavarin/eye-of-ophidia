@@ -55,6 +55,13 @@ a{
     height: 250px;
 }
 
+.forIssuePage{
+    height: 270px;
+    width: 30vw;
+    min-width: 300px;
+    max-width: 500px;
+}
+
 @media(landscape: portrait), (width < 900px){
     .forEventsPage{
         min-width: 450px;
@@ -69,5 +76,13 @@ a{
         align-self: center;
         max-width: 630px;
         min-width: 400px;
+    }
+}
+
+@media(width < 650px){
+    .forIssuePage{
+        width: 100%;
+        max-width: 650px;
+        height: 220px;
     }
 }

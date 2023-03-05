@@ -79,6 +79,8 @@
     box-shadow: 2px 2px 2px black;
 
     align-self: center;
+
+    white-space: nowrap;
 }
 
 .containerTab > *:hover {

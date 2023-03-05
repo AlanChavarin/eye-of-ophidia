@@ -62,7 +62,7 @@ function Event() {
                         <div>{event.format}{event.format==='Mixed' && (<> Format</>)}</div>
                         <div>{event.location}</div>
                     </div>
-                    {event.description && <div className={EventCSS.verticalLine}></div>}
+                    {event.description && <div className={EventCSS.verticalLine}></div>}*
                     <div className={EventCSS.eventDetails}>
                         <div>{event.description}</div>
                     </div>
@@ -70,7 +70,7 @@ function Event() {
             </div>
             {(issueTab) ? (<>
             <button onClick={onClick} className={EventCSS.cornerItem} style={{position: 'relative'}}>Back to event matches <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
-            <Issues targetid={event._id} />
+            <Issues targetid={event._id} targetType='event'/>
             </>
             ) :  (<div className={EventCSS.matchThumbnailContainer}>
                 {matches?.map((match) => (<MatchThumbnail key={match._id} match={match}/>))}  

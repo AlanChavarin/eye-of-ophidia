@@ -19,7 +19,7 @@ code {
 .app-parent{
   height: 100vh;
   display: grid;
-  grid-template-rows: 4vh auto 4vh;
+  grid-template-rows: 50px auto 30px;
 }
 
 .app-parent > *{
@@ -32,8 +32,8 @@ code {
   background-color: #fffcf0;
 }
 
-@media(oritentation: portrait),(max-width: 900px){
+@media(orientation: portrait),(max-width: 900px){
   .app-parent{
-    grid-template-rows: 50px auto 4vh;
+    grid-template-rows: 50px auto 30px;
   }
 }

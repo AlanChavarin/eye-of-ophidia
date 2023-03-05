@@ -6,7 +6,13 @@
    padding: 0px 30px 0px 30px;
    border-right: 1px solid lightgrey;
    border-left: 1px solid lightgrey;
+}
 
+@media(width < 840px){
+    .parent{
+        width: 100%;
+        min-width: 0px;
+    }
 }
 
 .issuesContainer{

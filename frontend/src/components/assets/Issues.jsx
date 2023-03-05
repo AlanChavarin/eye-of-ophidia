@@ -12,7 +12,7 @@ import Issue from './Issue'
 import IssuesCSS from './styles/Issues.module.css'
 import IssuePageCSS from '../pages/styles/IssuePage.module.css'
 
-function Issues({targetid, status}) {
+function Issues({targetid, status, targetType}) {
     const {getIssues, postIssue, getAllIssues} = useIssueService()
     const [issues, setIssues] = useState()
     const [formData, setFormData] = useState({
@@ -24,7 +24,6 @@ function Issues({targetid, status}) {
     const {title, body} = formData
 
     useEffect(() => {
-        console.log(1)
         fetchIssues()
     }, [statusFilter])
 
@@ -45,9 +44,12 @@ function Issues({targetid, status}) {
 
     const onSubmit = (e) => {   
         e.preventDefault()
-        postIssue(targetid, formData)
-        .then(() => getIssues(targetid))
-        .then(data => setIssues(data))
+        postIssue(targetid, formData, targetType)
+        .then(() => getIssues(targetid, 'pending'))
+        .then(data => {
+            setStatusFilter('pending')
+            setIssues(data)
+        })
         .then(() => setFormData({title: '', body: ''}))
     }
 
@@ -89,7 +91,7 @@ function Issues({targetid, status}) {
                 </div>
                 <div className={IssuesCSS.formContainer}>
                     <label className={IssuesCSS.label}>Body</label>
-                    <textarea placeholder='Write the details of the issue with this match/event' name='body' id="" cols="60" rows="7" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
+                    <textarea placeholder='Write the details of the issue with this match/event' name='body' id="" cols="30" rows="7" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
                 </div>
                 <input type="submit" value='Submit Issue' className={IssuesCSS.submitButton} style={{boxShadow: '3px 3px 2px black'}}/>
             </form>

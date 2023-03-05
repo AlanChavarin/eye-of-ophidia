@@ -62,13 +62,13 @@ function Match() {
             </div>
             
             {tab==='comments' && <Comments matchid={matchid}/>}
-            {tab==='issues' && <Issues targetid={matchid}/>}
+            {tab==='issues' && <Issues targetid={matchid} targetType='match'/>}
             {tab==='history' && <EditHistories matchid={matchid}/>}
           </div>
 
           {tab==='details' && <>
 
-          <EventThumbnail event={match.event} type={'matchPage'} details={`${(match.top8) ? (`${match?.top8Round}`) : `Swiss Round ${match?.swissRound}`}`}/>
+          <EventThumbnail event={match.event} page='match' details={`${(match.top8) ? (`${match?.top8Round}`) : `Swiss Round ${match?.swissRound}`}`}/>
 
           <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player1hero)})`}}>
             <div className={MatchCSS.playerName}>{match.player1name}</div>

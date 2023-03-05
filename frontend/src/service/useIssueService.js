@@ -13,6 +13,7 @@ const useIssueService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                console.log(data, status)
                 resolve(data)
             })
             .catch((error) => {
@@ -58,7 +59,7 @@ const useIssueService = () => {
         ))
     }
 
-    const postIssue = async (targetid, formData) => {
+    const postIssue = async (targetid, formData, targetType) => {
         const {title, body} = formData
         return new Promise(resolve => (
             fetch(API_URL + targetid, {
@@ -69,7 +70,8 @@ const useIssueService = () => {
                 },
                 body: JSON.stringify({
                     title: title,
-                    body: body
+                    body: body,
+                    targetType: targetType,
                 })
             })
             .then(res => res.json())

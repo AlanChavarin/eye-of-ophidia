@@ -32,7 +32,7 @@ function IssuePageComponent({issue}) {
     <div className={IssuePageComponentCSS.parent}>
        {data && <>
         {(issue.targetType==='match') && <MatchThumbnail match={data} page='issue'/>}
-        {(issue.targetType==='event') && <EventThumbnail event={data} type={'eventPage'}/>}
+        {(issue.targetType==='event') && <EventThumbnail event={data} page='issue'/>}
         <Issue issue={issue}/>
        </>} 
         
