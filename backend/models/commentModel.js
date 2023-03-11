@@ -13,10 +13,6 @@ const commentSchema = mongoose.Schema({
     body: {
         type: String,
         required: true
-    },
-    ownerDetails: {
-        name: String,
-        picture: String,
     }
 })
 

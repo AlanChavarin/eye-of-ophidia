@@ -1,7 +1,7 @@
 const express = require('express')
 const asyncHandler = require('express-async-handler')
 const router = express.Router()
-const {getComments, postComment, editComment, deleteComment, getCount} = require('../controllers/commentController')
+const {getComments, postComment, editComment, deleteComment} = require('../controllers/commentController')
 const {protect, protectModerator} = require('../middleware/authMiddleware')
 const Comment = require('../models/commentModel')
 
@@ -27,6 +27,5 @@ router.put('/:commentid', protect, protectCorrectUser, editComment)
 
 router.delete('/:commentid', protect, protectCorrectUser, deleteComment)
 
-router.get('/count/:matchid', getCount)
 
 module.exports = router

@@ -14,7 +14,7 @@ import CommentsCSS from '../assets/styles/Comments.module.css'
 import SearchResultsCSS from './styles/SearchResults.module.css'
 
 function SearchResults() {
-    const {getMatches, getCount} = useMatchService()
+    const {getMatches} = useMatchService()
     const [searchParams, setSearchParams] = useSearchParams()
     const [matches, setMatches] = useState()
     const text = searchParams.get('text')
@@ -27,15 +27,11 @@ function SearchResults() {
 
     useEffect(() => {
       getMatches(text, hero1, hero2, page, limit)
-      .then(data => setMatches(data))
-      getCount(text, hero1, hero2)
-      .then(data => setCount(data))
-    }, [searchParams])
-
-    useEffect(() => {
-      getMatches(text, hero1, hero2, page, limit)
-      .then(data => setMatches(data))
-    }, [page])
+      .then(data => {
+        setMatches(data.matches)
+        setCount(data.count)
+      })
+    }, [searchParams, page])
 
   return (
     <div>

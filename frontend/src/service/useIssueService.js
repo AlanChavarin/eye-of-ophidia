@@ -5,15 +5,36 @@ const useIssueService = () => {
     const API_URL = 'http://localhost:5000/api/issues/'
     const {addAlert} = useContext(AlertContext)
 
-    const getIssues = async (targetid, status) => {
+    const getIssues = async (targetid, status, page, limit) => {
+        !page && (page=0)
+        !limit && (limit=10)
         return new Promise(resolve => (
-            fetch(API_URL + targetid + '?status=' + status)
+            fetch(API_URL + targetid + '?status=' + status + '&page=' + page + '&limit=' + limit)
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
-                console.log(data, status)
+                resolve(data)
+            })
+            .catch((error) => {
+                console.error(error)
+                addAlert(error.message, 'error')
+            })
+        ))
+    }
+
+    const getAllIssues = async (targetType, status, page, limit) => {
+        !page && (page=0)
+        !limit && (limit=10)
+        if(!status)(status='')
+        return new Promise(resolve => (
+            fetch(API_URL + '?status=' + status + '&targetType=' + targetType + '&page=' + page + '&limit=' + limit)
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
                 resolve(data)
             })
             .catch((error) => {
@@ -24,7 +45,6 @@ const useIssueService = () => {
     }
 
     const getIssue = async (issueid) => {
-        console.log(issueid)
         return new Promise(resolve => {
             fetch(API_URL + 'singleissue/' + issueid)
             .then(res => res.json())
@@ -41,23 +61,7 @@ const useIssueService = () => {
         })
     }
 
-    const getAllIssues = async (targetType, status) => {
-        if(!status)(status='')
-        return new Promise(resolve => (
-            fetch(API_URL + '?status=' + status + '&targetType=' + targetType)
-            .then(res => res.json())
-            .then((data) => {
-                if(data.errorMessage){
-                    throw new Error(data.errorMessage)
-                }
-                resolve(data)
-            })
-            .catch((error) => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
-        ))
-    }
+    
 
     const postIssue = async (targetid, formData, targetType) => {
         const {title, body} = formData

@@ -25,7 +25,7 @@ function Event() {
     const {getEvent} = useEventService()
     const {eventid} = useParams()
     const [event, setEvent] = useState()
-    const {getMatchesByEventName} = useMatchService()
+    const {getMatchesByEvent} = useMatchService()
     const [matches, setMatches] = useState()
     const [backgroundImage, setBackgroundImage] = useState()
     const [issueTab, setIssueTab] = useState(false)
@@ -37,7 +37,7 @@ function Event() {
     }, [])
 
     useEffect(() => {
-        event && getMatchesByEventName(event.name)
+        event && getMatchesByEvent(event.name)
         .then(data => setMatches(data))
     }, [event])
 

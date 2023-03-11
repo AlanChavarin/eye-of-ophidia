@@ -17,8 +17,8 @@ import PopupCSS from '../assets/styles/Popup.module.css'
 import CommentsCSS from './styles/Comments.module.css'
 
 function Comments({matchid}) {
-  const {getComments, postComment, deleteComment, getCount} = useCommentService()
-  const [comments, setComments] = useState()
+  const {getComments, postComment, deleteComment} = useCommentService()
+  const [comments, setComments] = useState([])
   const [newCommentBody, setNewCommentBody] = useState('')
   const {userData} = useContext(UserContext)
   const [popup, setPopup] = useState(false)
@@ -37,10 +37,11 @@ function Comments({matchid}) {
   }
 
   const runGetComments = () => {
-    getComments(matchid, true, page, limit)
-    .then(data => setComments(data))
-    getCount(matchid)
-    .then(data => setCount(data))
+    getComments(matchid, page, limit)
+    .then(data => {
+      setComments(data.comments)
+      setCount(data.count)
+    })
   }
 
   const onSubmit = async (e) => {
@@ -70,7 +71,7 @@ function Comments({matchid}) {
   return (
     <div className={CommentsCSS.parent}>
       <div className={CommentsCSS.pageButtons}>
-        {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => setPage(i)}>{i+1}</button>)}
+        {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => {setPage(i)}}>{i+1}</button>)}
       </div>
       {comments?.map((comment) => (<>
         <div key={comment._id} className={CommentsCSS.comment}>

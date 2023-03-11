@@ -6,8 +6,10 @@ const getIssues = asyncHandler(async (req, res) => {
     let issues
     if(req.query.status){
         issues = await Issue.find({target: req.params.targetid, status: req.query.status})
+        .skip(req.query.page*req.query.limit).limit(req.query.limit)
     } else {
         issues = await Issue.find({target: req.params.targetid})
+        .skip(req.query.page*req.query.limit).limit(req.query.limit)
     }
     
     res.status(200).json(issues)
@@ -22,12 +24,16 @@ const getAllIssues = asyncHandler(async (req, res) => {
     let issues
     if(req.query.status && req.query.targetType){
         issues = await Issue.find({status: req.query.status, targetType: req.query.targetType})
+        .skip(req.query.page*req.query.limit).limit(req.query.limit)
     } else if (req.query.status){
         issues = await Issue.find({status: req.query.status})
+        .skip(req.query.page*req.query.limit).limit(req.query.limit)
     } else if (req.query.targetType){
         issues = await Issue.find({targetType: req.query.targetType})
+        .skip(req.query.page*req.query.limit).limit(req.query.limit)
     }  else {
         issues = await Issue.find({})
+        .skip(req.query.page*req.query.limit).limit(req.query.limit)
     }
     res.status(200).json(issues)
 })

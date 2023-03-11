@@ -5,12 +5,12 @@ const useCommentService = () => {
   const API_URL = 'http://localhost:5000/api/comments/'
   const {addAlert} = useContext(AlertContext)
 
-  const getComments = async (matchid, ownerDetails, page, limit) => {
+  const getComments = async (matchid, page, limit) => {
         !page && (page=0)
         !limit && (limit=10)
         if(matchid){
           return new Promise( resolve => (
-            fetch(API_URL + matchid + '?ownerdetails=' + ownerDetails + '&page=' + page + '&limit=' + limit)
+            fetch(API_URL + matchid + '?page=' + page + '&limit=' + limit)
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){
@@ -77,29 +77,8 @@ const useCommentService = () => {
         })
       ))
     }
-  
-  const getCount = (matchid) => {
-    if(matchid){
-      return new Promise( resolve => (
-        fetch(API_URL + 'count/' + matchid)
-        .then(res => res.json())
-        .then((data) => {
-            if(data.errorMessage){
-              throw new Error(data.errorMessage)
-            }
-            resolve(data)
-        })
-        .catch(error => {
-          console.error(error)
-          addAlert(error.message, 'error')
-        })
-      ))
-    } else {
-      throw new Error('matchid doesnt exist')
-    }
-  }
 
-    return {getComments, postComment, deleteComment, getCount}
+    return {getComments, postComment, deleteComment}
 }
 
 export default useCommentService

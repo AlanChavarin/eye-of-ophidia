@@ -24,7 +24,7 @@ const useMatchService = () => {
 
     const getMatches = async (text, hero1, hero2, page, limit) => {
         !page && (page=0)
-        !limit && (limit=20)
+        !limit && (limit=10)
         return new Promise(resolve => (
             fetch(API_URL + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2 + '&page=' + page + '&limit=' + limit)
             .then(res => res.json())
@@ -42,26 +42,9 @@ const useMatchService = () => {
         ))
     }
 
-    const getMatchesByEventId = async (eventId) => {
+    const getMatchesByEvent = async (event) => {
         return new Promise(resolve => (
-            fetch(API_URL + 'byeventid/' + eventId)
-            .then(res => res.json())
-            .then((data) => {
-                if(data.errorMessage){
-                    throw new Error(data.errorMessage)
-                }
-                resolve(data)
-            })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
-        ))
-    }
-
-    const getMatchesByEventName = async (eventName) => {
-        return new Promise(resolve => (
-            fetch(API_URL + 'byeventname/' + eventName)
+            fetch(API_URL + 'byevent/' + event)
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){
@@ -125,25 +108,13 @@ const useMatchService = () => {
         })
     }
 
-    const getCount = async (text, hero1, hero2) => {
-        return new Promise(resolve => (
-            fetch(API_URL + 'count/' + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)
-            .then(res => res.json())
-            .then((data) => {
-                if(data.errorMessage){
-                    throw new Error(data.errorMessage)
-                }
-                resolve(data)
-            })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
-
-        ))
+    return {
+        getMatch, 
+        getMatches, 
+        postMatch, 
+        deleteMatch, 
+        getMatchesByEvent
     }
-
-    return {getMatch, getMatches, getMatchesByEventName, postMatch, deleteMatch, getMatchesByEventId, getCount}
 }
 
 export default useMatchService

@@ -1,20 +1,45 @@
 const asyncHandler = require('express-async-handler')
 const Comment = require('../models/commentModel')
-const User = require('../models/userModel')
+const ObjectId = require('mongodb').ObjectId
 
 const getComments = asyncHandler(async(req, res) => {
-    var comments = await Comment.find({match: req.params.matchid}).skip(req.query.page*req.query.limit).limit(req.query.limit)
-    if(req.query.ownerdetails==='true'){
-        let ids = []
-        comments.map(comment => ids.push(comment.owner))
-        const users = await User.find({_id: {$in: ids}})
-        users.map(user => comments.map(comment => {
-            if(user._id.equals(comment.owner)){
-                comment.ownerDetails = user
-            }
-        }))
+    var skip, limit
+    if(!req.query.limit){limit = 10} 
+    else {limit = parseInt(req.query.limit)}
+    if(!req.query.page){skip = 0} 
+    else {skip = parseInt(req.query.page*limit)}
+
+    const pipeline = [
+        {"$match": {"match": ObjectId(req.params.matchid)}},
+        { "$facet": {
+            "comments": [
+                { "$skip": skip },
+                { "$limit": limit },
+                { "$lookup": {
+                    from: "users",
+                    localField: "owner",
+                    foreignField: "_id",
+                    as: "ownerDetails"
+                }}
+            ],
+            "count": [
+                { "$count": "count" }
+            ]
+        }}
+    ]
+    
+    const commentsQuery = await Comment.aggregate(pipeline)
+
+    const data = {
+        "comments": commentsQuery[0].comments,
+        "count": commentsQuery[0].count[0]?.count
     }
-    res.status(200).json(comments)
+
+    data.comments.map(comment => {
+        comment.ownerDetails = comment.ownerDetails[0]
+    })
+
+    res.status(200).json(data)
 })
 
 const postComment = asyncHandler(async(req, res) => {
@@ -39,15 +64,9 @@ const deleteComment = asyncHandler(async(req, res) => {
     res.status(200).json(comment)
 })
 
-const getCount = asyncHandler(async(req, res) => {
-    const num = await Comment.find({match: req.params.matchid}).count()
-    res.status(200).json(num)
-})
-
 module.exports = {
     getComments, 
     postComment, 
     editComment, 
-    deleteComment,
-    getCount
+    deleteComment
 }

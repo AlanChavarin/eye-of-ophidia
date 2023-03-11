@@ -2,63 +2,90 @@ const asyncHandler = require('express-async-handler')
 const Match = require('../models/matchModel')
 const Event = require('../models/eventModel')
 const {postMatchEdit} = require('./matchEditHistoryController') 
+const ObjectId = require('mongodb').ObjectId
 
 const getMatches = asyncHandler(async (req, res) => {
-    let matches
+    var skip, limit, find
+    if(!req.query.limit){limit = 10} 
+    else {limit = parseInt(req.query.limit)}
+    if(!req.query.page){skip = 0} 
+    else {skip = parseInt(req.query.page*limit)}
+
     if(!req.recyclebin){req.recyclebin = false}
+
     if(req.query.hero1 && req.query.hero2 && req.query.text){
-        matches = await Match.find({ 
-                $text: {$search: req.query.text},
-                $or: [{"player1hero": req.query.hero1, "player2hero": req.query.hero2, },
+        find = {
+                "$text": {"$search": req.query.text},
+                "$or": [{"player1hero": req.query.hero1, "player2hero": req.query.hero2, },
                     {"player1hero": req.query.hero2, "player2hero": req.query.hero1, }],
-                deleted: req.recyclebin
-            }).skip(req.query.page*req.query.limit).limit(req.query.limit)
+                "deleted": req.recyclebin
+            }
     } else if(req.query.hero1 && req.query.hero2){
-        matches = await Match.find({ 
-                $or: [{"player1hero": req.query.hero1, "player2hero": req.query.hero2, },
+        find = {
+                "$or": [{"player1hero": req.query.hero1, "player2hero": req.query.hero2, },
                     {"player1hero": req.query.hero2, "player2hero": req.query.hero1, }],
-                deleted: req.recyclebin
-            }).skip(req.query.page*req.query.limit).limit(req.query.limit)
+                "deleted": req.recyclebin
+            }
     } else if(req.query.hero1 && req.query.text){
-        matches = await Match.find({ 
-                $text: {$search: req.query.text},
-                $or: [{"player1hero": req.query.hero1},
+        find = {
+                "$text": {"$search": req.query.text},
+                "$or": [{"player1hero": req.query.hero1},
                     {"player2hero": req.query.hero1, }],
-                deleted: req.recyclebin
-            }).skip(req.query.page*req.query.limit).limit(req.query.limit)
+                "deleted": req.recyclebin
+            }
     } else if(req.query.hero2 && req.query.text){
-        matches = await Match.find({ 
-            $text: {$search: req.query.text},
-            $or: [{"player1hero": req.query.hero2},
+        find = {
+            "$text": {"$search": req.query.text},
+            "$or": [{"player1hero": req.query.hero2},
                 {"player2hero": req.query.hero2, }],
-            deleted: req.recyclebin
-        }).skip(req.query.page*req.query.limit).limit(req.query.limit)
+            "deleted": req.recyclebin
+        }
     }
     else if(req.query.hero1){
-        matches = await Match.find({
-            $or: [{"player1hero": req.query.hero1},{"player2hero": req.query.hero1}],
-            deleted: req.recyclebin
-        }).skip(req.query.page*req.query.limit).limit(req.query.limit)
+        find = {
+            "$or": [{"player1hero": req.query.hero1},{"player2hero": req.query.hero1}],
+            "deleted": req.recyclebin
+        }
     } else if(req.query.text){
-        matches = await Match.find({ 
-            $text: {$search: req.query.text},
-            deleted: req.recyclebin
-        }).skip(req.query.page*req.query.limit).limit(req.query.limit)
+        find = { 
+            "$text": {"$search": req.query.text},
+            "deleted": req.recyclebin
+        }
     } else {
-        matches = await Match.find({deleted: req.recyclebin}).skip(req.query.page*req.query.limit).limit(req.query.limit)
+        find = {"deleted": req.recyclebin}
     }
-    res.status(200).json(matches)
+
+    const pipeline = [
+        {"$match": find},
+        { "$facet": {
+            "matches": [
+                { "$skip": skip },
+                { "$limit": limit }
+            ],
+            "count": [
+                { "$count": "count" }
+            ]
+        }}
+    ]
+
+    const matchesQuery = await Match.aggregate(pipeline)
+
+    const data = {
+        "matches": matchesQuery[0].matches,
+        "count": matchesQuery[0].count[0]?.count
+    }
+
+    res.status(200).json(data)
 })
 
-const getMatchesByEventName = asyncHandler(async (req, res) => {
+const getMatchesByEvent = asyncHandler(async (req, res) => {
+    var matches
     if(!req.recyclebin){req.recyclebin = false}
-    const matches = await Match.find({'event.name': req.params.eventName, deleted: req.recyclebin}).skip(req.query.page*req.query.limit).limit(req.query.limit)
-    res.status(200).json(matches)
-})
-
-const getMatchesByEventId = asyncHandler(async (req, res) => {
-    if(!req.recyclebin){req.recyclebin = false}
-    const matches = await Match.find({'event._id': req.params.eventId, deleted: req.recyclebin}).skip(req.query.page*req.query.limit).limit(req.query.limit)
+    if(ObjectId.isValid(req.params.event)){
+        matches = await Match.find({'event._id': req.params.event, deleted: req.recyclebin})
+    } else {
+        matches = await Match.find({'event.name': req.params.event, deleted: req.recyclebin})
+    }
     res.status(200).json(matches)
 })
 
@@ -134,61 +161,12 @@ const restoreMatch = asyncHandler(async (req, res) => {
     res.status(200).json(match)
 })
 
-const getCount = asyncHandler(async (req, res) => {
-    let matches
-    if(!req.recyclebin){req.recyclebin = false}
-    if(req.query.hero1 && req.query.hero2 && req.query.text){
-        matches = await Match.find({ 
-                $text: {$search: req.query.text},
-                $or: [{"player1hero": req.query.hero1, "player2hero": req.query.hero2, },
-                    {"player1hero": req.query.hero2, "player2hero": req.query.hero1, }],
-                deleted: req.recyclebin
-            }).count()
-    } else if(req.query.hero1 && req.query.hero2){
-        matches = await Match.find({ 
-                $or: [{"player1hero": req.query.hero1, "player2hero": req.query.hero2, },
-                    {"player1hero": req.query.hero2, "player2hero": req.query.hero1, }],
-                deleted: req.recyclebin
-            }).count()
-    } else if(req.query.hero1 && req.query.text){
-        matches = await Match.find({ 
-                $text: {$search: req.query.text},
-                $or: [{"player1hero": req.query.hero1},
-                    {"player2hero": req.query.hero1, }],
-                deleted: req.recyclebin
-            }).count()
-    } else if(req.query.hero2 && req.query.text){
-        matches = await Match.find({ 
-            $text: {$search: req.query.text},
-            $or: [{"player1hero": req.query.hero2},
-                {"player2hero": req.query.hero2, }],
-            deleted: req.recyclebin
-        }).count()
-    }
-    else if(req.query.hero1){
-        matches = await Match.find({
-            $or: [{"player1hero": req.query.hero1},{"player2hero": req.query.hero1}],
-            deleted: req.recyclebin
-        }).count()
-    } else if(req.query.text){
-        matches = await Match.find({ 
-            $text: {$search: req.query.text},
-            deleted: req.recyclebin
-        }).count()
-    } else {
-        matches = await Match.find({deleted: req.recyclebin}).count()
-    }
-    res.status(200).json(matches)
-})
-
 module.exports = {
     getMatches,
+    getMatchesByEvent,
     getMatch,
-    getMatchesByEventName,
     postMatch,
     updateMatch,
     deleteMatch,
     restoreMatch,
-    getMatchesByEventId,
-    getCount
 }
