@@ -13,13 +13,44 @@ const getEvent = asyncHandler(async (req, res) => {
 })
 
 const getEvents = asyncHandler(async (req, res) => {
+    var skip, limit, find
+    if(!req.query.limit){limit = 10} 
+    else {limit = parseInt(req.query.limit)}
+    if(!req.query.page){skip = 0} 
+    else {skip = parseInt(req.query.page*limit)}
     if(!req.recyclebin){req.recyclebin = false}
-    const events = await Event.find({deleted: req.recyclebin})
-    res.status(200).json(events)
+
+    if(req.query.text){
+        find = {"$text": {"$search": req.query.text},
+            "deleted": req.recyclebin}
+    } else {
+        find = {"deleted": req.recyclebin}
+    }
+
+    const pipeline = [
+        {"$match": find},
+        { "$facet": {
+            "events": [
+                { "$skip": skip },
+                { "$limit": limit }
+            ],
+            "count": [
+                { "$count": "count" }
+            ]
+        }}
+    ]
+
+    const eventsQuery = await Event.aggregate(pipeline)
+
+    const data = {
+        "events": eventsQuery[0].events,
+        "count": eventsQuery[0].count[0]?.count
+    }
+
+    res.status(200).json(data)
 })
 
 const postEvent = asyncHandler(async (req, res) => {
-    console.log(req.body)
     const event = await Event.create({
         name: req.body.name,
         location: req.body.location,

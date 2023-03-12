@@ -12,7 +12,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 //css
 import SearchFormCSS from './styles/SearchForm.module.css'
 
-function SearchForm() {
+function SearchForm({page}) {
 
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
@@ -31,7 +31,8 @@ function SearchForm() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        navigate('/matches/?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2)
+        navigate(`/${page}/?text=` + text + `${(page==='matches') ? ('&hero1=' + hero1 + '&hero2=' + hero2) : ''}`)
+        //'&hero1=' + hero1 + '&hero2=' + hero2
     }
 
     return (
@@ -39,10 +40,10 @@ function SearchForm() {
             <form className={SearchFormCSS.searchform} onSubmit={onSubmit}>
                 <div className={SearchFormCSS.searchBar}> 
                     <button className={SearchFormCSS.searchButton}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
-                    <input className={SearchFormCSS.searchInput} type='text' name='text' value={text} onChange={onChange} placeholder="Search for a match"/>
+                    <input className={SearchFormCSS.searchInput} type='text' name='text' value={text} onChange={onChange} placeholder={`Search for ${page}`}/>
                 </div>
-                
-                <div className={SearchFormCSS.hero}>
+
+                {(page==='matches') && <div className={SearchFormCSS.hero}>
                     <div className={SearchFormCSS.container}>   
                         <HeroSelect name='hero1' onChange={onChange} value={hero1}/>
                     </div>
@@ -50,7 +51,9 @@ function SearchForm() {
                     <div className={SearchFormCSS.container}>
                         <HeroSelect name='hero2' onChange={onChange} value={hero2}/>
                     </div>
-                </div>
+                </div>}
+                
+                
             </form>
         </div>
     )

@@ -35,7 +35,7 @@ function SearchResults() {
 
   return (
     <div>
-      <SearchForm/>
+      <SearchForm page='matches'/>
       
       <div className={SearchResultsCSS.matchThumbnails}>
         {matches?.map((match) => (

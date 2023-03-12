@@ -1,3 +1,10 @@
+.parent{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px;
+}
+
 .eventThumbnails{
     display: flex;
     flex-direction: row;

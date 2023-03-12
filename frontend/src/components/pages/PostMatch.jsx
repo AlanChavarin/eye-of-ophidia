@@ -64,7 +64,7 @@ function PostMatch() {
     getEvents()
     .then(data => {
       let eventNames = []
-      data.map((event) => eventNames.push(event.name))
+      data?.map((event) => eventNames.push(event.name))
       setEventData(eventNames)
     })
   }, [])
@@ -81,7 +81,7 @@ function PostMatch() {
   }, [fullLink])
 
   useEffect(() => {
-    eventData.map((thisEvent) => {
+    eventData?.map((thisEvent) => {
       if(thisEvent.name === event && thisEvent.format !== 'Mixed'){
         setFormData((prevState) => ({
           ...prevState,

@@ -13,7 +13,7 @@ import IssuesCSS from './styles/Issues.module.css'
 import IssuePageCSS from '../pages/styles/IssuePage.module.css'
 import CommentsCSS from '../assets/styles/Comments.module.css'
 
-function Issues({targetid, status, targetType}) {
+function Issues({targetid, targetType}) {
     const {getIssues, postIssue} = useIssueService()
     const [issues, setIssues] = useState()
     const [formData, setFormData] = useState({

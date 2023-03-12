@@ -22,11 +22,17 @@ const useEventService = () => {
         })
     }
 
-    const getEvents = async () => {
+    const getEvents = async (text, page, limit) => {
+        !text && (text='')
+        !page && (page=0)
+        !limit && (limit=7)
         return new Promise(resolve => (
-            fetch(API_URL)
+            fetch(API_URL + '?text=' + text + '&page=' + page + '&limit=' + limit)
             .then(res => res.json())
             .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
                 resolve(data)
             })
             .catch(error => {
