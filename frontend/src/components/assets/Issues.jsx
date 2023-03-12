@@ -11,9 +11,10 @@ import Issue from './Issue'
 //css
 import IssuesCSS from './styles/Issues.module.css'
 import IssuePageCSS from '../pages/styles/IssuePage.module.css'
+import CommentsCSS from '../assets/styles/Comments.module.css'
 
 function Issues({targetid, status, targetType}) {
-    const {getIssues, postIssue, getAllIssues} = useIssueService()
+    const {getIssues, postIssue} = useIssueService()
     const [issues, setIssues] = useState()
     const [formData, setFormData] = useState({
         title: '',
@@ -21,18 +22,22 @@ function Issues({targetid, status, targetType}) {
     })
     const [statusFilter, setStatusFilter] = useState('pending')
 
+    const limit = 7
+    const [page, setPage] = useState(0)
+    const [count, setCount] = useState('')
+
     const {title, body} = formData
 
     useEffect(() => {
         fetchIssues()
-    }, [statusFilter])
+    }, [statusFilter, page])
 
     const fetchIssues = () => {
-        if(targetid){
-            getIssues(targetid, statusFilter).then(data => setIssues(data))
-        } else {
-            getAllIssues(status).then(data => setIssues(data))
-        }
+        getIssues(targetid, targetType, statusFilter, page, limit)
+        .then(data => {
+            setIssues(data.issues)
+            setCount(data.count)
+        })
     }
 
     const onChange = (e) => {
@@ -45,10 +50,10 @@ function Issues({targetid, status, targetType}) {
     const onSubmit = (e) => {   
         e.preventDefault()
         postIssue(targetid, formData, targetType)
-        .then(() => getIssues(targetid, 'pending'))
-        .then(data => {
-            setStatusFilter('pending')
-            setIssues(data)
+        .then(() => {
+            statusFilter!=='pending' ?
+            setStatusFilter('pending') : 
+            fetchIssues()
         })
         .then(() => setFormData({title: '', body: ''}))
     }
@@ -76,6 +81,9 @@ function Issues({targetid, status, targetType}) {
                 ${statusFilter==='closed' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
             `}>Closed</button>
 
+        </div>
+        <div className={CommentsCSS.pageButtons}>
+            {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => {setPage(i)}}>{i+1}</button>)}
         </div>
         {issues?.map((issue) => (
             <Issue issue={issue}/>

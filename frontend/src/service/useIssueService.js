@@ -5,31 +5,14 @@ const useIssueService = () => {
     const API_URL = 'http://localhost:5000/api/issues/'
     const {addAlert} = useContext(AlertContext)
 
-    const getIssues = async (targetid, status, page, limit) => {
+    const getIssues = async (targetid, targetType, status, page, limit) => {
+        !targetid && (targetid='')
+        !targetType && (targetType='')
+        !status && (status='')
         !page && (page=0)
         !limit && (limit=10)
         return new Promise(resolve => (
-            fetch(API_URL + targetid + '?status=' + status + '&page=' + page + '&limit=' + limit)
-            .then(res => res.json())
-            .then((data) => {
-                if(data.errorMessage){
-                    throw new Error(data.errorMessage)
-                }
-                resolve(data)
-            })
-            .catch((error) => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
-        ))
-    }
-
-    const getAllIssues = async (targetType, status, page, limit) => {
-        !page && (page=0)
-        !limit && (limit=10)
-        if(!status)(status='')
-        return new Promise(resolve => (
-            fetch(API_URL + '?status=' + status + '&targetType=' + targetType + '&page=' + page + '&limit=' + limit)
+            fetch(API_URL + '?targetid=' + targetid + '&status=' + status + '&targetType=' + targetType + '&page=' + page + '&limit=' + limit)
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){
@@ -46,7 +29,7 @@ const useIssueService = () => {
 
     const getIssue = async (issueid) => {
         return new Promise(resolve => {
-            fetch(API_URL + 'singleissue/' + issueid)
+            fetch(API_URL + issueid)
             .then(res => res.json())
             .then(data => {
                 if(data.errorMessage){
@@ -60,8 +43,6 @@ const useIssueService = () => {
             })
         })
     }
-
-    
 
     const postIssue = async (targetid, formData, targetType) => {
         const {title, body} = formData
@@ -120,7 +101,7 @@ const useIssueService = () => {
         ))
     }
 
-    return {getIssues, getIssue, getAllIssues, postIssue, changeStatus}
+    return {getIssues, getIssue, postIssue, changeStatus}
 }
 
 export default useIssueService

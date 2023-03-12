@@ -9,17 +9,25 @@ import useIssueService from '../../service/useIssueService'
 
 //css
 import IssuePageCSS from './styles/IssuePage.module.css'
+import CommentsCSS from '../assets/styles/Comments.module.css'
 
 function IssuePage() {
-  const {getAllIssues} = useIssueService()
+  const {getIssues} = useIssueService()
   const [issues, setIssues] = useState()
   const [tab, setTab] = useState('match')
   const [statusFilter, setStatusFilter] = useState('')
 
+  const limit = 5
+  const [page, setPage] = useState(0)
+  const [count, setCount] = useState('')
+
   useEffect(() => {
-    getAllIssues(tab, statusFilter)
-    .then(data => {setIssues(data)})
-  }, [tab, statusFilter])
+    getIssues(undefined, tab, statusFilter, page, limit)
+    .then(data => {
+      setIssues(data.issues)
+      setCount(data.count)
+    })
+  }, [tab, statusFilter, page])
 
   return (
     <div className={IssuePageCSS.parent}>
@@ -56,10 +64,17 @@ function IssuePage() {
         `}>Closed</button>
 
       </div>
+
+      <div className={CommentsCSS.pageButtons}>
+        {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => {setPage(i)}}>{i+1}</button>)}
+      </div>
+
       <div className={IssuePageCSS.issuesContainer}>
         {issues?.map((issue) => (<IssuePageComponent issue={issue} key={issue._id}/>))}
         {!issues && <div>No {tab} issues currently</div>}
       </div>
+
+      <br />
       
     </div>
   )

@@ -1,41 +1,57 @@
 const asyncHandler = require('express-async-handler')
 const Issue = require('../models/issueModel')
 const User = require('../models/userModel')
+const ObjectId = require('mongodb').ObjectId
 
 const getIssues = asyncHandler(async (req, res) => {
-    let issues
-    if(req.query.status){
-        issues = await Issue.find({target: req.params.targetid, status: req.query.status})
-        .skip(req.query.page*req.query.limit).limit(req.query.limit)
+    req.query.targetid && (req.query.targetid = ObjectId(req.query.targetid))
+    var skip, limit, find
+    find = {}
+    if(!req.query.limit){limit = 10} 
+    else {limit = parseInt(req.query.limit)}
+    if(!req.query.page){skip = 0} 
+    else {skip = parseInt(req.query.page*limit)}
+
+    if(req.query.targetid && req.query.status){
+        find = {"target": req.query.targetid, status: req.query.status}
+    } else if(req.query.targetid){
+        find = {"target": req.query.targetid}
+    } else if(req.query.status && req.query.targetType){
+        find = {"status": req.query.status, "targetType": req.query.targetType}
+    } else if (req.query.status){
+        find = {"status": req.query.status}
+    } else if (req.query.targetType){
+        find = {"targetType": req.query.targetType}
     } else {
-        issues = await Issue.find({target: req.params.targetid})
-        .skip(req.query.page*req.query.limit).limit(req.query.limit)
+        find = {}
+    }
+
+    const pipeline = [
+        {"$match": find},
+        {"$facet": {
+            "issues": [
+                { "$skip": skip },
+                { "$limit": limit }
+            ],
+            "count": [
+                { "$count": "count" }
+            ]
+        }}
+    ]
+
+    const issuesQuery = await Issue.aggregate(pipeline)
+
+    const data = {
+        "issues": issuesQuery[0].issues,
+        "count": issuesQuery[0].count[0]?.count
     }
     
-    res.status(200).json(issues)
+    res.status(200).json(data)
 })
 
 const getIssue = asyncHandler(async (req, res) => {
     const issue = await Issue.findById(req.params.issueid)
     res.status(200).json(issue)
-})
-
-const getAllIssues = asyncHandler(async (req, res) => {
-    let issues
-    if(req.query.status && req.query.targetType){
-        issues = await Issue.find({status: req.query.status, targetType: req.query.targetType})
-        .skip(req.query.page*req.query.limit).limit(req.query.limit)
-    } else if (req.query.status){
-        issues = await Issue.find({status: req.query.status})
-        .skip(req.query.page*req.query.limit).limit(req.query.limit)
-    } else if (req.query.targetType){
-        issues = await Issue.find({targetType: req.query.targetType})
-        .skip(req.query.page*req.query.limit).limit(req.query.limit)
-    }  else {
-        issues = await Issue.find({})
-        .skip(req.query.page*req.query.limit).limit(req.query.limit)
-    }
-    res.status(200).json(issues)
 })
 
 const postIssue = asyncHandler(async (req, res) => {
@@ -66,7 +82,6 @@ const deleteIssue = asyncHandler(async (req, res) => {
 module.exports = {
     getIssues, 
     getIssue,
-    getAllIssues,
     postIssue, 
     changeIssueStatus, 
     deleteIssue
