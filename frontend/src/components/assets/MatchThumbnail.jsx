@@ -9,12 +9,12 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import MatchThumbnailCSS from './styles/MatchThumbnail.module.css'
 
 
-function MatchResults({match, page}) {
+function MatchThumbnail({match, page, recyclebin}) {
   const hero1url = window.location.origin + `/images/${encodeURI(match.player1hero)}.jpg`
   const hero2url = window.location.origin + `/images/${encodeURI(match.player2hero)}.jpg`
 
   return (
-    <Link to={'/matches/' + match._id} className={`
+    <Link to={'/matches/' + match._id + `${recyclebin ? '?recyclebin=true':''}`} className={`
     ${MatchThumbnailCSS.match} 
     ${!page && MatchThumbnailCSS.default}
     ${page==='issue' && MatchThumbnailCSS.issuePage}
@@ -67,4 +67,4 @@ function MatchResults({match, page}) {
     </Link>
   )
 }
-export default MatchResults
+export default MatchThumbnail

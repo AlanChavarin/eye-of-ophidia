@@ -20,13 +20,15 @@ function SearchResults() {
     const text = searchParams.get('text')
     const hero1 =  searchParams.get('hero1')
     const hero2 =  searchParams.get('hero2')
+    let recyclebin =  searchParams.get('recyclebin')
+    !recyclebin && (recyclebin=false)
 
     const limit = 30
     const [page, setPage] = useState(0)
     const [count, setCount] = useState('')
 
     useEffect(() => {
-      getMatches(text, hero1, hero2, page, limit)
+      getMatches(text, hero1, hero2, page, limit, recyclebin)
       .then(data => {
         setMatches(data.matches)
         setCount(data.count)
@@ -39,7 +41,7 @@ function SearchResults() {
       
       <div className={SearchResultsCSS.matchThumbnails}>
         {matches?.map((match) => (
-          <MatchThumbnail key={match._id} match={match}/>
+          <MatchThumbnail key={match._id} match={match} recyclebin={recyclebin}/>
         ))}  
       </div> 
 

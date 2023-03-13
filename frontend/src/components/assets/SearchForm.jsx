@@ -1,6 +1,7 @@
 //react
-import {useState} from 'react'
+import {useState, useContext} from 'react'
 import {useNavigate} from 'react-router-dom'
+import UserContext from '../../context/UserContext'
 
 //assets
 import HeroSelect from './HeroSelect'
@@ -13,14 +14,16 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import SearchFormCSS from './styles/SearchForm.module.css'
 
 function SearchForm({page}) {
+    const {userData} = useContext(UserContext)
 
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
         text: "",
         hero1: "",
-        hero2: ""
+        hero2: "",
+        reyclebin: false,
     })
-    const {text, hero1, hero2} = formData
+    const {text, hero1, hero2, recyclebin} = formData
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -29,10 +32,16 @@ function SearchForm({page}) {
         }))
     }
 
+    const onChangeChecked = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.checked
+        }))
+    }
+
     const onSubmit = (e) => {
         e.preventDefault()
-        navigate(`/${page}/?text=` + text + `${(page==='matches') ? ('&hero1=' + hero1 + '&hero2=' + hero2) : ''}`)
-        //'&hero1=' + hero1 + '&hero2=' + hero2
+        navigate(`/${page}/?text=` + text + `${(page==='matches') ? ('&hero1=' + hero1 + '&hero2=' + hero2) : ''}` + `${recyclebin ? '&recyclebin=true' : ''}`)
     }
 
     return (
@@ -42,7 +51,6 @@ function SearchForm({page}) {
                     <button className={SearchFormCSS.searchButton}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
                     <input className={SearchFormCSS.searchInput} type='text' name='text' value={text} onChange={onChange} placeholder={`Search for ${page}`}/>
                 </div>
-
                 {(page==='matches') && <div className={SearchFormCSS.hero}>
                     <div className={SearchFormCSS.container}>   
                         <HeroSelect name='hero1' onChange={onChange} value={hero1}/>
@@ -52,7 +60,11 @@ function SearchForm({page}) {
                         <HeroSelect name='hero2' onChange={onChange} value={hero2}/>
                     </div>
                 </div>}
-                
+
+                {userData?.privilege==='admin' && <div className={SearchFormCSS.container} style={{flexDirection: 'row'}}>
+                    <label>Recyclebin</label>
+                    <input type="checkbox" name='recyclebin' onChange={onChangeChecked} value={recyclebin}/>
+                </div>}
                 
             </form>
         </div>

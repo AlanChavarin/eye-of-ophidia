@@ -15,7 +15,7 @@ import CommentsCSS from '../assets/styles/Comments.module.css'
 
 function Events() {
   const {getEvents} = useEventService()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const [events, setEvents] = useState()
 
   const limit = 10
@@ -23,9 +23,11 @@ function Events() {
   const [count, setCount] = useState('')
 
   const text = searchParams.get('text')
+  let recyclebin = searchParams.get('recyclebin')
+  !recyclebin && (recyclebin=false)
 
   useEffect(() => {
-    getEvents(text, page, limit)
+    getEvents(text, page, limit, recyclebin)
     .then(data => {
       setEvents(data.events)
       setCount(data.count)
@@ -37,7 +39,7 @@ function Events() {
       <SearchForm page='events'/>
       <div className={EventsCSS.eventThumbnails}>
       {events?.map((event) => (
-        <EventThumbnail event={event} key={event._id} page='event'/>
+        <EventThumbnail event={event} key={event._id} page='event' recyclebin={recyclebin}/>
       ))}  
       </div>
       <div className={CommentsCSS.pageButtons}>

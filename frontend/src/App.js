@@ -18,7 +18,7 @@ import Event from "./components/pages/Event"
 import IssuePage from './components/pages/IssuePage'
 
 //tools
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Routes, useSearchParams} from 'react-router-dom'
 
 //context
 import {UserProvider} from './context/UserContext'
@@ -31,13 +31,24 @@ import UserAuth from "./auth/UserAuth"
 import Alert from "./components/assets/AlertsContainer"
 
 function App() {
+  const [searchParams] = useSearchParams()
+  let recyclebin = searchParams.get('recyclebin')
+  !recyclebin && (recyclebin=false)
+  const imageURL = window.location.origin + '/backgroundImages/recyclebin.PNG'
+
   return (
     <AlertProvider>
       <UserProvider>
         <div className="app-parent">
           <Navbar />
           <Sidebar />
-          <div className='app-container background-color'>
+          <div className={`app-container ${!recyclebin ? 'background-color' : ''}`} 
+          style={recyclebin ? {
+            backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url(${imageURL})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '100%',
+            backgroundPosition: '0% 50%',
+          }: {}}>
             <Routes>
               <Route path='/' element={<Home />}/>
               <Route path='/matches/' element={<SearchResults />}/>

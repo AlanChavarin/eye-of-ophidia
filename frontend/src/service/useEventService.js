@@ -5,9 +5,15 @@ const useEventService = () => {
     const API_URL = 'http://localhost:5000/api/events/'
     const {addAlert} = useContext(AlertContext)
 
-    const getEvent = async (eventid) => {
+    const getEvent = async (eventid, recyclebin) => {
         return new Promise(resolve => {
-            fetch(API_URL + eventid)
+            fetch(API_URL + `${recyclebin ? 'recyclebin/':''}` + eventid, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('user')
+                }
+            })
             .then(res => res.json())
             .then(data => {
                 if(data.errorMessage){
@@ -22,12 +28,18 @@ const useEventService = () => {
         })
     }
 
-    const getEvents = async (text, page, limit) => {
+    const getEvents = async (text, page, limit, recyclebin) => {
         !text && (text='')
         !page && (page=0)
         !limit && (limit=7)
         return new Promise(resolve => (
-            fetch(API_URL + '?text=' + text + '&page=' + page + '&limit=' + limit)
+            fetch(API_URL + `${recyclebin ? 'recyclebin/':''}` + '?text=' + text + '&page=' + page + '&limit=' + limit, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('user')
+                }
+            })
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){
@@ -102,7 +114,31 @@ const useEventService = () => {
         ))
     }
 
-    return {getEvent, getEvents, postEvent, deleteEvent}
+    const restoreEvent = async (eventid) => {
+        return new Promise(resolve => (
+            fetch(API_URL + 'recyclebin/' + eventid, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('user')
+                }
+            })
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                addAlert(`${data.name} event restored!`, 'success')
+                resolve(data)
+            })
+            .catch((error) => {
+                console.error(error.message)
+                addAlert(error.message, 'error')
+            })
+        ))
+    }
+
+    return {getEvent, getEvents, postEvent, deleteEvent, restoreEvent}
 }
 
 export default useEventService

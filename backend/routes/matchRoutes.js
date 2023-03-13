@@ -11,7 +11,7 @@ const recycleBin = asyncHandler(async (req, res, next) => {
 
 router.get('/recyclebin', protect, protectHelper, recycleBin, getMatches)
 
-router.get('/recyclebin/:id', protect, protectHelper, recycleBin, getMatches)
+router.get('/recyclebin/:id', protect, protectHelper, recycleBin, getMatch)
 
 router.put('/recyclebin/:id', protect, protectHelper, restoreMatch)
 

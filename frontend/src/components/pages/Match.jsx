@@ -1,5 +1,5 @@
 //react
-import {useParams, Link} from 'react-router-dom'
+import {useParams, Link, useSearchParams, useNavigate} from 'react-router-dom'
 import { useEffect, useState, useContext } from 'react'
 
 //component imports
@@ -22,14 +22,18 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import MatchCSS from './styles/Match.module.css'
 
 function Match() {
-    const {getMatch} = useMatchService()
+    const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const {getMatch, restoreMatch} = useMatchService()
     const {matchid} = useParams()
     const [match, setMatch] = useState()
     const [tab, setTab] = useState('details')
     const {userData} = useContext(UserContext)
+    let recyclebin =  searchParams.get('recyclebin')
+    !recyclebin && (recyclebin=false)
 
     useEffect(() => {
-      getMatch(matchid)
+      getMatch(matchid, recyclebin)
       .then(data => setMatch(data))
     }, [])
 
@@ -39,6 +43,13 @@ function Match() {
 
     const onClick = (e) => {
       setTab(e.target.value)
+    }
+
+    const restore = () => {
+      if(recyclebin){
+        restoreMatch(matchid)
+        navigate(`/matches/${matchid}`)
+      }
     }
 
   return (
@@ -54,11 +65,15 @@ function Match() {
 
           <div className={MatchCSS.feedbackContainer}>
             <div className={MatchCSS.containerTab}> 
+            {!recyclebin ? <>
               <button value='details' onClick={onClick} style={{backgroundColor: (tab==='details') && '#1446A0', color: (tab==='details') && 'white'}}>Details</button>
               <button value='comments' onClick={onClick} style={{backgroundColor: (tab==='comments') && '#1446A0', color: (tab==='comments') && 'white'}}>Comments</button>
               <button value='issues' onClick={onClick} style={{backgroundColor: (tab==='issues') && '#1446A0', color: (tab==='issues') && 'white'}}>Issues</button>
               <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
               {(userData.name) && <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
+            </> : <button onClick={restore} className={MatchCSS.restoreButton}>Restore Match</button>}
+              
+              
             </div>
             
             {tab==='comments' && <Comments matchid={matchid}/>}

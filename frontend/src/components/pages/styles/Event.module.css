@@ -105,6 +105,15 @@
     background-color: rgb(156, 155, 155)
 }
 
+.restoreButton{
+    background-color: #db3c30;
+    color: white;
+}
+
+.restoreButton:hover{
+    background-color: #b13027;
+}
+
 /* .issueButton{
     position: absolute;
     right: 50px;

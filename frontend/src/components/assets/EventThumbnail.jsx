@@ -1,13 +1,13 @@
 import EventThumbnailCSS from './styles/EventThumbnail.module.css'
 import {Link} from 'react-router-dom'
 
-function EventThumbnail({event, page, details}) {
+function EventThumbnail({event, page, details, recyclebin}) {
 
   const num = event.startDate.substring(5, 7)
   const backgroundImage = window.location.origin + `/backgroundImages/${num}.jpg`
 
   return (
-    <Link to={`/events/${event._id}`} className={`
+    <Link to={`/events/${event._id}` + `${recyclebin ? '?recyclebin=true':''}`} className={`
     ${EventThumbnailCSS.container} 
     ${(page==='event') && EventThumbnailCSS.forEventsPage} 
     ${(page==='match') && EventThumbnailCSS.forMatchPage}
