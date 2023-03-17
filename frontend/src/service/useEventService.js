@@ -28,12 +28,12 @@ const useEventService = () => {
         })
     }
 
-    const getEvents = async (text, page, limit, recyclebin) => {
+    const getEvents = async (text, page, limit, order, recyclebin) => {
         !text && (text='')
         !page && (page=0)
         !limit && (limit=7)
         return new Promise(resolve => (
-            fetch(API_URL + `${recyclebin ? 'recyclebin/':''}` + '?text=' + text + '&page=' + page + '&limit=' + limit, {
+            fetch(API_URL + `${recyclebin ? 'recyclebin/':''}` + '?text=' + text + '&page=' + page + '&limit=' + limit + '&order=' + order, {
                 method: 'GET',
                 headers: {
                     'Content-type': 'application/json',

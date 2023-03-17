@@ -1,0 +1,55 @@
+.dropdownContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dropdownButton{
+    width: 100%;
+    position: relative;
+    
+    background-color: lightgray;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+
+    text-decoration: none;
+    text-shadow: none;
+    font-weight: 550;
+    font-size: small;
+
+    box-shadow: 2px 2px 2px black;
+
+    align-self: center;
+
+    cursor: pointer;
+}
+
+.dropdownButton:hover{
+    background-color: rgb(190, 190, 190);
+}
+
+.icon{
+    position: absolute;
+    right: 10px;
+}
+
+.dropdown{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    margin: 10px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid lightgray;
+    z-index: 1;
+    position: relative;
+    border-radius: 10px;
+}
+
+.edit{
+    background-color: pink;
+    border-radius: 3px;
+}

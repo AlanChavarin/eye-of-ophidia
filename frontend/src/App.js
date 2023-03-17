@@ -34,7 +34,6 @@ function App() {
   const [searchParams] = useSearchParams()
   let recyclebin = searchParams.get('recyclebin')
   !recyclebin && (recyclebin=false)
-  const imageURL = window.location.origin + '/backgroundImages/recyclebin.PNG'
 
   return (
     <AlertProvider>
@@ -44,10 +43,7 @@ function App() {
           <Sidebar />
           <div className={`app-container ${!recyclebin ? 'background-color' : ''}`} 
           style={recyclebin ? {
-            backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url(${imageURL})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: '100%',
-            backgroundPosition: '0% 50%',
+            backgroundColor: '#a6acde'
           }: {}}>
             <Routes>
               <Route path='/' element={<Home />}/>

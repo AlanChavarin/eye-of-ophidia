@@ -25,14 +25,15 @@ function Events() {
   const text = searchParams.get('text')
   let recyclebin = searchParams.get('recyclebin')
   !recyclebin && (recyclebin=false)
+  const order = searchParams.get('order')
 
   useEffect(() => {
-    getEvents(text, page, limit, recyclebin)
+    getEvents(text, page, limit, order, recyclebin)
     .then(data => {
       setEvents(data.events)
       setCount(data.count)
     })
-  }, [searchParams, page])
+  }, [searchParams, page, order])
 
   return (
     <div className={EventsCSS.parent}>

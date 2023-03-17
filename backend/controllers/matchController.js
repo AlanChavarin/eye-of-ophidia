@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const Match = require('../models/matchModel')
 const Event = require('../models/eventModel')
+const Name = require('../models/nameModel')
 const {postMatchEdit} = require('./matchEditHistoryController') 
 const ObjectId = require('mongodb').ObjectId
 
@@ -108,7 +109,7 @@ const postMatch = asyncHandler(async (req, res) => {
     if(top8 === 'true'){
         delete swissRound
     } else {
-        top8Round='None'
+        req.body.top8Round='None'
     }
     const match = await Match.create({
         player1name: player1name,
@@ -131,6 +132,12 @@ const postMatch = asyncHandler(async (req, res) => {
         deleted: false
     })
     postMatchEdit(match, req.user._id)
+    if(!await Name.exists({name: player1name})){
+        Name.create({name: player1name})
+    } 
+    if(!await Name.exists({name: player2name})){
+        Name.create({name: player2name})
+    } 
     res.status(200).json(match)
 })
 

@@ -13,12 +13,15 @@ const getEvent = asyncHandler(async (req, res) => {
 })
 
 const getEvents = asyncHandler(async (req, res) => {
-    var skip, limit, find
+    var skip, limit, find, order
     if(!req.query.limit){limit = 10} 
     else {limit = parseInt(req.query.limit)}
     if(!req.query.page){skip = 0} 
     else {skip = parseInt(req.query.page*limit)}
     if(!req.recyclebin){req.recyclebin = false}
+
+    order = parseInt(req.query.order)
+    !(order === 1 || order ===-1) && (order = 1)
 
     if(req.query.text){
         find = {"$text": {"$search": req.query.text},
@@ -32,7 +35,8 @@ const getEvents = asyncHandler(async (req, res) => {
         { "$facet": {
             "events": [
                 { "$skip": skip },
-                { "$limit": limit }
+                { "$limit": limit },
+                {"$sort": {"startDate": order}}
             ],
             "count": [
                 { "$count": "count" }

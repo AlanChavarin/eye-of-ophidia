@@ -6,9 +6,9 @@ const useEditHistoryService = () => {
     const API_URL = 'http://localhost:5000/api/matchedithistory/history/'
     const {addAlert} = useContext(AlertContext)
 
-    const getMatchEditHistory = async (matchid) => {
+    const getMatchEditHistory = async (matchid, page, limit) => {
         return new Promise(resolve => (
-            fetch(API_URL + matchid)
+            fetch(API_URL + matchid + '?page=' + page + '&limit=' + limit)
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){

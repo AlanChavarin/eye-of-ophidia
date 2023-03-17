@@ -58,6 +58,9 @@ function Issue({issue}) {
                     </div>
                 </>)}
             </div>
+            <div style={{fontSize: 'smaller'}}>
+                Created at {issue.createdDate.slice(0, 10)}
+            </div>
         </>}
     </div>
   )

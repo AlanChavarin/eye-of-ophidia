@@ -5,12 +5,15 @@ const ObjectId = require('mongodb').ObjectId
 
 const getIssues = asyncHandler(async (req, res) => {
     req.query.targetid && (req.query.targetid = ObjectId(req.query.targetid))
-    var skip, limit, find
+    var skip, limit, find, order
     find = {}
     if(!req.query.limit){limit = 10} 
     else {limit = parseInt(req.query.limit)}
     if(!req.query.page){skip = 0} 
     else {skip = parseInt(req.query.page*limit)}
+    order = parseInt(req.query.order)
+    !(order==+1 || order===-1) && (order=1)
+
 
     if(req.query.targetid && req.query.status){
         find = {"target": req.query.targetid, status: req.query.status}
@@ -31,7 +34,8 @@ const getIssues = asyncHandler(async (req, res) => {
         {"$facet": {
             "issues": [
                 { "$skip": skip },
-                { "$limit": limit }
+                { "$limit": limit },
+                {"$sort": {"createdDate": order}}
             ],
             "count": [
                 { "$count": "count" }
@@ -40,7 +44,6 @@ const getIssues = asyncHandler(async (req, res) => {
     ]
 
     const issuesQuery = await Issue.aggregate(pipeline)
-
     const data = {
         "issues": issuesQuery[0].issues,
         "count": issuesQuery[0].count[0]?.count

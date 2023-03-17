@@ -5,14 +5,14 @@ const useIssueService = () => {
     const API_URL = 'http://localhost:5000/api/issues/'
     const {addAlert} = useContext(AlertContext)
 
-    const getIssues = async (targetid, targetType, status, page, limit) => {
+    const getIssues = async (targetid, targetType, status, page, limit, order) => {
         !targetid && (targetid='')
         !targetType && (targetType='')
         !status && (status='')
         !page && (page=0)
         !limit && (limit=10)
         return new Promise(resolve => (
-            fetch(API_URL + '?targetid=' + targetid + '&status=' + status + '&targetType=' + targetType + '&page=' + page + '&limit=' + limit)
+            fetch(API_URL + '?targetid=' + targetid + '&status=' + status + '&targetType=' + targetType + '&page=' + page + '&limit=' + limit + '&order=' + order)
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){

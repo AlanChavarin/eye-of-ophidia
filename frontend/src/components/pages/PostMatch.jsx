@@ -10,6 +10,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import Popup from '../assets/Popup'
 import SearchableDropdown from '../assets/SearchableDropdown'
 import HeroSelect from '../assets/HeroSelect'
+import NameSelect from '../assets/NameSelect'
 
 //service
 import useEventService from '../../service/useEventService'
@@ -64,7 +65,7 @@ function PostMatch() {
     getEvents()
     .then(data => {
       let eventNames = []
-      data?.map((event) => eventNames.push(event.name))
+      data.events?.map((event) => eventNames.push(event.name))
       setEventData(eventNames)
     })
   }, [])
@@ -113,9 +114,7 @@ function PostMatch() {
   const onSubmit = (e) => {
     e.preventDefault()
     postMatch(formData, matchid)
-    .then(match => {
-      navigate(`/matches/${match._id}`)
-    })
+    .then(match => navigate(`/matches/${match._id}`))
   }
 
   const onDelete = (e) => {
@@ -197,7 +196,7 @@ function PostMatch() {
         </div>
         <div className={PostMatchCSS.container}>
           <label>Player 1 Full Name <span style={{color: 'red'}}>*</span></label>
-          <input type="text" name='player1name' value={player1name} onChange={onChange} required className={PostMatchCSS.input}/>
+          <NameSelect name='player1name' value={player1name} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
         <div className={PostMatchCSS.container}>
           <label>Player 1 Deck Link <span style={{color: 'red'}}>*</span></label>
@@ -210,7 +209,7 @@ function PostMatch() {
         </div>
         <div className={PostMatchCSS.container}>
           <label>Player 2 Full Name <span style={{color: 'red'}}>*</span></label>
-          <input type="text" name='player2name' value={player2name} onChange={onChange} required className={PostMatchCSS.input}/>
+          <NameSelect name='player2name' value={player2name} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
         <div className={PostMatchCSS.container}>
           <label>Player 2 Deck Link <span style={{color: 'red'}}>*</span></label>

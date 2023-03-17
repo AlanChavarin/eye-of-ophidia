@@ -32,6 +32,7 @@ app.use('/api/issues', require('./routes/issueRoutes'))
 app.use('/api/comments', require('./routes/commentRoutes'))
 app.use('/api/matchedithistory', require('./routes/matchEditHistoryRoutes'))
 app.use('/api/events', require('./routes/eventRoutes'))
+app.use('/api/names', require('./routes/nameRoutes'))
 
 app.get('/api/test/:var1', async(req, res) => {
     res.status(200).json({message: req.params.var1})

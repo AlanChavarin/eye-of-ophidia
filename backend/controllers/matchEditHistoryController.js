@@ -1,10 +1,49 @@
 const asyncHandler = require('express-async-handler')
-const { format } = require('node:path/win32')
 const MatchEditHistory = require('../models/matchEditHistoryModel')
+const ObjectId = require('mongodb').ObjectId
 
 const getMatchEditHistory = asyncHandler(async (req, res) => {
-    const matchEditHistory = await MatchEditHistory.find({parentMatch: req.params.matchid})
-    res.status(200).json(matchEditHistory)
+
+    var skip, limit, find
+    if(!req.query.limit){limit = 10} 
+    else {limit = parseInt(req.query.limit)}
+    if(!req.query.page){skip = 0} 
+    else {skip = parseInt(req.query.page*limit)}
+
+    find = {"parentMatch": ObjectId(req.params.matchid)}
+
+    const pipeline = [
+        {"$match": find},
+        { "$facet": {
+            "histories": [
+                { "$skip": skip },
+                { "$limit": limit },
+                { "$sort": {"createdAt": -1}},
+                { "$lookup": {
+                    from: "users",
+                    localField: "editor",
+                    foreignField: "_id",
+                    as: "ownerDetails"
+                }}
+            ],
+            "count": [
+                { "$count": "count" }
+            ]
+        }}
+    ]
+
+    const matchEditHistoryQuery = await MatchEditHistory.aggregate(pipeline)
+
+    const data = {
+        "matchEditHistories": matchEditHistoryQuery[0].histories,
+        "count": matchEditHistoryQuery[0].count[0]?.count
+    }
+
+    data.matchEditHistories.map(editHistory => {
+        editHistory.ownerDetails = editHistory.ownerDetails[0]
+    })
+
+    res.status(200).json(data)
 })
 
 const getMatchEdit = asyncHandler(async (req, res) => {

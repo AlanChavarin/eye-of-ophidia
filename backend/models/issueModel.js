@@ -26,6 +26,7 @@ const issueSchema = mongoose.Schema({
         required: true,
         enum: ['pending', 'fixed', 'closed']
     }
-})
+}, 
+{timestamps: { createdAt: 'createdDate'}})
 
 module.exports = mongoose.model('Issue', issueSchema)

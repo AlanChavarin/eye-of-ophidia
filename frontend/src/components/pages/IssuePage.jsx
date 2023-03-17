@@ -15,19 +15,20 @@ function IssuePage() {
   const {getIssues} = useIssueService()
   const [issues, setIssues] = useState()
   const [tab, setTab] = useState('match')
-  const [statusFilter, setStatusFilter] = useState('')
+  const [statusFilter, setStatusFilter] = useState('pending')
+  const [order, setOrder] = useState(1)
 
-  const limit = 5
+  const limit = 10
   const [page, setPage] = useState(0)
   const [count, setCount] = useState('')
 
   useEffect(() => {
-    getIssues(undefined, tab, statusFilter, page, limit)
+    getIssues(undefined, tab, statusFilter, page, limit, order)
     .then(data => {
       setIssues(data.issues)
       setCount(data.count)
     })
-  }, [tab, statusFilter, page])
+  }, [tab, statusFilter, page, order])
 
   return (
     <div className={IssuePageCSS.parent}>
@@ -62,6 +63,19 @@ function IssuePage() {
           ${IssuePageCSS.button}
           ${statusFilter==='closed' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
         `}>Closed</button>
+
+      </div>
+
+      <div style={{margin: '10px'}} className={IssuePageCSS.buttonContainer}>
+        <button onClick={() => setOrder(1)} className={`
+          ${IssuePageCSS.button}
+          ${order===1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
+        `}>Newest</button>
+
+        <button onClick={() => setOrder(-1)} className={`
+          ${IssuePageCSS.button}
+          ${order===-1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
+        `}>Oldest</button>
 
       </div>
 

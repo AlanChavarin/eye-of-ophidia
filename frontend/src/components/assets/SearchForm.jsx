@@ -1,6 +1,6 @@
 //react
 import {useState, useContext} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useSearchParams} from 'react-router-dom'
 import UserContext from '../../context/UserContext'
 
 //assets
@@ -12,11 +12,15 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 
 //css
 import SearchFormCSS from './styles/SearchForm.module.css'
+import IssuePageCSS from '../pages/styles/IssuePage.module.css'
 
 function SearchForm({page}) {
     const {userData} = useContext(UserContext)
+    const [searchParams] = useSearchParams()
+    const [order, setOrder] = useState(0)
 
     const navigate = useNavigate()
+ 
     const [formData, setFormData] = useState({
         text: "",
         hero1: "",
@@ -41,9 +45,11 @@ function SearchForm({page}) {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        navigate(`/${page}/?text=` + text + `${(page==='matches') ? ('&hero1=' + hero1 + '&hero2=' + hero2) : ''}` + `${recyclebin ? '&recyclebin=true' : ''}`)
+        navigate(`/${page}/?text=` + text + 
+        `${(page==='matches') ? ('&hero1=' + hero1 + '&hero2=' + hero2) : ''}` + 
+        `${recyclebin ? '&recyclebin=true' : ''}` + 
+        `${order ? ('&order=' + order) : ''}`)
     }
-
     return (
         <div>
             <form className={SearchFormCSS.searchform} onSubmit={onSubmit}>
@@ -59,6 +65,15 @@ function SearchForm({page}) {
                     <div className={SearchFormCSS.container}>
                         <HeroSelect name='hero2' onChange={onChange} value={hero2}/>
                     </div>
+                </div>}
+
+                {page==='events' && <div className={IssuePageCSS.buttonContainer}>
+                    <button 
+                    onClick={(e) => {e.preventDefault(); setOrder(1)}}
+                    className={`${IssuePageCSS.button} ${order===1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}`}>Newest</button>
+                    <button 
+                    onClick={(e) => {e.preventDefault(); setOrder(-1)}}
+                    className={`${IssuePageCSS.button} ${order===-1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}`}>Oldest</button>
                 </div>}
 
                 {userData?.privilege==='admin' && <div className={SearchFormCSS.container} style={{flexDirection: 'row'}}>
