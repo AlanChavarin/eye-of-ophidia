@@ -23,7 +23,7 @@ import MatchCSS from './styles/Match.module.css'
 
 function Match() {
     const navigate = useNavigate()
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const {getMatch, restoreMatch} = useMatchService()
     const {matchid} = useParams()
     const [match, setMatch] = useState()
@@ -53,8 +53,7 @@ function Match() {
     }
 
   return (
-      <div className={MatchCSS.container}>
-
+      <div className={MatchCSS.container} >
         <div className={MatchCSS.videoFeedbackContainer}>
           <div className={MatchCSS.videoContainer}>
             {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
@@ -62,20 +61,18 @@ function Match() {
         </div>
         <div className={MatchCSS.detailsContainer}>
           {(match) && <>
-
           <div className={MatchCSS.feedbackContainer}>
             <div className={MatchCSS.containerTab}> 
-            {!recyclebin ? <>
-              <button value='details' onClick={onClick} style={{backgroundColor: (tab==='details') && '#1446A0', color: (tab==='details') && 'white'}}>Details</button>
-              <button value='comments' onClick={onClick} style={{backgroundColor: (tab==='comments') && '#1446A0', color: (tab==='comments') && 'white'}}>Comments</button>
-              <button value='issues' onClick={onClick} style={{backgroundColor: (tab==='issues') && '#1446A0', color: (tab==='issues') && 'white'}}>Issues</button>
-              <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
-              {(userData.name) && <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
-            </> : <button onClick={restore} className={MatchCSS.restoreButton}>Restore Match</button>}
-              
-              
+              {!recyclebin ? <>
+                <button value='details' onClick={onClick} style={{backgroundColor: (tab==='details') && '#1446A0', color: (tab==='details') && 'white'}}>Details</button>
+                <button value='comments' onClick={onClick} style={{backgroundColor: (tab==='comments') && '#1446A0', color: (tab==='comments') && 'white'}}>Comments</button>
+                <button value='issues' onClick={onClick} style={{backgroundColor: (tab==='issues') && '#1446A0', color: (tab==='issues') && 'white'}}>Issues</button>
+                <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
+                {(userData.name) && <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
+              </> : 
+              <button onClick={restore} className={MatchCSS.restoreButton}>Restore Match</button>
+              }
             </div>
-            
             {tab==='comments' && <Comments matchid={matchid}/>}
             {tab==='issues' && <Issues targetid={matchid} targetType='match'/>}
             {tab==='history' && <EditHistories matchid={matchid}/>}
@@ -114,3 +111,7 @@ export default Match
     <div>Description: {match.event.description}</div>
   </div>
 </div> */
+
+/* <button value='theater' onClick={() => setTheater(!theater)} style={{backgroundColor: theater && '#e24840', color: theater && 'white'}}>
+  <FontAwesomeIcon icon={faSquare} />
+</button> */

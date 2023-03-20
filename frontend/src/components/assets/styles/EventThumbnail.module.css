@@ -67,10 +67,9 @@ a{
         min-width: 450px;
         max-width: 500px;
     }
-
 }
 
-@media(orientation: portrait),(width < 1200px){
+@media(orientation: portrait),(width < 1300px){
     .forMatchPage{
         width: 83%;
         align-self: center;
