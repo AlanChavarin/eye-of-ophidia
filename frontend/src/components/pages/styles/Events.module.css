@@ -13,3 +13,10 @@
     width: 80vw;
     gap: 20px;
 }
+
+@media(width < 1030px){
+    .eventThumbnails{
+        width: 100%;
+    }
+}
+

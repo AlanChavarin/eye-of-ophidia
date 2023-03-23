@@ -76,9 +76,9 @@ function Comments({matchid}) {
       {comments?.map((comment) => (<>
         <div key={comment._id} className={CommentsCSS.comment}>
           {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={(e) => promptDelete(e, comment._id)}><FontAwesomeIcon icon={faTrash} /></button>) : <></>}
-          <img src={window.location.origin + `/profilePics/${comment.ownerDetails?.picture}.png`} className={CommentsCSS.img}/>
+          <img src={window.location.origin + `/profilePics/${comment.picture}.png`} className={CommentsCSS.img}/>
           <div>
-            <div className={CommentsCSS.commenter}>{comment.ownerDetails?.name}</div>
+            <div className={CommentsCSS.commenter}>{comment.name}</div>
             <div className={CommentsCSS.commentContainer}>
               <div className={CommentsCSS.commentBody}>{comment.body}</div>
             </div>

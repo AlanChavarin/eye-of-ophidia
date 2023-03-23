@@ -7,7 +7,6 @@ const nodemailer = require('nodemailer')
 
 const registerUser = asyncHandler(async (req, res) => {
     if(!req.body.name || !req.body.email || !req.body.password){
-        //console.log(req.body)
         res.status(400)
         throw new Error('Please add all fields')
     }
@@ -27,14 +26,26 @@ const registerUser = asyncHandler(async (req, res) => {
         picture: 'bauble',
         verified: false,
     })
-
-    sendEmail(jwt.sign(newlyCreatedUser._id.toJSON(), process.env.EMAIL_SECRET), newlyCreatedUser.email)
     
     res.status(200).json({
         name: newlyCreatedUser.name,
         email: newlyCreatedUser.email,
+        id: newlyCreatedUser._id
         //token: jwt.sign(newlyCreatedUser._id.toJSON(), process.env.JWT_SECRET),
     })
+})
+
+const resendVerificationEmail = asyncHandler(async (req, res) => {
+    if(!req.body.id || !req.body.email){
+        res.status(400)
+        throw new Error('id or email field empty')
+    }
+    if(!await User.findById(req.body.id) || !await User.find({email: req.body.email})){
+        res.status(400)
+        throw new Error('ID or email of account does not exist')
+    }
+    sendEmail(jwt.sign(req.body.id, process.env.EMAIL_SECRET), req.body.email)
+    res.status(200).json({message: 'success'})
 })
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -57,6 +68,9 @@ const verifyUser = asyncHandler(async (req, res) => {
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         try{
             const decodedUserId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.EMAIL_SECRET)
+            if(!await User.findById(decodedUserId)){
+                throw new Error('user cannot be found')
+            }
             await User.findByIdAndUpdate(decodedUserId, {verified: true})
             res.status(200).json({message: "email verified!"})
         } catch(error) {
@@ -99,11 +113,11 @@ const sendEmail = asyncHandler(async (token, email) => {
         },
       })
 
-    let info = await transporter.sendMail({
+    let info = transporter.sendMail({
         from: '"eye of ophidia" <eyeofophidia@zohomail.com>', 
         to: email,
         subject: "eyeofophidia.net email verification",
-        html: `<html><a href="localhost:3000/verify/${token}">localhost:3000/verify/${token}</a></html>`
+        html: `<html><a href="http://localhost:3000/verify/${token}">localhost:3000/verify/${token}</a></html>`
       })
 
     console.log("Message sent: %s", info.messageId)
@@ -131,6 +145,7 @@ const sendEmail = asyncHandler(async (token, email) => {
 
 module.exports = {
     registerUser,
+    resendVerificationEmail,
     loginUser,
     getMe,
     verifyUser,

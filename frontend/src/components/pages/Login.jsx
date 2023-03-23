@@ -11,7 +11,7 @@ import LoginCSS from './styles/Login.module.css'
 
 function Login() {
   const navigate = useNavigate()
-  const {postLogin, postRegistration} = useLoginService()
+  const {postLogin, postRegistration, resendVerificationEmail} = useLoginService()
   const {updateLoggedInUserData} = useContext(UserContext)
   const [registrationMode, setRegistrationMode] = useState(false)
   const [formData, setFormData] = useState({
@@ -20,6 +20,7 @@ function Login() {
     password: '',
     password2: ''
   })
+  const [resendVerificationEmailData, setResendVerificationEmailData] = useState()
 
   const {name, email, password, password2} = formData
 
@@ -33,14 +34,28 @@ function Login() {
     
   const onSubmit = async (e) => {
     e.preventDefault()
-    registrationMode ? 
-    await postRegistration(formData) : 
-    await postLogin(formData, updateLoggedInUserData)
-    navigate('/')
+    if(registrationMode){
+      postRegistration(formData)
+      .then(data => setResendVerificationEmailData(data))
+    } else {
+      await postLogin(formData, updateLoggedInUserData)
+      navigate('/')
+    }
   }
 
-  return (
+  const onClick = () => {
+    if(resendVerificationEmailData){
+      resendVerificationEmail(resendVerificationEmailData)
+    }
+  }
+
+  return (<div style={{display: 'flex', flexDirection: 'column'}}>
+    {resendVerificationEmailData && <button onClick={onClick} className={LoginCSS.resendButton}>
+      Resend verification email.  
+    </button>}
+
     <div className={LoginCSS.parent}>
+        
         <div className={LoginCSS.registrationModeSection}>
           <button onClick={() => setRegistrationMode(false)} className={`${LoginCSS.button} ${LoginCSS.buttonLogin} ${registrationMode ? LoginCSS.buttonUnselected : LoginCSS.buttonSelected}`}>Login</button>
           <button onClick={() => setRegistrationMode(true)} className={`${LoginCSS.button} ${LoginCSS.buttonRegister} ${registrationMode ? LoginCSS.buttonSelected : LoginCSS.buttonUnselected}`}>Register</button>
@@ -70,7 +85,7 @@ function Login() {
                 <input type='submit' value={`${registrationMode ? 'Register' : 'Login'}`} className={LoginCSS.submitButton}/>
             </div>
         </form>
-    </div>
+    </div></div>
   )
 }
 export default Login

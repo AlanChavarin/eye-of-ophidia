@@ -41,6 +41,8 @@ const getMatchEditHistory = asyncHandler(async (req, res) => {
 
     data.matchEditHistories.map(editHistory => {
         editHistory.ownerDetails = editHistory.ownerDetails[0]
+        editHistory.editorName = editHistory.ownerDetails.name
+        editHistory.ownerDetails = ''
     })
 
     res.status(200).json(data)

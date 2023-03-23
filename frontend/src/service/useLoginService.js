@@ -59,8 +59,8 @@ const useLoginService = () => {
                     if(data.errorMessage){
                         throw new Error(data.errorMessage)
                     }
-                    addAlert(`Registration as ${data.name} Successful!`)
-                    resolve(true)
+                    addAlert(`Verification email sent to ${data.email} Please verify your account!`, 'success')
+                    resolve(data)
                 })
                 .catch(error => {
                     console.error(error.message)
@@ -69,6 +69,34 @@ const useLoginService = () => {
             }
         })
             
+    }
+
+    const resendVerificationEmail = async (userData) => {
+        return new Promise(resolve => {
+            fetch(API_URL + 'resendverification', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: userData.email,
+                    id: userData.id
+                })
+            })
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                addAlert(`Verification email resent to ${userData.email} Please verify your account!`, 'success')
+                resolve(data)
+            })
+            .catch(error => {
+                console.error(error.message)
+                addAlert(error.message, 'error')
+            })
+            }
+        )
     }
 
     const putVerify = async (token) => {
@@ -84,8 +112,7 @@ const useLoginService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 } 
-                console.log(data.message)
-                addAlert(`Verification Successful!`)
+                addAlert(`Verification Successful!`, 'success')
                 resolve(true)
             })
             .catch(error => {
@@ -141,7 +168,7 @@ const useLoginService = () => {
     }
     
 
-    return {postLogin, postRegistration, putVerify, getMe, changepfp}
+    return {postLogin, postRegistration, resendVerificationEmail, putVerify, getMe, changepfp}
 }
 
 export default useLoginService

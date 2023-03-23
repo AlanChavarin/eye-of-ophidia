@@ -6,8 +6,10 @@
     width: 100%;
 }
 
-.eventContainer{
-    height: 25vh;
+.eventContainer{    
+    position: relative;
+
+    height: 270px;
     width: 95vw;
     min-height: 200px;
 
@@ -31,12 +33,9 @@
     text-decoration-line: none;
 
     margin: 10px;
-
-    position: relative;
 }
 
 .eventName{
-    font-size: 1.4em;
     text-align: center;
     background-color: rgba(0, 0, 0, .5);
     padding: 10px 0px 10px 0px;
@@ -49,6 +48,21 @@
 .div1{
     display: flex;
     justify-content: center;
+}
+
+@media(orientation: portrait), (width: 720px){
+    .eventContainer{
+        height: 330px;
+    }
+
+    .div1{
+        flex-direction: column;
+    }
+
+    .verticalLine{
+        height: 0%;
+        width: 60%;
+    }
 }
 
 .eventDetails{
@@ -67,6 +81,22 @@
     font-size: 1.2em;
 }
 
+@media(width < 610px){
+    .eventName{
+        font-size: 1.3em;
+    } 
+
+    .eventDetails > *{
+        font-size: 1em;
+    }
+    
+    .eventDescription > *{
+        font-size: 1em;
+    }
+}
+
+
+
 .verticalLine{
     height: 80%;
     border: 1px solid lightgrey;
@@ -83,8 +113,6 @@
 }
 
 .cornerItem{
-    position: absolute;
-
     background-color: lightgray;
     color: black;
     border: none;
@@ -103,6 +131,14 @@
 .cornerItem:hover{
     cursor: pointer;
     background-color: rgb(156, 155, 155)
+}
+
+.cornerContainer{
+    position: absolute;
+    display: flex;
+    gap: 10px;
+    right: 5px;
+    bottom: 5px;
 }
 
 .restoreButton{

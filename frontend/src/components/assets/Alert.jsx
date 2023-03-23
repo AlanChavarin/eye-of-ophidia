@@ -6,7 +6,7 @@ function Alerts({alert}) {
   const [deleted, setDeleted] = useState(false)
 
   useEffect(() => {
-    setTimeout(() => deleteAlert(alert.id), 10000)
+    setTimeout(() => deleteAlert(alert.id), 100000)
   }, [])
 
   const deleteAlert = () => {

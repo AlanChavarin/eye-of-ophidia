@@ -79,3 +79,14 @@
     outline: none;
     box-shadow: 0px 0px 5px #1446A0;
 }
+
+.resendButton{
+    margin-top: 5px;
+    background-color: #1446A0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+
+    margin: 10px;
+}

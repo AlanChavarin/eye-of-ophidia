@@ -1,7 +1,22 @@
+.parent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 .dropdownContainer{
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 80%;
+    max-width: 500px;
+}
+
+@media(width < 500px){
+    .dropdownContainer{
+        width: 90%;
+    }
 }
 
 .dropdownButton{

@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler')
 const Event = require('../models/eventModel')
 const Match = require('../models/matchModel')
+const {postEventEdit} = require('./eventEditHistoryController')
 
 const getEvent = asyncHandler(async (req, res) => {
     if(!req.recyclebin){req.recyclebin = false}
@@ -64,6 +65,7 @@ const postEvent = asyncHandler(async (req, res) => {
         description: req.body.description,
         deleted: false,
     })
+    postEventEdit(event, req.user._id)
     res.status(200).json(event)
 })
 
@@ -73,7 +75,7 @@ const updateEvent = asyncHandler(async (req, res) => {
         throw new Error('Event with that id does not exist or has been deleted')
     }
     const event = await Event.findOneAndUpdate({_id: req.params.eventid, deleted: false}, req.body, {runValidators: true, new: true})
-    //postEventEdit
+    postEventEdit(event, req.user._id)
     await Match.updateMany({'event._id': event._id}, {event: event}, {runValidators: true, new: true})
     res.status(200).json(event)
 })

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import EditHistoryCSS from './styles/EditHistory.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
@@ -22,23 +22,19 @@ function EditHistory({editHistory, previousHistory}) {
     }
     const type = (previousHistory ? 'Change' : 'First post')
 
-    useEffect(() => {
-      console.log(editHistory[a[2]])
-    }, [])
-
   return (
     <div>
       <button 
       className={`${EditHistoryCSS.dropdownButton}`} 
       onClick={onClick}>
-        {type} by {editHistory.ownerDetails?.name} at {editHistory.createdAt.slice(0,10)}
+        {type} by {editHistory.editorName} at {editHistory.createdAt.slice(0, 10)}
         <FontAwesomeIcon icon={dropdown ? faCaretDown : faCaretUp} className={EditHistoryCSS.icon} />
       </button>
       {dropdown && ( 
         <div className={EditHistoryCSS.dropdown}>
           <div>
             <div><b>{type} submitted at: </b>{editHistory.updatedAt.slice(0, 10)}</div>
-            <div><b>{type} submitted by: </b>{editHistory.ownerDetails?.name}</div>
+            <div><b>{type} submitted by: </b>{editHistory.editorName}</div>
           </div>
           <div>
             <div className={`${h(0)}`}><b>Player 1 Name: </b>{editHistory.player1name}</div>

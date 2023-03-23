@@ -75,23 +75,21 @@ function Match() {
             </div>
             {tab==='comments' && <Comments matchid={matchid}/>}
             {tab==='issues' && <Issues targetid={matchid} targetType='match'/>}
-            {tab==='history' && <EditHistories matchid={matchid}/>}
+            {tab==='history' && <EditHistories id={matchid} forPage='match'/>}
           </div>
 
           {tab==='details' && <>
+            <EventThumbnail event={match.event} page='match' details={`${(match.top8) ? (`${match?.top8Round}`) : `Swiss Round ${match?.swissRound}`}`}/>
 
-          <EventThumbnail event={match.event} page='match' details={`${(match.top8) ? (`${match?.top8Round}`) : `Swiss Round ${match?.swissRound}`}`}/>
+            <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player1hero)})`}}>
+              <div className={MatchCSS.playerName}>{match.player1name}</div>
+              <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a>
+            </div>
 
-          <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player1hero)})`}}>
-            <div className={MatchCSS.playerName}>{match.player1name}</div>
-            <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a>
-          </div>
-
-          <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player2hero)})`}}>
-            <div className={MatchCSS.playerName}>{match.player2name}</div>
-            <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> 
-          </div> 
-
+            <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player2hero)})`}}>
+              <div className={MatchCSS.playerName}>{match.player2name}</div>
+              <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> 
+            </div> 
           </>}
             </>}
           </div>

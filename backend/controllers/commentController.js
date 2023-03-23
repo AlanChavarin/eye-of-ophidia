@@ -37,6 +37,9 @@ const getComments = asyncHandler(async(req, res) => {
 
     data.comments.map(comment => {
         comment.ownerDetails = comment.ownerDetails[0]
+        comment.name = comment.ownerDetails.name
+        comment.picture = comment.ownerDetails.picture
+        comment.ownerDetails = ''
     })
 
     res.status(200).json(data)
