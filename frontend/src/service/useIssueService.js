@@ -1,11 +1,13 @@
-import {useContext} from 'react'
+import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useIssueService = () => {
     const API_URL = 'http://localhost:5000/api/issues/'
     const {addAlert} = useContext(AlertContext)
+    const [issueLoading, setLoading] = useState(false)
 
     const getIssues = async (targetid, targetType, status, page, limit, order) => {
+        setLoading(true)
         !targetid && (targetid='')
         !targetType && (targetType='')
         !status && (status='')
@@ -18,16 +20,15 @@ const useIssueService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(data)
             })
-            .catch((error) => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch((error) => err(error))
         ))
     }
 
     const getIssue = async (issueid) => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + issueid)
             .then(res => res.json())
@@ -37,14 +38,12 @@ const useIssueService = () => {
                 }
                 resolve(data)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         })
     }
 
     const postIssue = async (targetid, formData, targetType) => {
+        setLoading(true)
         const {title, body} = formData
         return new Promise(resolve => (
             fetch(API_URL + targetid, {
@@ -65,16 +64,15 @@ const useIssueService = () => {
                     throw new Error(data.errorMessage)
                 }
                 addAlert('Issue successfully posted!', 'success')
+                setLoading(false)
                 resolve(true)
             })
-            .catch((error) => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch((error) => err(error))
         ))
     }
 
     const changeStatus = async (issueid, status) => {
+        setLoading(true)
         return new Promise(resolve => (
             fetch(API_URL + issueid, {
                 method: 'PUT',
@@ -92,16 +90,20 @@ const useIssueService = () => {
                     throw new Error(data.errorMessage)
                 }
                 addAlert('Issue status successfully changed!', 'success')
+                setLoading(false)
                 resolve(true)
             })
-            .catch((error) => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch((error) => err(error))
         ))
     }
+    
+    const err = (error) => {
+        console.error(error.message)
+        addAlert(error.message, 'error')
+        setLoading(false)
+    }
 
-    return {getIssues, getIssue, postIssue, changeStatus}
+    return {issueLoading, getIssues, getIssue, postIssue, changeStatus}
 }
 
 export default useIssueService

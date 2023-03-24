@@ -16,9 +16,12 @@ import useCommentService from '../../service/useCommentService'
 import PopupCSS from '../assets/styles/Popup.module.css'
 import CommentsCSS from './styles/Comments.module.css'
 
+//loader
+import MoonLoader from 'react-spinners/MoonLoader'
+
 function Comments({matchid}) {
-  const {getComments, postComment, deleteComment} = useCommentService()
-  const [comments, setComments] = useState([])
+  const {commentLoading, getComments, postComment, deleteComment} = useCommentService()
+  const [comments, setComments] = useState()
   const [newCommentBody, setNewCommentBody] = useState('')
   const {userData} = useContext(UserContext)
   const [popup, setPopup] = useState(false)
@@ -29,6 +32,7 @@ function Comments({matchid}) {
   const [count, setCount] = useState('')
 
   useEffect(() => {
+    setComments()
     runGetComments()
   }, [page])
 
@@ -46,7 +50,7 @@ function Comments({matchid}) {
 
   const onSubmit = async (e) => {
     e.preventDefault()
-    await postComment(newCommentBody, matchid)
+    await postComment(newCommentBody, matchid) 
     runGetComments()
     setNewCommentBody('')
   }
@@ -73,6 +77,7 @@ function Comments({matchid}) {
       <div className={CommentsCSS.pageButtons}>
         {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => {setPage(i)}}>{i+1}</button>)}
       </div>
+      <MoonLoader size={60} loading={commentLoading} cssOverride={{alignSelf: 'center'}}/> 
       {comments?.map((comment) => (<>
         <div key={comment._id} className={CommentsCSS.comment}>
           {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={(e) => promptDelete(e, comment._id)}><FontAwesomeIcon icon={faTrash} /></button>) : <></>}

@@ -11,8 +11,11 @@ import useIssueService from '../../service/useIssueService'
 import IssuePageCSS from './styles/IssuePage.module.css'
 import CommentsCSS from '../assets/styles/Comments.module.css'
 
+//loader
+import MoonLoader from 'react-spinners/MoonLoader'
+
 function IssuePage() {
-  const {getIssues} = useIssueService()
+  const {issueLoading, getIssues} = useIssueService()
   const [issues, setIssues] = useState()
   const [tab, setTab] = useState('match')
   const [statusFilter, setStatusFilter] = useState('pending')
@@ -23,6 +26,7 @@ function IssuePage() {
   const [count, setCount] = useState('')
 
   useEffect(() => {
+    setIssues()
     getIssues(undefined, tab, statusFilter, page, limit, order)
     .then(data => {
       setIssues(data.issues)
@@ -78,6 +82,8 @@ function IssuePage() {
         `}>Oldest</button>
 
       </div>
+
+      <MoonLoader size={60} loading={issueLoading} cssOverride={{alignSelf: 'center'}}/> 
 
       <div className={CommentsCSS.pageButtons}>
         {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => {setPage(i)}}>{i+1}</button>)}

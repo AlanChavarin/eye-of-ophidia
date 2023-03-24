@@ -1,11 +1,13 @@
-import {useContext} from 'react'
+import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useHeroService = () => {
     const API_URL = 'http://localhost:5000/api/heroes/'
     const {addAlert} = useContext(AlertContext)
+    const [heroLoading, setLoading] = useState(false)
 
     const getHeroes = async () => {
+        setLoading(true)
         return new Promise(resolve => (
             fetch(API_URL)
             .then(res => res.json())
@@ -17,16 +19,15 @@ const useHeroService = () => {
                 data.map((hero) => {
                     heroNames.push(hero.name)
                 })
+                setLoading(false)
                 resolve(heroNames)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         ))
     }
 
     const getAdultHeroNames = async () => {
+        setLoading(true)
         return new Promise(resolve => (
             fetch(API_URL + 'adultnames')
             .then(res => res.json())
@@ -38,16 +39,15 @@ const useHeroService = () => {
                 data.map((hero) => {
                     heroNames.push(hero.name)
                 })
+                setLoading(false)
                 resolve(heroNames)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         ))
     }
 
     const getYoungHeroNames = async () => {
+        setLoading(true)
         return new Promise(resolve => (
             fetch(API_URL + 'youngnames')
             .then(res => res.json())
@@ -59,16 +59,15 @@ const useHeroService = () => {
                 data.map((hero) => {
                     heroNames.push(hero.name)
                 })
+                setLoading(false)
                 resolve(heroNames)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         ))
     }
 
     const getHero = async (heroid) => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + heroid)
             .then(res => res.json())
@@ -76,16 +75,20 @@ const useHeroService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(data)
             })
-            .catch((error) => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch((error) => err(error))
         })
     }
 
-    return {getHeroes, getHero, getAdultHeroNames, getYoungHeroNames}
+    const err = (error) => {
+        console.error(error.message)
+        addAlert(error.message, 'error')
+        setLoading(false)
+    }
+
+    return {heroLoading, getHeroes, getHero, getAdultHeroNames, getYoungHeroNames}
 }
 
 export default useHeroService

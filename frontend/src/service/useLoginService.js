@@ -1,11 +1,13 @@
-import {useContext} from 'react'
+import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useLoginService = () => {
     const API_URL = 'http://localhost:5000/api/users/'
     const {addAlert} = useContext(AlertContext)
+    const [loginLoading, setLoading] = useState(false)
 
     const postLogin = async (formData, updateLoggedInUserData) => {
+        setLoading(true)
         return new Promise(resolve => {
             const {email, password} = formData
             fetch(API_URL + 'login', {
@@ -26,17 +28,15 @@ const useLoginService = () => {
                 localStorage.setItem('user', data.token)
                 updateLoggedInUserData()
                 addAlert(`Login Successful!`, 'success')
+                setLoading(false)
                 resolve(true)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         })
-            
     }
 
     const postRegistration = async (formData) => {
+        setLoading(true)
         return new Promise(resolve => {
             const {name, email, password, password2} = formData
             //check if passwords match
@@ -60,18 +60,17 @@ const useLoginService = () => {
                         throw new Error(data.errorMessage)
                     }
                     addAlert(`Verification email sent to ${data.email} Please verify your account!`, 'success')
+                    setLoading(false)
                     resolve(data)
                 })
-                .catch(error => {
-                    console.error(error.message)
-                    addAlert(error.message, 'error')
-                })
+                .catch(error => err(error))
             }
         })
             
     }
 
     const resendVerificationEmail = async (userData) => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + 'resendverification', {
                 method: 'POST',
@@ -89,17 +88,16 @@ const useLoginService = () => {
                     throw new Error(data.errorMessage)
                 }
                 addAlert(`Verification email resent to ${userData.email} Please verify your account!`, 'success')
+                setLoading(false)
                 resolve(data)
             })
-            .catch(error => {
-                console.error(error.message)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
             }
         )
     }
 
     const putVerify = async (token) => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + 'verify', {
                 method: 'PUT',
@@ -113,17 +111,16 @@ const useLoginService = () => {
                     throw new Error(data.errorMessage)
                 } 
                 addAlert(`Verification Successful!`, 'success')
+                setLoading(false)
                 resolve(true)
             })
-            .catch(error => {
-                console.error(error.message)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         })
             
     }
 
     const getMe = async(token) => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + 'me', {
                 method: 'GET',
@@ -138,14 +135,12 @@ const useLoginService = () => {
                 }
                 resolve(data)
             })
-            .catch(error => {
-                console.error(error.message)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         })
     }
 
     const changepfp = async(token, picture) => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + 'changepfp?picture=' + picture, {
                 method: 'PUT',
@@ -158,17 +153,21 @@ const useLoginService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(true)
             })
-            .catch(error => {
-                console.error(error.message)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         })
     }
-    
 
-    return {postLogin, postRegistration, resendVerificationEmail, putVerify, getMe, changepfp}
+    const err = (error) => {
+        console.error(error.message)
+        addAlert(error.message, 'error')
+        setLoading(false)
+    }
+
+    return {postLogin, postRegistration, resendVerificationEmail, putVerify, getMe, changepfp,
+        loginLoading}
 }
 
 export default useLoginService

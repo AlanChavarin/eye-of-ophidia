@@ -9,9 +9,12 @@ import useLoginService from '../../service/useLoginService'
 //css
 import LoginCSS from './styles/Login.module.css'
 
+//loader
+import ClipLoader from 'react-spinners/ClipLoader'
+
 function Login() {
   const navigate = useNavigate()
-  const {postLogin, postRegistration, resendVerificationEmail} = useLoginService()
+  const {loginLoading, postLogin, postRegistration, resendVerificationEmail} = useLoginService()
   const {updateLoggedInUserData} = useContext(UserContext)
   const [registrationMode, setRegistrationMode] = useState(false)
   const [formData, setFormData] = useState({
@@ -36,10 +39,18 @@ function Login() {
     e.preventDefault()
     if(registrationMode){
       postRegistration(formData)
-      .then(data => setResendVerificationEmailData(data))
+      .then(data => {
+        if(data){
+          setResendVerificationEmailData(data)
+        }
+      })
     } else {
-      await postLogin(formData, updateLoggedInUserData)
-      navigate('/')
+      postLogin(formData, updateLoggedInUserData)
+      .then(data => {
+        if(data){
+          navigate('/')
+        }
+      })
     }
   }
 
@@ -60,7 +71,7 @@ function Login() {
           <button onClick={() => setRegistrationMode(false)} className={`${LoginCSS.button} ${LoginCSS.buttonLogin} ${registrationMode ? LoginCSS.buttonUnselected : LoginCSS.buttonSelected}`}>Login</button>
           <button onClick={() => setRegistrationMode(true)} className={`${LoginCSS.button} ${LoginCSS.buttonRegister} ${registrationMode ? LoginCSS.buttonSelected : LoginCSS.buttonUnselected}`}>Register</button>
         </div>
-        <form className={LoginCSS.form} onSubmit={onSubmit}>
+        <form className={LoginCSS.form} onSubmit={onSubmit} id="form1">
             {(registrationMode) ? (
               <div className={LoginCSS.container}>
                 <label>Name</label>
@@ -82,7 +93,10 @@ function Login() {
               </div>
             ): <></>}
             <div className={LoginCSS.container}>
-                <input type='submit' value={`${registrationMode ? 'Register' : 'Login'}`} className={LoginCSS.submitButton}/>
+            <button type="submit" form="form1" value="Submit" className={LoginCSS.submitButton}> 
+              {loginLoading ? <ClipLoader color='white' size={20}/>
+              : <>Submit</>}
+            </button>
             </div>
         </form>
     </div></div>

@@ -20,13 +20,17 @@ import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 //css
 import EventCSS from './styles/Event.module.css'
 
+//loader
+import MoonLoader from 'react-spinners/MoonLoader'
+import ClipLoader from 'react-spinners/ClipLoader'
+
 function Event() {
     const navigate = useNavigate()
     const {userData} = useContext(UserContext)
-    const {getEvent, restoreEvent} = useEventService()
+    const {eventLoading, getEvent, restoreEvent} = useEventService()
+    const {matchLoading, getMatchesByEvent} = useMatchService()
     const {eventid} = useParams()
     const [event, setEvent] = useState()
-    const {getMatchesByEvent} = useMatchService()
     const [matches, setMatches] = useState()
     const [backgroundImage, setBackgroundImage] = useState()
     const [tab, setTab] = useState('matches')
@@ -34,7 +38,6 @@ function Event() {
 
     let recyclebin = searchParams.get('recyclebin')
     !recyclebin && (recyclebin=false)
-
 
     useEffect(() => {
         getEvent(eventid, recyclebin)
@@ -53,23 +56,28 @@ function Event() {
     const restore = () => {
         if(recyclebin){
             restoreEvent(eventid)
-            .then(navigate(`/events/${eventid}`))
-          }
+            .then(data => {
+                if(data){
+                    navigate(`/events/${eventid}`)
+                }
+            })
+        }
     }
 
   return (
     <div className={EventCSS.parent}>
+        <MoonLoader size={100} loading={eventLoading}/> 
         {event && (<>
             <div className={EventCSS.eventContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${backgroundImage})`}}>
                 <div className={EventCSS.cornerContainer}>
                 {!recyclebin ? <>
                     {(userData.name) && <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
-
                     <button onClick={() => setTab('issues')} className={EventCSS.cornerItem}>Issues</button>
                     <button onClick={() => setTab('editHistory')} className={EventCSS.cornerItem}>Edit History</button>
-                    
                     </> :
-                    <button onClick={restore} className={`${EventCSS.restoreButton} ${EventCSS.cornerItem}`}>Restore Match</button>
+                    <button onClick={restore} className={`${EventCSS.restoreButton} ${EventCSS.cornerItem}`}>
+                        {eventLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}
+                    </button>
                 }
                 </div>
                 
@@ -93,7 +101,8 @@ function Event() {
             </>
             )}
             {(tab==='matches') && <div className={EventCSS.matchThumbnailContainer}>
-                {matches?.map((match) => (<MatchThumbnail key={match._id} match={match}/>))}  
+                <MoonLoader size={70} loading={matchLoading || eventLoading}/> 
+                {matches?.map((match) => (<MatchThumbnail key={match._id} match={match}/>))}
             </div>}
             {(tab==='editHistory') && <>
                 <button onClick={() => setTab('matches')} className={EventCSS.cornerItem} style={{position: 'relative'}}>Back to event matches <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>

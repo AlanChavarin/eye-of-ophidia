@@ -17,10 +17,14 @@ import PostMatchCSS from './styles/PostMatch.module.css'
 import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
 import PopupCSS from '../assets/styles/Popup.module.css'
 
+//loader
+import MoonLoader from 'react-spinners/MoonLoader'
+import ClipLoader from 'react-spinners/ClipLoader'
+
 function PostEvent() {
   const navigate = useNavigate()
   const {eventid} = useParams()
-  const {getEvent, postEvent, deleteEvent} = useEventService()
+  const {eventLoading, getEvent, postEvent, deleteEvent} = useEventService()
   const [formData, setFormData] = useState({
     name: '',
     location: '',
@@ -54,7 +58,6 @@ function PostEvent() {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    console.log(formData)
     postEvent(formData, eventid)
     .then(event => {
       console.log(event)
@@ -65,25 +68,31 @@ function PostEvent() {
   const onDelete = (e) => {
     e.preventDefault()
     deleteEvent(eventid)
-    navigate('/')
+    .then(data => {
+      if(data){
+        navigate('/events')
+      }
+    })
+    
   }
 
   return (
     <div className={PostMatchCSS.parent}>
-      <form onSubmit={onSubmit} className={PostMatchCSS.form}>
+      <form onSubmit={onSubmit} className={PostMatchCSS.form} id="form1">
+      {(eventid && !formData?.location) && <div><MoonLoader size={20} />Fetching event data...</div>}
         <h3 style={{alignSelf: 'center'}}>{(eventid) ? (<>Edit Event</>):(<>Post New Event</>)}</h3>
         {eventid && <button className={PostMatchCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
 
         <div className={PostMatchCSS.container}>
-          <label>Event Name</label>
+          <label>Event Name <span style={{color: 'red'}}>*</span></label>
           <input type="text" name='name' value={name} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
         <div className={PostMatchCSS.container}>
-          <label>Location Name</label>
+          <label>Location Name <span style={{color: 'red'}}>*</span></label>
           <input type="text" name='location' value={location} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
         <div className={PostMatchCSS.container}>
-          <label>Format</label>
+          <label>Format <span style={{color: 'red'}}>*</span></label>
           <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
             <option value="Classic Constructed">Classic Constructed</option>
             <option value="Blitz">Blitz</option>
@@ -104,7 +113,10 @@ function PostEvent() {
           <label>Description</label>
           <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={PostMatchCSS.input}></textarea>
         </div>
-        <input type="submit" className={PostMatchCSS.submitButton}/>
+        <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton}> 
+          {eventLoading ? <ClipLoader color='white' size={20}/>
+           : <>Submit</>}
+        </button>
       </form>
 
       <Popup trigger={deletePopup}>
@@ -113,8 +125,10 @@ function PostEvent() {
         <div>It can be restored from the recycle bin at anytime if deleted.</div>
         </div>
         <div className={PostMatchCSS.popupButtons}>
-          <button className={PopupCSS.deleteButton} onClick={onDelete}>Delete</button>
-          <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
+          {eventLoading ? <ClipLoader size={25}/> : <>
+            <button className={PopupCSS.deleteButton} onClick={onDelete}>Delete</button>
+            <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
+          </>}
         </div>
       </Popup>
 

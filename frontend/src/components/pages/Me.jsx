@@ -24,7 +24,7 @@ function Me() {
         setDropdown(false)
         const userToken = localStorage.getItem('user')
         changepfp(userToken, e.target.getAttribute('imgkey'))
-        .then(data => updateLoggedInUserData())
+        .then(() => updateLoggedInUserData())
     }
 
     useEffect(() => {

@@ -13,9 +13,12 @@ import useMatchService from '../../service/useMatchService'
 import CommentsCSS from '../assets/styles/Comments.module.css'
 import SearchResultsCSS from './styles/SearchResults.module.css'
 
+//loader
+import MoonLoader from "react-spinners/MoonLoader";
+
 function SearchResults() {
-    const {getMatches} = useMatchService()
-    const [searchParams, setSearchParams] = useSearchParams()
+    const {matchLoading, getMatches} = useMatchService()
+    const [searchParams] = useSearchParams()
     const [matches, setMatches] = useState()
     const text = searchParams.get('text')
     const hero1 =  searchParams.get('hero1')
@@ -40,9 +43,10 @@ function SearchResults() {
       <SearchForm page='matches'/>
       
       <div className={SearchResultsCSS.matchThumbnails}>
+        <MoonLoader size={70} loading={matchLoading}/>
         {matches?.map((match) => (
           <MatchThumbnail key={match._id} match={match} recyclebin={recyclebin}/>
-        ))}  
+        ))}
       </div> 
 
       <div className={CommentsCSS.pageButtons}>

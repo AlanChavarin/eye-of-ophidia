@@ -13,8 +13,11 @@ import IssuesCSS from './styles/Issues.module.css'
 import IssuePageCSS from '../pages/styles/IssuePage.module.css'
 import CommentsCSS from '../assets/styles/Comments.module.css'
 
+//loader
+import MoonLoader from 'react-spinners/MoonLoader'
+
 function Issues({targetid, targetType}) {
-    const {getIssues, postIssue} = useIssueService()
+    const {issueLoading, getIssues, postIssue} = useIssueService()
     const [issues, setIssues] = useState()
     const [formData, setFormData] = useState({
         title: '',
@@ -33,6 +36,7 @@ function Issues({targetid, targetType}) {
     }, [statusFilter, page])
 
     const fetchIssues = () => {
+        setIssues()
         getIssues(targetid, targetType, statusFilter, page, limit)
         .then(data => {
             setIssues(data.issues)
@@ -80,11 +84,11 @@ function Issues({targetid, targetType}) {
                 ${IssuePageCSS.button}
                 ${statusFilter==='closed' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
             `}>Closed</button>
-
         </div>
         <div className={CommentsCSS.pageButtons}>
             {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => {setPage(i)}}>{i+1}</button>)}
         </div>
+        <MoonLoader size={60} loading={issueLoading} cssOverride={{alignSelf: 'center'}}/> 
         {issues?.map((issue) => (
             <Issue issue={issue}/>
         ))}

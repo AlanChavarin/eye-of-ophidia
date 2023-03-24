@@ -1,11 +1,13 @@
-import {useContext} from 'react'
+import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useEventService = () => {
     const API_URL = 'http://localhost:5000/api/events/'
     const {addAlert} = useContext(AlertContext)
+    const [eventLoading, setLoading] = useState(false)
 
     const getEvent = async (eventid, recyclebin) => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + `${recyclebin ? 'recyclebin/':''}` + eventid, {
                 method: 'GET',
@@ -19,16 +21,15 @@ const useEventService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(data)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         })
     }
 
     const getEvents = async (text, page, limit, order, recyclebin) => {
+        setLoading(true)
         !text && (text='')
         !page && (page=0)
         !limit && (limit=7)
@@ -45,16 +46,15 @@ const useEventService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(data)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         ))
     }
 
     const postEvent = async (formData, eventid) => {
+        setLoading(true)
         if(!eventid){
             eventid = ''
         } 
@@ -81,16 +81,15 @@ const useEventService = () => {
                     throw new Error(data.errorMessage)
                 }
                 addAlert(`${data.name} event posted!`, 'success')
+                setLoading(false)
                 resolve(data)
             })
-            .catch((error) => {
-                console.error(error.message)
-                addAlert(error.message, 'error')
-            })
+            .catch((error) => err(error))
         ))
     }
 
     const deleteEvent = async (eventid) => {
+        setLoading(true)
         return new Promise(resolve => (
             fetch(API_URL + eventid, {
                 method: 'DELETE',
@@ -105,16 +104,15 @@ const useEventService = () => {
                     throw new Error(data.errorMessage)
                 }
                 addAlert(`${data.name} event deleted!`, 'success')
+                setLoading(false)
                 resolve(data)
             })
-            .catch((error) => {
-                console.error(error.message)
-                addAlert(error.message, 'error')
-            })
+            .catch((error) => err(error))
         ))
     }
 
     const restoreEvent = async (eventid) => {
+        setLoading(true)
         return new Promise(resolve => (
             fetch(API_URL + 'recyclebin/' + eventid, {
                 method: 'PUT',
@@ -129,16 +127,20 @@ const useEventService = () => {
                     throw new Error(data.errorMessage)
                 }
                 addAlert(`${data.name} event restored!`, 'success')
+                setLoading(false)
                 resolve(data)
             })
-            .catch((error) => {
-                console.error(error.message)
-                addAlert(error.message, 'error')
-            })
+            .catch((error) => err(error))
         ))
     }
 
-    return {getEvent, getEvents, postEvent, deleteEvent, restoreEvent}
+    const err = (error) => {
+        console.error(error.message)
+        addAlert(error.message, 'error')
+        setLoading(false)
+    }
+
+    return {eventLoading, getEvent, getEvents, postEvent, deleteEvent, restoreEvent}
 }
 
 export default useEventService

@@ -9,14 +9,18 @@ import useEditHistoryService from '../../service/useEditHistoryService'
 import CommentsCSS from './styles/Comments.module.css'
 import EditHistoryCSS from './styles/EditHistory.module.css'
 
+//loader
+import MoonLoader from 'react-spinners/MoonLoader'
+
 function EditHistories({id, forPage}) {
-    const {getMatchEditHistory, getEventEditHistory} = useEditHistoryService()
+    const {editLoading, getMatchEditHistory, getEventEditHistory} = useEditHistoryService()
     const [history, setHistory] = useState()
     const [count, setCount] = useState()
     const [page, setPage] = useState(0)
     const limit = 10
 
     useEffect(() => {
+        setHistory()
         if(forPage==='match'){
             getMatchEditHistory(id, page, limit)
             .then(data => {
@@ -38,6 +42,7 @@ function EditHistories({id, forPage}) {
             {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page ? CommentsCSS.selectedButton : ''} onClick={() => {setPage(i)}}>{i+1}</button>)}
         </div>
         <div className={EditHistoryCSS.dropdownContainer}>
+        <MoonLoader size={60} loading={editLoading} cssOverride={{alignSelf: 'center'}}/> 
             {(forPage==='match') && history?.map((editHistory, i, arr) => (
                 <EditHistory editHistory={editHistory} key={i}
                 previousHistory={(i!==arr.length-1) ? arr[i+1] : null}

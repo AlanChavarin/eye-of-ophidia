@@ -144,6 +144,7 @@
 .restoreButton{
     background-color: #db3c30;
     color: white;
+    min-width: 120px;
 }
 
 .restoreButton:hover{

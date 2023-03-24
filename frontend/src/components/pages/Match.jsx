@@ -21,10 +21,14 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 //css
 import MatchCSS from './styles/Match.module.css'
 
+//loader
+import MoonLoader from 'react-spinners/MoonLoader'
+import ClipLoader from 'react-spinners/ClipLoader'
+
 function Match() {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
-    const {getMatch, restoreMatch} = useMatchService()
+    const {matchLoading, getMatch, restoreMatch} = useMatchService()
     const {matchid} = useParams()
     const [match, setMatch] = useState()
     const [tab, setTab] = useState('details')
@@ -48,13 +52,20 @@ function Match() {
     const restore = () => {
       if(recyclebin){
         restoreMatch(matchid)
-        navigate(`/matches/${matchid}`)
+        .then(data => {
+          if(data){
+            navigate(`/matches/${matchid}`)
+          }
+        })
+        
       }
     }
 
   return (
       <div className={MatchCSS.container} >
+        <MoonLoader size={100} loading={matchLoading} className={MatchCSS.loader}/> 
         <div className={MatchCSS.videoFeedbackContainer}>
+        
           <div className={MatchCSS.videoContainer}>
             {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
           </div>
@@ -70,7 +81,9 @@ function Match() {
                 <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
                 {(userData.name) && <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
               </> : 
-              <button onClick={restore} className={MatchCSS.restoreButton}>Restore Match</button>
+              <button onClick={restore} className={MatchCSS.restoreButton}>
+                {matchLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}
+              </button>
               }
             </div>
             {tab==='comments' && <Comments matchid={matchid}/>}

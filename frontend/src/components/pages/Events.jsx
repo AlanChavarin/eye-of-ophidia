@@ -13,8 +13,11 @@ import SearchForm from '../assets/SearchForm'
 import EventsCSS from './styles/Events.module.css'
 import CommentsCSS from '../assets/styles/Comments.module.css'
 
+//loader
+import MoonLoader from 'react-spinners/MoonLoader'
+
 function Events() {
-  const {getEvents} = useEventService()
+  const {eventLoading, getEvents} = useEventService()
   const [searchParams] = useSearchParams()
   const [events, setEvents] = useState()
 
@@ -28,6 +31,7 @@ function Events() {
   const order = searchParams.get('order')
 
   useEffect(() => {
+    setEvents()
     getEvents(text, page, limit, order, recyclebin)
     .then(data => {
       setEvents(data.events)
@@ -38,7 +42,9 @@ function Events() {
   return (
     <div className={EventsCSS.parent}>
       <SearchForm page='events'/>
+      
       <div className={EventsCSS.eventThumbnails}>
+      <MoonLoader size={70} loading={eventLoading}/> 
       {events?.map((event) => (
         <EventThumbnail event={event} key={event._id} page='event' recyclebin={recyclebin}/>
       ))}  

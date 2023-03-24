@@ -1,11 +1,13 @@
-import {useContext} from 'react'
+import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useCommentService = () => {
   const API_URL = 'http://localhost:5000/api/comments/'
   const {addAlert} = useContext(AlertContext)
+  const [commentLoading, setLoading] = useState(false)
 
   const getComments = async (matchid, page, limit) => {
+        setLoading(true)
         !page && (page=0)
         !limit && (limit=10)
         if(matchid){
@@ -16,12 +18,10 @@ const useCommentService = () => {
                 if(data.errorMessage){
                   throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(data)
             })
-            .catch(error => {
-              console.error(error)
-              addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
           ))
         } else {
           throw new Error('matchid doesnt exist')
@@ -29,6 +29,7 @@ const useCommentService = () => {
     }
 
   const postComment = async (newCommentBody, matchid) => {
+      setLoading(true)
       return new Promise( resolve  => (
         fetch(API_URL + matchid, {
             method: 'POST',
@@ -46,16 +47,15 @@ const useCommentService = () => {
               throw new Error(data.errorMessage)
             }
             addAlert('Comment successfully posted', 'success')
+            setLoading(false)
             resolve(true)
           })
-          .catch(error => {
-            console.error(error)
-            addAlert(error.message, 'error')
-          })
+          .catch(error => err(error))
       ))
   }
 
   const deleteComment = (commentid) => {
+      setLoading(true)
       return new Promise(resolve => (
         fetch(API_URL + commentid, {
           method: 'DELETE',
@@ -69,16 +69,20 @@ const useCommentService = () => {
             throw new Error(data.errorMessage)
           }
           addAlert('Comment successfully deleted', 'success')
+          setLoading(false)
           resolve(true)
         })
-        .catch(error => {
-          console.error(error)
-          addAlert(error.message, 'error')
-        })
+        .catch(error => err(error))
       ))
     }
 
-    return {getComments, postComment, deleteComment}
+    const err = (error) => {
+      console.error(error.message)
+      addAlert(error.message, 'error')
+      setLoading(false)
+    } 
+
+    return {commentLoading, getComments, postComment, deleteComment}
 }
 
 export default useCommentService

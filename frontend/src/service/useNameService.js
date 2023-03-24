@@ -1,11 +1,13 @@
-import {useContext} from 'react'
+import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useNameService = () => {
     const API_URL = 'http://localhost:5000/api/names/'
     const {addAlert} = useContext(AlertContext)
+    const [nameLoading, setLoading] = useState(false)
 
     const getNames = async () => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL, {
                 method: 'GET',
@@ -19,16 +21,15 @@ const useNameService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(data)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         })
     }
 
     const postName = async (name) => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + name, {
                 method: 'POST',
@@ -42,16 +43,15 @@ const useNameService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(data)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         })
     }
 
     const deleteName = async (name) => {
+        setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + name, {
                 method: 'DELETE',
@@ -65,16 +65,20 @@ const useNameService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(data)
             })
-            .catch(error => {
-                console.error(error)
-                addAlert(error.message, 'error')
-            })
+            .catch(error => err(error))
         })
     }
 
-    return {getNames, postName, deleteName}
+    const err = (error) => {
+        console.error(error.message)
+        addAlert(error.message, 'error')
+        setLoading(false)
+    }
+
+    return {nameLoading, getNames, postName, deleteName}
 }
 
 export default useNameService

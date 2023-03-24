@@ -24,8 +24,12 @@ import PopupCSS from '../assets/styles/Popup.module.css'
 //tools
 import { getYoutubeParams } from '../../helpers/YoutubeParams'
 
+//loader
+import MoonLoader from 'react-spinners/MoonLoader'
+import ClipLoader from 'react-spinners/ClipLoader'
+
 function PostMatch() {
-  const {postMatch, getMatch, deleteMatch} = useMatchService()
+  const {matchLoading, postMatch, getMatch, deleteMatch} = useMatchService()
   const {getEvents} = useEventService()
 
   const navigate = useNavigate()
@@ -120,12 +124,18 @@ function PostMatch() {
   const onDelete = (e) => {
     e.preventDefault()
     deleteMatch(matchid)
-    navigate('/')
+    .then(data => {
+      if(data){
+        navigate('/')
+      }
+    })
+    
   }
 
   return (
     <div className={PostMatchCSS.parent}>
-      <form onSubmit={onSubmit} className={PostMatchCSS.form}>
+      <form onSubmit={onSubmit} className={PostMatchCSS.form} id='form1'>
+        {(matchid && !formData?.link) && <div><MoonLoader size={20} />Fetching match data...</div>}
         <h3 style={{alignSelf: 'center'}}>{(matchid) ? (<>Edit Match</>):(<>Post New Match</>)}</h3>
         {matchid && <button className={PostMatchCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
         
@@ -220,7 +230,12 @@ function PostMatch() {
           <label>Description</label>
           <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={LoginCSS.input}></textarea>
         </div> */}
-        <input type="submit" className={PostMatchCSS.submitButton}/>
+        {/* <input type="submit" className={PostMatchCSS.submitButton}/> */}
+
+        <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton}> 
+          {matchLoading ? <ClipLoader color='white' size={20}/>
+           : <>Submit</>}
+        </button>
       </form>
 
 
@@ -230,8 +245,10 @@ function PostMatch() {
         <div>It can be restored from the recycle bin at anytime if deleted.</div>
         </div>
         <div className={PostMatchCSS.popupButtons}>
-          <button className={PopupCSS.deleteButton} onClick={onDelete}>Delete</button>
-          <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
+          {matchLoading ? <ClipLoader size={25}/> : <>
+            <button className={PopupCSS.deleteButton} onClick={onDelete}>Delete</button>
+            <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
+          </>}
         </div>
       </Popup>
 
