@@ -129,7 +129,6 @@ function PostMatch() {
         navigate('/')
       }
     })
-    
   }
 
   return (

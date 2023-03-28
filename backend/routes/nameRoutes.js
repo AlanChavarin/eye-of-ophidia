@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const {getNames, postName, deleteName} = require('../controllers/nameController')
-const {protectHelper, protect} = require('../middleware/authMiddleware')
+const {protectModerator, protect} = require('../middleware/authMiddleware')
 
-router.get('/', protect, protectHelper, getNames)
+router.get('/', protect, protectModerator, getNames)
 
-router.post('/:name', protect, protectHelper, postName)
+router.post('/:name', protect, protectModerator, postName)
 
-router.delete('/:name', protect, protectHelper, deleteName)
+router.delete('/:name', protect, protectModerator, deleteName)
 
 //router.get('/doesnameexist/:name', protect, protectHelper, doesNameExist)
 

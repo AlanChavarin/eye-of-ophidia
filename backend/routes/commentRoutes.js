@@ -6,7 +6,6 @@ const {protect, protectModerator} = require('../middleware/authMiddleware')
 const Comment = require('../models/commentModel')
 
 const protectCorrectUser = asyncHandler(async (req, res, next) => {
-    console.log(req.params.commentid)
     if(req.user._id.toString() !== (await Comment.findById(req.params.commentid))?.owner.toString()){
         res.status(400)
         throw new Error('You do not have privileges to delete/edit this comment')

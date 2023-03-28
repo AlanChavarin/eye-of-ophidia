@@ -71,9 +71,9 @@ function Event() {
             <div className={EventCSS.eventContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${backgroundImage})`}}>
                 <div className={EventCSS.cornerContainer}>
                 {!recyclebin ? <>
-                    {(userData.name) && <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
+                    {(userData.privilege==='admin') && <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
                     <button onClick={() => setTab('issues')} className={EventCSS.cornerItem}>Issues</button>
-                    <button onClick={() => setTab('editHistory')} className={EventCSS.cornerItem}>Edit History</button>
+                    {(userData.privilege==='admin') && <button onClick={() => setTab('editHistory')} className={EventCSS.cornerItem}>Edit History</button>}
                     </> :
                     <button onClick={restore} className={`${EventCSS.restoreButton} ${EventCSS.cornerItem}`}>
                         {eventLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}

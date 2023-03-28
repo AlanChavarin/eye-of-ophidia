@@ -10,7 +10,13 @@ const useEditHistoryService = () => {
     const getMatchEditHistory = async (matchid, page, limit) => {
         setLoading(true)
         return new Promise(resolve => (
-            fetch(MATCH_API_URL + matchid + '?page=' + page + '&limit=' + limit)
+            fetch(MATCH_API_URL + matchid + '?page=' + page + '&limit=' + limit, {
+                method: 'GET',
+                headers: {
+                  'Content-type': 'application/json',
+                  'Authorization': 'Bearer ' + localStorage.getItem('user')
+                }
+            })
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){
@@ -26,7 +32,13 @@ const useEditHistoryService = () => {
     const getEventEditHistory = async (eventid, page, limit) => {
         setLoading(true)
         return new Promise(resolve => (
-            fetch(EVENT_API_URL + eventid + '?page=' + page + '&limit=' + limit)
+            fetch(EVENT_API_URL + eventid + '?page=' + page + '&limit=' + limit, {
+                method: 'GET',
+                headers: {
+                  'Content-type': 'application/json',
+                  'Authorization': 'Bearer ' + localStorage.getItem('user')
+                }
+            })
             .then(res => res.json())
             .then((data) => {
                 if(data.errorMessage){

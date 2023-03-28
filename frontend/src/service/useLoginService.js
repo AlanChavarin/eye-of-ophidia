@@ -160,6 +160,51 @@ const useLoginService = () => {
         })
     }
 
+    const changePrivileges = async(userid, privilege) => {
+        setLoading(true)
+        return new Promise(resolve => {
+            fetch(API_URL + 'changeprivileges?userid=' + userid + '&privilege=' + privilege, {
+                method: 'PUT',
+                headers: {
+                    'authorization': 'Bearer ' + localStorage.getItem('user')
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                setLoading(false)
+                resolve(data)
+            })
+            .catch(error => err(error))
+        })
+    }
+
+    const getUsers = async(page, limit, privilege) => {
+        !privilege && (privilege='')
+        !page && (page='')
+        !limit && (limit='')
+        setLoading(true)
+        return new Promise(resolve => {
+            fetch(API_URL + '?page=' + page + '&limit=' + limit + '&privilege=' + privilege, {
+                method: 'GET',
+                headers: {
+                    'authorization': 'Bearer ' + localStorage.getItem('user')
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                setLoading(false)
+                resolve(data)
+            })
+            .catch(error => err(error))
+        })
+    }
+
     const err = (error) => {
         console.error(error.message)
         addAlert(error.message, 'error')
@@ -167,7 +212,7 @@ const useLoginService = () => {
     }
 
     return {postLogin, postRegistration, resendVerificationEmail, putVerify, getMe, changepfp,
-        loginLoading}
+        loginLoading, getUsers, changePrivileges}
 }
 
 export default useLoginService

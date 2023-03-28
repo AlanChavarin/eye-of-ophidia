@@ -16,6 +16,7 @@ import Verify from "./components/pages/Verify"
 import Events from "./components/pages/Events"
 import Event from "./components/pages/Event"
 import IssuePage from './components/pages/IssuePage'
+import Users from './components/pages/Users'
 
 //tools
 import {BrowserRouter as Router, Route, Routes, useSearchParams} from 'react-router-dom'
@@ -58,11 +59,12 @@ function App() {
               <Route element={<UserAuth privilege='user'/>}>
                 <Route path='/me' element={<Me />}/>
               </Route>
-              <Route element={<UserAuth privilege='admin'/>}>
+              <Route element={<UserAuth privilege='moderator'/>}>
                 <Route path='/postmatch' element={<PostMatch />}/>
                 <Route path='/postmatch/:matchid' element={<PostMatch />}/>
                 <Route path='/postevent' element={<PostEvent />}/>
                 <Route path='/postevent/:eventid' element={<PostEvent />}/>
+                <Route path='/users' element={<Users />}/>
               </Route>
             </Routes>
           </div>

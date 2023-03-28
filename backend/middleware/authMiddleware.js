@@ -20,7 +20,7 @@ const protect = asyncHandler(async (req, res, next) => {
 })
 
 const protectAdmin = asyncHandler(async (req, res, next) => {
-    if(req.user.privilege === 'admin'){
+    if(req.user?.privilege === 'admin'){
         next()
     } else {
         res.status(400)
@@ -29,7 +29,7 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
 })
 
 const protectModerator = asyncHandler(async (req, res, next) => {
-    if(req.user.privilege === 'admin' || req.user.privilege === 'moderator'){
+    if(req.user?.privilege === 'admin' || req.user?.privilege === 'moderator'){
         next()
     } else {
         res.status(400)
@@ -37,13 +37,13 @@ const protectModerator = asyncHandler(async (req, res, next) => {
     }
 })
 
-const protectHelper = asyncHandler(async (req, res, next) => {
-    if(req.user.privilege === 'admin' || req.user.privilege === 'moderator' || req.user.privilege === 'helper'){
-        next()
-    } else {
-        res.status(400)
-        throw new Error('You need admin or moderator privileges to access this function')
-    }
-}) 
+// const protectHelper = asyncHandler(async (req, res, next) => {
+//     if(req.user.privilege === 'admin' || req.user.privilege === 'moderator' || req.user.privilege === 'helper'){
+//         next()
+//     } else {
+//         res.status(400)
+//         throw new Error('You need admin or moderator privileges to access this function')
+//     }
+// }) 
 
-module.exports = {protect, protectAdmin, protectModerator, protectHelper}
+module.exports = {protect, protectAdmin, protectModerator}

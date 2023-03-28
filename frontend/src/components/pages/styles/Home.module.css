@@ -1,0 +1,17 @@
+.parent{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    gap: 30px;
+}
+
+.p{
+    font-size: 3em;
+}
+
+.icon{
+    font-size: 1em;
+    margin-right: 10px;
+}

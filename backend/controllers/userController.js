@@ -51,8 +51,9 @@ const resendVerificationEmail = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
     const userThatsLoggingIn = await User.findOne({email: req.body.email})
     if(!userThatsLoggingIn.verified){
+        sendEmail(jwt.sign(userThatsLoggingIn._id.toJSON(), process.env.EMAIL_SECRET), userThatsLoggingIn.email)
         res.status(400)
-        throw new Error('Please verify your email before logging in.')
+        throw new Error('Please verify your email before logging in. A new verification email has been sent.')
     }
     if(userThatsLoggingIn && (await bcrypt.compare(req.body.password, userThatsLoggingIn.password))){
         res.status(200).json({
@@ -96,9 +97,64 @@ const getMe = asyncHandler(async (req, res) => {
 
 const changepfp = asyncHandler(async (req, res) => {
     const user = await User.findOneAndUpdate({_id: req.user._id}, {picture: req.query.picture}, {runValidators: true, new: true})
+    user.password = ''
     res.status(200).json(user)
 })
 
+const changePrivileges = asyncHandler(async (req, res) => {
+    let user = await User.findById(req.query.userid)
+
+    if(req.user.privilege!=='admin'){
+        if(user.privilege==='admin' || user.privilege==='moderator'){
+            res.status(400)
+            throw new Error(`You cannot change another admin's or moderator's privileges`)
+        }
+        if(req.query.privilege==='admin' || req.query.privilege==='moderator'){
+            res.status(400)
+            throw new Error('You may not elevate a user to admin or moderator privileges')
+        }
+    }
+
+    user = await User.findOneAndUpdate({_id: req.query.userid}, {privilege: req.query.privilege}, {runValidators: true, new: true})
+    user.password = ''
+    res.status(200).json(user)
+})
+
+const getUsers = asyncHandler(async (req, res) => {
+    var skip, limit, pipeline
+    if(!req.query.limit){limit = 10} 
+    else {limit = parseInt(req.query.limit)}
+    if(!req.query.page){skip = 0} 
+    else {skip = parseInt(req.query.page*limit)}
+
+    pipeline = []
+
+    if(req.query.privilege){
+        pipeline.push({"$match": {
+            "privilege": req.query.privilege
+        }})
+    } 
+
+    pipeline.push(
+            { "$facet": {
+            "users": [
+                { "$skip": skip },
+                { "$limit": limit }
+            ],
+            "count": [
+                { "$count": "count" }
+            ]}
+    })
+
+    const usersQuery = await User.aggregate(pipeline)
+
+    const data = {
+        "users": usersQuery[0].users,
+        "count": usersQuery[0].count[0]?.count
+    }
+
+    res.status(200).json(data)
+})
 
 
 //internal use only
@@ -149,5 +205,7 @@ module.exports = {
     loginUser,
     getMe,
     verifyUser,
-    changepfp
+    changepfp,
+    getUsers,
+    changePrivileges
 }

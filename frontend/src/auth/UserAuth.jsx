@@ -14,9 +14,16 @@ function UserAuth({privilege}) {
                 return (<div>You need admin privileges to access this page</div>)
             }
         }
+        case 'moderator': {
+            if(userData?.privilege === 'moderator' || userData?.privilege === 'admin'){
+                return <Outlet />
+            } else {
+                return (<div>You need moderator privileges to access this page</div>)
+            }
+        }
         case 'user': {
-            //console.log('user')
-            if(userData?.privilege === 'admin' || userData?.privilege === 'user'){
+            console.log(userData)
+            if(userData?.privilege === 'admin' || userData?.privilege === 'moderator' || userData?.privilege === 'user'){
                 return <Outlet />
             } else {
                 return (<div>You must be logged in to access this page</div>)

@@ -31,7 +31,7 @@ const getMatches = asyncHandler(async (req, res) => {
         find = {
                 "$text": {"$search": req.query.text},
                 "$or": [{"player1hero": req.query.hero1},
-                    {"player2hero": req.query.hero1, }],
+                    {"player2hero": req.query.hero1 }],
                 "deleted": req.recyclebin
             }
     } else if(req.query.hero2 && req.query.text){

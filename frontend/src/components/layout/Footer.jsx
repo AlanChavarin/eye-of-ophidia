@@ -13,16 +13,16 @@ function Footer() {
   return (
     <div className={`${FooterCSS.footer}`}>
       <div>
-        Copyright Alan Chavarin
+        Created by Alan Chavarin
       </div>
-      <div>
+      {/* <div>
         {(userData?.name) ? 
         <>
           <div>
             Email: {userData.email}
           </div>
         </> : <></>}
-      </div>
+      </div> */}
       {(userData?.name) ? <>
         <Link to='/logout' className={FooterCSS.logout}>
           <div>Logout</div>

@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const {getMatchEditHistory, getMatchEdit} = require('../controllers/matchEditHistoryController')
-const {protect, protectAdmin, protectModerator, protectHelper} = require('../middleware/authMiddleware')
+const {protect, protectModerator} = require('../middleware/authMiddleware')
 
-router.get('/matchedit/:editid', getMatchEdit)
+router.get('/matchedit/:editid', protect, protectModerator, getMatchEdit)
 
-router.get('/history/:matchid', getMatchEditHistory)
+router.get('/history/:matchid', protect, protectModerator, getMatchEditHistory)
 
 module.exports = router

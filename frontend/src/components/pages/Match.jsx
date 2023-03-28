@@ -52,43 +52,47 @@ function Match() {
     const restore = () => {
       if(recyclebin){
         restoreMatch(matchid)
-        .then(data => {
-          if(data){
-            navigate(`/matches/${matchid}`)
-          }
-        })
-        
+        .then(data => data && navigate(`/matches/${matchid}`))     
       }
     }
 
   return (
       <div className={MatchCSS.container} >
+
         <MoonLoader size={100} loading={matchLoading} className={MatchCSS.loader}/> 
+
         <div className={MatchCSS.videoFeedbackContainer}>
-        
           <div className={MatchCSS.videoContainer}>
             {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
           </div>
         </div>
+
         <div className={MatchCSS.detailsContainer}>
           {(match) && <>
           <div className={MatchCSS.feedbackContainer}>
+
             <div className={MatchCSS.containerTab}> 
               {!recyclebin ? <>
                 <button value='details' onClick={onClick} style={{backgroundColor: (tab==='details') && '#1446A0', color: (tab==='details') && 'white'}}>Details</button>
                 <button value='comments' onClick={onClick} style={{backgroundColor: (tab==='comments') && '#1446A0', color: (tab==='comments') && 'white'}}>Comments</button>
                 <button value='issues' onClick={onClick} style={{backgroundColor: (tab==='issues') && '#1446A0', color: (tab==='issues') && 'white'}}>Issues</button>
-                <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
-                {(userData.name) && <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
-              </> : 
+
+                {(userData.privilege==='admin' || userData.privilege==='moderator') && <>
+                  <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
+                  <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>
+                </>}</> 
+                :
+
               <button onClick={restore} className={MatchCSS.restoreButton}>
                 {matchLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}
               </button>
               }
             </div>
+
             {tab==='comments' && <Comments matchid={matchid}/>}
             {tab==='issues' && <Issues targetid={matchid} targetType='match'/>}
             {tab==='history' && <EditHistories id={matchid} forPage='match'/>}
+
           </div>
 
           {tab==='details' && <>

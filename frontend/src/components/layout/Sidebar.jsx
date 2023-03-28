@@ -39,8 +39,7 @@ function Sidebar() {
                 <Link to='/events' className={SidebarCSS.item}>
                     <div>Events</div>
                 </Link>
-                {(userData.name) ? (
-                    <>
+                {(userData.privilege === 'admin' || userData.privilege === 'moderator' ) && (<>
                     <Link to='/postmatch' className={SidebarCSS.item}>
                         <div>Submit a new match!</div>
                     </Link>
@@ -51,14 +50,24 @@ function Sidebar() {
                         <div>Issues</div>
                     </Link>
                     <Link to='/me' className={SidebarCSS.item}>
-                        <div>Me</div>
+                        <div>{userData.name}</div>
                     </Link>
-                    </>
-                ) : <>
+                    <Link to='/users' className={SidebarCSS.item}>
+                        <div>Users</div>
+                    </Link>
+
+                </>)}
+
+
+                {!(userData.name) ? 
                     <Link to='/login' className={SidebarCSS.item}>
-                    <div>Login/Register</div>
+                        <div>Login/Register</div>
                     </Link>
-                </>}
+                : 
+                    <Link to='/logout' className={SidebarCSS.item}>
+                        <div>Logout</div>
+                    </Link>
+                }
             </div>
         </div>
     </div>

@@ -28,7 +28,7 @@ function Navbar() {
         <div>Events</div>
       </Link>
       
-      {(userData.name) ? (
+      {(userData.privilege === 'admin' || userData.privilege === 'moderator' ) && (
         <>
           <Link to='/postmatch' className={NavbarCSS.item}>
             <div>Submit a new match!</div>
@@ -39,11 +39,20 @@ function Navbar() {
           <Link to='/issuepage' className={NavbarCSS.item}>
             <div>Issues</div>
           </Link>
-          <Link to='/me' className={NavbarCSS.item}>
-            <div>Me</div>
+          <Link to='/users' className={NavbarCSS.item}>
+            <div>Users</div>
           </Link>
+          
         </>
-      ) : <>
+      )}
+
+      {(userData.name) && <>
+        <Link to='/me' className={NavbarCSS.item}>
+          <div>{userData.name}</div>
+        </Link>
+      </>}
+      
+      {(!userData.name) && <>
         <Link to='/login' className={NavbarCSS.item}>
           <div>Login/Register</div>
         </Link>

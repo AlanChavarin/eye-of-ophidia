@@ -1,0 +1,46 @@
+.parent{
+    height: 100%;
+    min-width: 500px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+}
+
+.container{
+    padding: 20px;
+}
+
+.user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.img{
+    border: 1px solid lightgray;
+}
+
+.button{
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.button:hover{
+    color: #1446A0;
+}
+
+.dropdown{
+    position: absolute;
+    background-color: white;
+    border: 1px solid lightgray;
+    padding: 10px;
+    z-index: 1;
+    min-width: 200px;
+    right: -20px;
+    top: 20px;
+}
