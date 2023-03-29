@@ -2,7 +2,7 @@ import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useCommentService = () => {
-  const API_URL = 'http://localhost:5000/api/comments/'
+  const API_URL = process.env.REACT_APP_API + 'comments/'
   const {addAlert} = useContext(AlertContext)
   const [commentLoading, setLoading] = useState(false)
 

@@ -2,7 +2,7 @@ import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useIssueService = () => {
-    const API_URL = 'http://localhost:5000/api/issues/'
+    const API_URL =  process.env.REACT_APP_API + 'issues/'
     const {addAlert} = useContext(AlertContext)
     const [issueLoading, setLoading] = useState(false)
 

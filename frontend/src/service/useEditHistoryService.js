@@ -2,8 +2,8 @@ import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useEditHistoryService = () => {
-    const MATCH_API_URL = 'http://localhost:5000/api/matchedithistory/history/'
-    const EVENT_API_URL = 'http://localhost:5000/api/eventedithistory/history/'
+    const MATCH_API_URL =  process.env.REACT_APP_API + 'matchedithistory/history/'
+    const EVENT_API_URL =  process.env.REACT_APP_API + 'eventedithistory/history/'
     const {addAlert} = useContext(AlertContext)
     const [editLoading, setLoading] = useState(false)
 

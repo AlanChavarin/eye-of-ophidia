@@ -35,28 +35,28 @@ app.use('/api/eventedithistory', require('./routes/eventEditHistoryRoutes'))
 app.use('/api/events', require('./routes/eventRoutes'))
 app.use('/api/names', require('./routes/nameRoutes'))
 
-app.get('/api/test/', async (req, res) => {
+// app.get('/api/test/', async (req, res) => {
 
-    let transporter = nodemailer.createTransport({
-        host: "smtp.zoho.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: process.env.EMAIL,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      })
+//     let transporter = nodemailer.createTransport({
+//         host: "smtp.zoho.com",
+//         port: 465,
+//         secure: true,
+//         auth: {
+//           user: process.env.EMAIL,
+//           pass: process.env.EMAIL_PASSWORD,
+//         },
+//       })
 
-    let info = await transporter.sendMail({
-        from: '"eye of ophidia" <eyeofophidia@zohomail.com>', 
-        to: "alanchavarin4@hotmail.com", // list of receivers
-        subject: "this is a test from nodemailer", // Subject line
-        html: `<html><a href="https://www.google.com">Google</a></html>`, // html body
-      })
+//     let info = await transporter.sendMail({
+//         from: '"eye of ophidia" <eyeofophidia@zohomail.com>', 
+//         to: "alanchavarin4@hotmail.com", // list of receivers
+//         subject: "this is a test from nodemailer", // Subject line
+//         html: `<html><a href="https://www.google.com">Google</a></html>`, // html body
+//       })
 
-    console.log("Message sent: %s", info.messageId)
+//     console.log("Message sent: %s", info.messageId)
 
-    res.status(200).send('test')
-})
+//     res.status(200).send('test')
+// })
 
 app.use(errorHandler)
