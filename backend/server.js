@@ -7,7 +7,7 @@ const {errorHandler} = require('./middleware/errorMiddleware')
 const path = require('path')
 
 app.use(cors({
-    origin: 'http://localhost:3000'
+    origin: 'http://localhost:5000'
 }))
 
 app.listen(process.env.PORT, () => {

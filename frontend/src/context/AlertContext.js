@@ -5,6 +5,7 @@ export const AlertProvider = ({children}) => {
     const [alerts, setAlerts] = useState([])
 
     const addAlert = async (message, type) => {
+        console.log(message)
         const id = crypto.randomUUID()
         setAlerts([...alerts, {message: message, type: type, id: id}])
     }

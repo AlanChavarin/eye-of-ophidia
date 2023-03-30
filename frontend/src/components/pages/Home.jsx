@@ -6,7 +6,7 @@ import { faEye } from '@fortawesome/free-solid-svg-icons'
 function Home() {
   return (
     <div className={HomeCSS.parent}>
-        <p className={HomeCSS.p}><FontAwesomeIcon icon={faEye} className={HomeCSS.icon}/>Eye of Ophidia</p>
+        <p className={HomeCSS.p}><FontAwesomeIcon icon={faEye} className={HomeCSS.icon}/>Eye of Ophidia &</p>
         <SearchForm page='matches'/>
     </div>
   )

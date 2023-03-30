@@ -2,7 +2,7 @@ import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useEventService = () => {
-    const API_URL =  process.env.REACT_APP_API + '/api/events/'
+    const API_URL = '/api/events/'
     const {addAlert} = useContext(AlertContext)
     const [eventLoading, setLoading] = useState(false)
 
