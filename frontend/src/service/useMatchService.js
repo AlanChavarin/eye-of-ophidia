@@ -2,7 +2,7 @@ import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useMatchService = () => {
-    const API_URL =  process.env.REACT_APP_API + 'matches/'
+    const API_URL =  process.env.REACT_APP_API + '/api/matches/'
     const {addAlert} = useContext(AlertContext)
     const [matchLoading, setLoading] = useState(false)
 

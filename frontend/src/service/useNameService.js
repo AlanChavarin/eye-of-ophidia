@@ -2,7 +2,7 @@ import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useNameService = () => {
-    const API_URL =  process.env.REACT_APP_API + 'names/'
+    const API_URL =  process.env.REACT_APP_API + '/api/names/'
     const {addAlert} = useContext(AlertContext)
     const [nameLoading, setLoading] = useState(false)
 
