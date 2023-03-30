@@ -4,9 +4,7 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
 const cors = require('cors')
 const {errorHandler} = require('./middleware/errorMiddleware')
-
-const nodemailer = require('nodemailer')
-
+const path = require('path')
 
 app.use(cors({
     origin: 'http://localhost:3000'
@@ -34,6 +32,14 @@ app.use('/api/matchedithistory', require('./routes/matchEditHistoryRoutes'))
 app.use('/api/eventedithistory', require('./routes/eventEditHistoryRoutes'))
 app.use('/api/events', require('./routes/eventRoutes'))
 app.use('/api/names', require('./routes/nameRoutes'))
+
+if(process.env.NODE_ENV==='production'){
+    app.use(express.static('frontend/build'))
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    })
+}
 
 // app.get('/api/test/', async (req, res) => {
 
