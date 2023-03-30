@@ -4,8 +4,7 @@
   "description": "test",
   "main": "backend/server.js",
   "scripts": {
-    "server": "nodemon backend/server.js",
-    "build": "node backend/server.js"
+    "server": "nodemon backend/server.js"
   },
   "repository": {
     "type": "git",
