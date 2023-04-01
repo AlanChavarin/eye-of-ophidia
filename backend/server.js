@@ -7,7 +7,8 @@ const {errorHandler} = require('./middleware/errorMiddleware')
 const path = require('path')
 
 app.use(cors({
-    origin: 'http://localhost:5000'
+    origin: 'http://localhost:5000',
+    origin: 'http://localhost:3000'
 }))
 
 app.listen(process.env.PORT, () => {
@@ -33,36 +34,10 @@ app.use('/api/eventedithistory', require('./routes/eventEditHistoryRoutes'))
 app.use('/api/events', require('./routes/eventRoutes'))
 app.use('/api/names', require('./routes/nameRoutes'))
 
-if(process.env.NODE_ENV==='production'){
-    app.use(express.static('frontend/build'))
+app.use(express.static('frontend/build'))
 
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve( 'frontend', 'build', 'index.html'))
-    })
-}
-
-// app.get('/api/test/', async (req, res) => {
-
-//     let transporter = nodemailer.createTransport({
-//         host: "smtp.zoho.com",
-//         port: 465,
-//         secure: true,
-//         auth: {
-//           user: process.env.EMAIL,
-//           pass: process.env.EMAIL_PASSWORD,
-//         },
-//       })
-
-//     let info = await transporter.sendMail({
-//         from: '"eye of ophidia" <eyeofophidia@zohomail.com>', 
-//         to: "alanchavarin4@hotmail.com", // list of receivers
-//         subject: "this is a test from nodemailer", // Subject line
-//         html: `<html><a href="https://www.google.com">Google</a></html>`, // html body
-//       })
-
-//     console.log("Message sent: %s", info.messageId)
-
-//     res.status(200).send('test')
-// })
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve( 'frontend', 'build', 'index.html'))
+})
 
 app.use(errorHandler)

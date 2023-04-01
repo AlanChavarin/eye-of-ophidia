@@ -2,7 +2,7 @@ import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
 
 const useMatchService = () => {
-    const API_URL = '/api/matches/'
+    const API_URL = `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/matches/'
     const {addAlert} = useContext(AlertContext)
     const [matchLoading, setLoading] = useState(false)
 
@@ -29,7 +29,7 @@ const useMatchService = () => {
     }
 
     const getMatches = async (text, hero1, hero2, page, limit, recyclebin) => {
-        console.log(API_URL + 'test')
+        console.log(process.env.REACT_APP_API)
         setLoading(true)
         !page && (page=0)
         !limit && (limit=10)
@@ -50,7 +50,6 @@ const useMatchService = () => {
                 resolve(data)
             })
             .catch(error => err(error))
-
         ))
     }
 
