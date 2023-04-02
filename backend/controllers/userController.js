@@ -180,7 +180,7 @@ const sendEmail = asyncHandler(async (token, email) => {
         from: '"eye of ophidia" <eyeofophidia@zohomail.com>', 
         to: email,
         subject: "eyeofophidia.net email verification",
-        html: `<html><a href="http://${link}/verify/${token}">localhost:3000/verify/${token}</a></html>`
+        html: `<html><a href="http://${link}/verify/${token}">${link}/verify/${token}</a></html>`
       })
 
     console.log("Message sent: %s", info.messageId)
