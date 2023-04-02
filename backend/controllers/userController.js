@@ -159,6 +159,13 @@ const getUsers = asyncHandler(async (req, res) => {
 
 //internal use only
 const sendEmail = asyncHandler(async (token, email) => {
+    let link
+    if(process.env.development==='development'){
+        link = 'localhost:3000'
+    } else {
+        link = 'www.eyeofophidia.net'
+    }
+
     let transporter = nodemailer.createTransport({
         host: "smtp.zoho.com",
         port: 465,
@@ -173,7 +180,7 @@ const sendEmail = asyncHandler(async (token, email) => {
         from: '"eye of ophidia" <eyeofophidia@zohomail.com>', 
         to: email,
         subject: "eyeofophidia.net email verification",
-        html: `<html><a href="http://localhost:3000/verify/${token}">localhost:3000/verify/${token}</a></html>`
+        html: `<html><a href="http://${link}/verify/${token}">localhost:3000/verify/${token}</a></html>`
       })
 
     console.log("Message sent: %s", info.messageId)
