@@ -9,6 +9,29 @@
     border-right: 1px solid lightgray;
 }
 
+.buttonContainer{
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+@media(width < 500px){
+    .parent{
+        min-width: 100vw;
+    }
+}
+
+@media(width < 400px){
+    .buttonContainer{
+        width: 250px;
+    }
+}
+
 .container{
     padding: 20px;
 }
@@ -44,3 +67,4 @@
     right: -20px;
     top: 20px;
 }
+

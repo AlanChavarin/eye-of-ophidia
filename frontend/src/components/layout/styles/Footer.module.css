@@ -17,3 +17,10 @@
 .logout:hover{
     color: #1446A0;
 }
+
+@media(orientation: portrait){
+    .logout{
+        visibility: hidden;
+        position: absolute;
+    }
+}

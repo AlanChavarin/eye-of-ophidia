@@ -63,7 +63,7 @@ function Match() {
 
         <div className={MatchCSS.videoFeedbackContainer}>
           <div className={MatchCSS.videoContainer}>
-            {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
+            {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp===0 ? 1 : match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
           </div>
         </div>
 
@@ -100,12 +100,18 @@ function Match() {
 
             <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player1hero)})`}}>
               <div className={MatchCSS.playerName}>{match.player1name}</div>
-              <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a>
+              {match.player1deck ? 
+                <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> :
+                <div className={MatchCSS.unavailable}>Deck list not available</div>
+              }
             </div>
 
             <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player2hero)})`}}>
               <div className={MatchCSS.playerName}>{match.player2name}</div>
-              <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> 
+              {match.player2deck ? 
+                <a href={`${match.player2deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> :
+                <div className={MatchCSS.unavailable}>Deck list not available</div>
+              }
             </div> 
           </>}
             </>}

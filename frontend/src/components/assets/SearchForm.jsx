@@ -1,6 +1,6 @@
 //react
 import {useState, useContext} from 'react'
-import {useNavigate, useSearchParams} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import UserContext from '../../context/UserContext'
 
 //assets
@@ -16,7 +16,6 @@ import IssuePageCSS from '../pages/styles/IssuePage.module.css'
 
 function SearchForm({page}) {
     const {userData} = useContext(UserContext)
-    const [searchParams] = useSearchParams()
     const [order, setOrder] = useState(0)
 
     const navigate = useNavigate()
@@ -51,7 +50,7 @@ function SearchForm({page}) {
         `${order ? ('&order=' + order) : ''}`)
     }
     return (
-        <div>
+        <div className={SearchFormCSS.parent}>
             <form className={SearchFormCSS.searchform} onSubmit={onSubmit}>
                 <div className={SearchFormCSS.searchBar}> 
                     <button className={SearchFormCSS.searchButton}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
@@ -61,7 +60,7 @@ function SearchForm({page}) {
                     <div className={SearchFormCSS.container}>   
                         <HeroSelect name='hero1' onChange={onChange} value={hero1}/>
                     </div>
-                    <label style={{fontWeight: '500', alignSelf: 'center'}}>VS</label>
+                    <label className={SearchFormCSS.vs}>VS</label>
                     <div className={SearchFormCSS.container}>
                         <HeroSelect name='hero2' onChange={onChange} value={hero2}/>
                     </div>

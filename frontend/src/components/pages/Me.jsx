@@ -12,13 +12,16 @@ import useLoginService from '../../service/useLoginService'
 //css
 import MeCSS from './styles/Me.module.css'
 
+//loader
+import ClipLoader from 'react-spinners/ClipLoader'
+
 function Me() {
     const images = ['bauble', 'blood', 'eye', 'grand', 'heart', 'shard', 'tit']
     const {userData, updateLoggedInUserData} = useContext(UserContext)
     const {name, email, privilege, picture} = userData
     const img = window.location.origin + `/profilePics/${picture}.png`
     const [dropdown, setDropdown] = useState(false)
-    const {changepfp} = useLoginService()
+    const {loginLoading, changepfp} = useLoginService()
 
     const onClick = (e) => {
         setDropdown(false)
@@ -54,7 +57,7 @@ function Me() {
                         <div className={MeCSS.dropdown} dropdownelement='true'>
                             {images.map(image => <img dropdownelement='true' key={image} imgkey={image} src={window.location.origin + `/profilePics/${image}.png`} className={`${MeCSS.img} ${MeCSS.dropdownImg}`} onClick={onClick}/>)}
                         </div>}
-                    <div style={{fontWeight: '500'}}>Avatar - {picture}</div>
+                    {loginLoading ? <ClipLoader /> : <div style={{fontWeight: '500'}}>Avatar - {picture}</div>}
                 </div>
                 <div className={MeCSS.entry}>Username: {name}</div>
                 <div className={MeCSS.entry}>Email: {email}</div>

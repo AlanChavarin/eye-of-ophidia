@@ -2,9 +2,8 @@
     background: white;
     border: 1px solid lightgray;
 
-    width: 30vw;
-    min-width: 600px;
-    height: 40%;
+    width: 600px;
+    height: 350px;
 
     display: flex;
     flex-direction: column;
@@ -91,5 +90,15 @@
     font-weight: 500;
     margin-left: 130px;
     border: 1px solid lightgrey;
+}
+
+@media(width < 650px){
+    .parent{
+        width: 100%;
+    }
+
+    .entry{
+        margin-left: 0px;
+    }
 }
 

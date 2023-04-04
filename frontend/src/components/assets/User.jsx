@@ -57,13 +57,14 @@ function User({user}) {
       cancelWarning()
       document.removeEventListener('mousedown', outsideClick)
     }
-   
   }
 
   return (<div className={UsersCSS.user}>
     <img className={UsersCSS.img} src={`/profilepics/${data.picture}.png`} width="25" height="25"/>
 
-    <p>{data.name}: {loginLoading ? <ClipLoader size={14}/> : data.privilege}</p>
+    <p style={{
+      fontSize: (data.name.length > 19) && '.6em'
+    }}>{data.name}: {loginLoading ? <ClipLoader size={14}/> : data.privilege}</p>
 
     <button className={UsersCSS.button} onClick={onClick}>
       <FontAwesomeIcon icon={dropdown ? faCaretDown : faGear}/>

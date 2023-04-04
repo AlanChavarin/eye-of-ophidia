@@ -9,7 +9,7 @@
 .sidebar{
     position: absolute;
     height: 100%;
-    width: 70%;
+    width: 300px;
     background-color: white;
     left:0;
 }
@@ -26,11 +26,35 @@
     font-size: 4em;
 }
 
+.xbutton:hover{
+    background-color: lightgrey;
+}
+
 .item{
-    font-size: 1.8em;
+    font-size: 1.3em;
     padding: 15px 10px 15px 10px;
 }
 
 .item:hover{
     background-color: lightgrey;
+}
+
+@media(width < 500px){
+    .sidebar{
+        width: 250px;
+    }
+
+    .sidebarContainer{
+        margin-left: 15px;
+    }
+}
+
+@media(width < 400px){
+    .sidebarContainer{
+        margin-left: 10px;
+    }
+
+    .item{
+        font-size: 1.1em;
+    }
 }

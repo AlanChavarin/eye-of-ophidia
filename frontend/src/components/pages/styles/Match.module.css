@@ -5,36 +5,11 @@
     position: relative
 }
 
-@media(orientation: portrait),(width < 1300px){
-    .container{
-        flex-direction: column;
-    }
-
-    .detailsContainer{
-        min-width: 80%;
-        align-self: center;
-    }
-
-    .playerContainer{
-        width: 80%;
-        align-self: center;
-        max-width: 600px;
-        min-width: 380px;
-    }
-
-    .videoFeedbackContainer{
-       align-self: center;
-    }
-    
-}
-
 .videoFeedbackContainer{
-    width: 90%;
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
-
-
 
 .videoContainer{
     position:relative;
@@ -48,7 +23,7 @@
     top: 10px;
     left: 10px;
     width: 100%;
-    height: 95%;
+    height: 100%;
 
     border-radius: 10px;
     border-color: lightgray;
@@ -63,7 +38,6 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-
 }
 
 .containerTab{
@@ -156,4 +130,69 @@
     position: absolute;
     top: 50%;
     left: 50%;
+}
+
+.unavailable{
+    background-color: #505050;
+    color: rgb(197, 197, 197);
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+
+    text-decoration: none;
+    text-shadow: none;
+
+    box-shadow: 3px 3px 2px rgb(49, 49, 49);
+
+    align-self: flex-start;
+}
+
+@media(orientation: portrait),(width < 1300px){
+    .container{
+        flex-direction: column;
+    }
+
+    .detailsContainer{
+        width: 100%;
+        align-self: center;
+        margin: 10px 0px 0px 0px;
+    }
+
+    .playerContainer{
+        width: 80%;
+        align-self: center;
+        max-width: 600px;
+        min-width: 0px;
+    }
+
+    .videoFeedbackContainer{
+       align-self: center;
+    }
+
+    .videoContainer iframe{
+        top: 0px;
+        left: 0px;
+    }
+
+    .containerTab{
+        margin: 0px 50px 0px 50px;
+        align-self: center;
+        flex-wrap: wrap;
+    }
+}
+
+@media(width < 420px){
+    .playerContainer{
+        width: 90%;
+        height: 180px;
+    }
+
+    .link{
+        font-size: .8em;
+    }
+
+    .unavailable{
+        font-size: .7em;
+    }
+
 }

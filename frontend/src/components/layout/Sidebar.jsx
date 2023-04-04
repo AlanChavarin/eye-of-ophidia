@@ -50,7 +50,7 @@ function Sidebar() {
                         <div>Issues</div>
                     </Link>
                     <Link to='/me' className={SidebarCSS.item}>
-                        <div>{userData.name}</div>
+                        <div style={{fontSize: (userData.name.length > 19) ? '.7em' : ''}}>{userData.name}</div>
                     </Link>
                     <Link to='/users' className={SidebarCSS.item}>
                         <div>Users</div>

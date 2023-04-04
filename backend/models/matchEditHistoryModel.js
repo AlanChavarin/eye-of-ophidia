@@ -5,11 +5,11 @@ const top8Rounds = ['Quarter Finals', 'Semi Finals', 'Finals', 'None']
 
 const matchEditHistorySchema = mongoose.Schema({
     player1name: {type: String, required: true},
-    player1deck: {type: String, required: true},
+    player1deck: {type: String},
     player1hero: {type: String, required: true},
 
     player2name: {type: String, required: true},
-    player2deck: {type: String, required: true},
+    player2deck: {type: String},
     player2hero: {type: String, required: true},
 
     event: {

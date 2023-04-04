@@ -40,7 +40,7 @@ function Users() {
   return (
     <div className={UsersCSS.parent}> 
 
-        <div style={{margin: '10px'}} className={IssuePageCSS.buttonContainer}>
+        <div style={{margin: '10px'}} className={UsersCSS.buttonContainer}>
             {privileges.map(privilege => (
                 <button onClick={() => setPrivilegeFilter(privilege)} className={`
                     ${IssuePageCSS.button}

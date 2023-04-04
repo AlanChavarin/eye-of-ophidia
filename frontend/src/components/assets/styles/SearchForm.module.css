@@ -3,9 +3,7 @@
     flex-direction: column;
     gap: 10px;
     align-items: center;
-
-    margin: 20px;
-    padding: 2px;
+    padding: 0px;
 }
 
 .container{
@@ -21,9 +19,7 @@
     border-radius: 20px;
     border: 1px solid grey;
 
-    width: 40vw;
-    max-width: 700px;
-    min-width: 500px;
+    width: 700px;
 }
 
 .searchButton{
@@ -50,22 +46,32 @@
     padding: 10px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
+    width: 100%;
 }
 
 .searchInput:focus{
     outline: none;
 }
 
+.vs{
+    font-weight: 500;
+    align-self: center;
+}
+
 @media (orientation: portrait), (width < 900px){
     .searchBar{
-        width: 75vw;
-        min-width: 100px;
+        width: 95vw;
+        min-width: 0px;
     }
 }
 
 @media(width < 600px){
     .hero{
         flex-direction: column;
+    }
+
+    .vs{
+        font-size: .8em;
     }
 }
 

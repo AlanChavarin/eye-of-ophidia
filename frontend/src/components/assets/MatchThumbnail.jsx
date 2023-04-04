@@ -36,25 +36,24 @@ function MatchThumbnail({match, page, recyclebin}) {
         </div>
 
         <div className={`${MatchThumbnailCSS.imageContainer} ${MatchThumbnailCSS.imageLeft}`} style={{
-            backgroundImage: `url(${hero1url})`,
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.20)), url(${hero1url})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: '180%',
             backgroundPosition: '40% 10%',
           }}>
 
-        <div className={MatchThumbnailCSS.playerName}>
-          {match.player1name}
-        </div>
+          <div className={MatchThumbnailCSS.playerName}>
+            {match.player1name}
+          </div>
 
         </div>
 
         <div className={`${MatchThumbnailCSS.imageContainer} ${MatchThumbnailCSS.imageRight}`} style={{
-            backgroundImage: `url(${hero2url})`,
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.20)), url(${hero2url})`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: '180%',
             backgroundPosition: '40% 10%',
           }}>
-          
 
           <div className={MatchThumbnailCSS.playerName}>
             {match.player2name}

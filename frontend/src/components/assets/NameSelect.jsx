@@ -9,14 +9,14 @@ function NameSelect({name, onChange, value}) {
     useEffect(() => {
         getNames()
         .then(data => {
-            let arr = []
-            data.map(d => arr.push(d.name))
-            setNames(arr)
+          let arr = []
+          data.map(d => arr.push(d.name))
+          setNames(arr)
         })
     }, [])
 
   return (
-    <SearchableDropdown items={names} name={name} value={value} onChange={onChange} />
+    <SearchableDropdown items={names} name={name} value={value} onChange={onChange}/>
   )
 }
 export default NameSelect

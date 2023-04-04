@@ -39,10 +39,10 @@ function SearchResults() {
     }, [searchParams, page])
 
   return (
-    <div>
+    <div className={SearchResultsCSS.parent}>
       <SearchForm page='matches'/>
-      
-      <div className={SearchResultsCSS.matchThumbnails}>
+
+      <div className={SearchResultsCSS.matchThumbnails} style={{marginTop: '20px'}}>
         <MoonLoader size={70} loading={matchLoading}/>
         {matches?.map((match) => (
           <MatchThumbnail key={match._id} match={match} recyclebin={recyclebin}/>

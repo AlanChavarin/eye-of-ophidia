@@ -18,7 +18,10 @@ function EventThumbnail({event, page, details, recyclebin}) {
         <>
           <div className={EventThumbnailCSS.name}>{event.name}</div>
           <div className={EventThumbnailCSS.details}>
-            <div>{event.startDate.substr(0, 10)} - {event.endDate.substr(0, 10)} </div>
+            <div>{event.startDate.substr(0, 10)}
+             {event.endDate && `- ${event.endDate.substr(0, 10)}`} 
+             
+            </div>
             <div>{event.format}{event.format==='Mixed' && (<> Format</>)}</div>
             <div>{event.location}</div>
             {(page==='matchPage') && (<div>{details}</div>)}

@@ -46,9 +46,7 @@ a{
 
 .forEventsPage{
     height: 270px;
-    width: 30vw;
-    min-width: 400px;
-    max-width: 500px;
+    width: 500px;
 }
 
 .forMatchPage{
@@ -62,10 +60,9 @@ a{
     max-width: 500px;
 }
 
-@media(landscape: portrait), (width < 900px){
+@media(landscape: portrait), (width < 1000px){
     .forEventsPage{
-        min-width: 450px;
-        max-width: 500px;
+        width: 400px;
     }
 }
 
@@ -74,7 +71,7 @@ a{
         width: 83%;
         align-self: center;
         max-width: 630px;
-        min-width: 400px;
+        min-width: 0px;
     }
 }
 
@@ -83,5 +80,17 @@ a{
         width: 100%;
         max-width: 650px;
         height: 220px;
+    }
+}
+
+@media(width < 420px){
+    .forEventsPage{
+        height: 240px;
+        width: 100%;
+    }
+
+    .forMatchPage{
+        width: 100%;
+        min-width: 0px;
     }
 }

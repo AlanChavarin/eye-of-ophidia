@@ -26,6 +26,8 @@ const registerUser = asyncHandler(async (req, res) => {
         picture: 'bauble',
         verified: false,
     })
+
+    sendEmail(jwt.sign(newlyCreatedUser._id, process.env.EMAIL_SECRET), req.body.email)
     
     res.status(200).json({
         name: newlyCreatedUser.name,

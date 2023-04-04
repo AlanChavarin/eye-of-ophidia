@@ -1,0 +1,20 @@
+.p{
+    position: absolute;
+    z-index: 2;
+    max-width: 80%;
+    background-color: #fffcf0;
+    border: 1px solid lightgray;
+    padding: 5px;
+    border-radius: 7px;
+    box-shadow: 3px 3px 2px #4d4c4c;
+}
+
+.button{
+    border: none;
+    background: none;
+}
+
+.button:hover{
+    color: gray;
+    cursor: pointer;
+}

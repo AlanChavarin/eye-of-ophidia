@@ -29,7 +29,6 @@ const useMatchService = () => {
     }
 
     const getMatches = async (text, hero1, hero2, page, limit, recyclebin) => {
-        console.log(process.env.REACT_APP_API)
         setLoading(true)
         !page && (page=0)
         !limit && (limit=10)

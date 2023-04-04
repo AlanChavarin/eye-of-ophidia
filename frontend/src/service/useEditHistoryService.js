@@ -3,7 +3,7 @@ import AlertContext from '../context/AlertContext'
 
 const useEditHistoryService = () => {
     const MATCH_API_URL = `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/matchedithistory/history/'
-    const EVENT_API_URL = `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + + '/api/eventedithistory/history/'
+    const EVENT_API_URL = `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/eventedithistory/history/'
     const {addAlert} = useContext(AlertContext)
     const [editLoading, setLoading] = useState(false)
 
@@ -30,6 +30,7 @@ const useEditHistoryService = () => {
     }
 
     const getEventEditHistory = async (eventid, page, limit) => {
+        console.log(EVENT_API_URL)
         setLoading(true)
         return new Promise(resolve => (
             fetch(EVENT_API_URL + eventid + '?page=' + page + '&limit=' + limit, {

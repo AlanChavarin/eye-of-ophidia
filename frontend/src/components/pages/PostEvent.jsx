@@ -33,6 +33,7 @@ function PostEvent() {
     endDate: '',
     description: ''
   })
+  const [isMultiDay, setIsMultiDay] = useState(false)
 
   const [deletePopup, setDeletePopup] = useState(false)
 
@@ -42,8 +43,8 @@ function PostEvent() {
     if(eventid){
       getEvent(eventid)
       .then(data => {
-        data.startDate = data.startDate.substring(0,10)
-        data.endDate = data.endDate.substring(0,10)
+        data.startDate = data.startDate?.substring(0,10)
+        data.endDate = data.endDate?.substring(0,10)
         setFormData(data)
       })
     }
@@ -56,13 +57,14 @@ function PostEvent() {
     }))
   }
 
+  const onChangeChecked = (e) => {
+    setIsMultiDay(e.target.checked)
+  }
+
   const onSubmit = (e) => {
     e.preventDefault()
     postEvent(formData, eventid)
-    .then(event => {
-      console.log(event)
-      navigate(`/events/${event._id}`)
-    })
+    .then(event => navigate(`/events/${event._id}`))
   }
 
   const onDelete = (e) => {
@@ -73,7 +75,6 @@ function PostEvent() {
         navigate('/events')
       }
     })
-    
   }
 
   return (
@@ -101,14 +102,25 @@ function PostEvent() {
             <option value="Mixed">Mixed</option>
           </select>
         </div>
+
+        <div>
+          <label>Multiday Event</label>
+          <input type="checkbox" name='recyclebin' onChange={onChangeChecked}/>
+        </div>
+        
+
         <div className={PostMatchCSS.container}>
-          <label>Start Date</label>
+          <label>{isMultiDay ? <>Start Date</> : <>Date</>}</label>
           <input type="date" name='startDate' value={startDate} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
-        <div className={PostMatchCSS.container}>
-          <label>End Date</label>
-          <input type="date" name='endDate' value={endDate} onChange={onChange} required className={PostMatchCSS.input}/>
-        </div>
+
+        {isMultiDay && <>
+          <div className={PostMatchCSS.container}>
+            <label>End Date</label>
+            <input type="date" name='endDate' value={endDate} onChange={onChange} required className={PostMatchCSS.input}/>
+          </div>
+        </> }
+        
         <div className={PostMatchCSS.container}>
           <label>Description</label>
           <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={PostMatchCSS.input}></textarea>

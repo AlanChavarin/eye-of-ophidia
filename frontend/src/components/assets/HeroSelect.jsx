@@ -21,7 +21,7 @@ function HeroSelect({name, onChange, required, value, type}) {
     }, [type])
     
   return (
-    <SearchableDropdown items={heroData} name={name} value={value} onChange={onChange}/>
+    <SearchableDropdown items={heroData} name={name} value={value} onChange={onChange} placeholder={true}/>
   )
 }
 export default HeroSelect

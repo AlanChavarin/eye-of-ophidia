@@ -7,11 +7,11 @@ const ObjectId = require('mongodb').ObjectId
 
 const matchSchema = mongoose.Schema({
     player1name: {type: String, required: true},
-    player1deck: {type: String, required: true},
+    player1deck: {type: String},
     player1hero: {type: String, required: true, validate: v => heroEnum(v)},
 
     player2name: {type: String, required: true},
-    player2deck: {type: String, required: true},
+    player2deck: {type: String},
     player2hero: {type: String, required: true, validate: v => heroEnum(v)},
 
     // winner: {type: string, required: true},

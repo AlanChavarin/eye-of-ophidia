@@ -11,6 +11,7 @@ import Popup from '../assets/Popup'
 import SearchableDropdown from '../assets/SearchableDropdown'
 import HeroSelect from '../assets/HeroSelect'
 import NameSelect from '../assets/NameSelect'
+import PostMatchInfoDropdown from '../assets/PostMatchInfoDropdown'
 
 //service
 import useEventService from '../../service/useEventService'
@@ -35,7 +36,8 @@ function PostMatch() {
   const navigate = useNavigate()
   const {matchid} = useParams()
 
-  const [eventData, setEventData] = useState([])
+  const [eventNames, setEventNames] = useState([])
+  const [eventData, setEventData] = useState()
   const [formData, setFormData] = useState({
     player1name: '',
     player1hero: '',
@@ -68,9 +70,10 @@ function PostMatch() {
     }
     getEvents()
     .then(data => {
+      setEventData(data.events)
       let eventNames = []
       data.events?.map((event) => eventNames.push(event.name))
-      setEventData(eventNames)
+      setEventNames(eventNames)
     })
   }, [])
 
@@ -86,9 +89,9 @@ function PostMatch() {
   }, [fullLink])
 
   useEffect(() => {
-    eventData?.map((thisEvent) => {
-      if(thisEvent.name === event && thisEvent.format !== 'Mixed'){
-        setFormData((prevState) => ({
+    eventData?.map(thisEvent => {
+      if(event === thisEvent.name && thisEvent.format !=='Mixed'){
+        setFormData(prevState => ({
           ...prevState,
           format: thisEvent.format
         }))
@@ -140,7 +143,7 @@ function PostMatch() {
         
         <div className={PostMatchCSS.container}>
           <label>Event <span style={{color: 'red'}}>*</span></label>
-          <SearchableDropdown items={eventData} onChange={onChange} value={event} name='event'/>
+          <SearchableDropdown items={eventNames} onChange={onChange} value={event} name='event'/>
         </div>
         <div className={PostMatchCSS.container}>
           <label>Format <span style={{color: 'red'}}>*</span></label>
@@ -185,7 +188,7 @@ function PostMatch() {
         </div>
 
         <div className={PostMatchCSS.container}>
-          <label>Youtube Video Link</label>
+          <div style={{display: 'flex'}}><label>Youtube Video Link </label><PostMatchInfoDropdown /></div>
           <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
         <div className={PostMatchCSS.container}>
@@ -208,8 +211,8 @@ function PostMatch() {
           <NameSelect name='player1name' value={player1name} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
         <div className={PostMatchCSS.container}>
-          <label>Player 1 Deck Link <span style={{color: 'red'}}>*</span></label>
-          <input type="url" name='player1deck' value={player1deck} onChange={onChange} required className={PostMatchCSS.input}/>
+          <label>Player 1 Deck Link</label>
+          <input type="url" name='player1deck' value={player1deck} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
 
         <div className={PostMatchCSS.container}>
@@ -221,8 +224,8 @@ function PostMatch() {
           <NameSelect name='player2name' value={player2name} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
         <div className={PostMatchCSS.container}>
-          <label>Player 2 Deck Link <span style={{color: 'red'}}>*</span></label>
-          <input type="url" name='player2deck' value={player2deck} onChange={onChange} required className={PostMatchCSS.input}/>
+          <label>Player 2 Deck Link</label>
+          <input type="url" name='player2deck' value={player2deck} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
       
         {/* <div className={LoginCSS.container}>

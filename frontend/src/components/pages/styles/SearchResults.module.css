@@ -1,3 +1,11 @@
+.parent{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 20px;
+}
+
 .matchThumbnails{
     display: flex;
     flex-direction: row;

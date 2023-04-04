@@ -84,7 +84,7 @@ function Event() {
                 <div className={EventCSS.eventName}>{event.name}</div>
                 <div className={EventCSS.div1}>
                     <div className={EventCSS.eventDetails}>
-                        <div>{event.startDate.substr(0, 10)} - {event.endDate.substr(0, 10)} </div>
+                        <div>{event.startDate.substr(0, 10)} {event.endDate && `- ${event.endDate.substr(0, 10)}`} </div>
                         <div>{event.format}{event.format==='Mixed' && (<>Format</>)}</div>
                         <div>{event.location}</div>
                     </div>
