@@ -69,32 +69,29 @@ function Match() {
 
         <div className={MatchCSS.detailsContainer}>
           {(match) && <>
-          <div className={MatchCSS.feedbackContainer}>
 
-            <div className={MatchCSS.containerTab}> 
-              {!recyclebin ? <>
-                <button value='details' onClick={onClick} style={{backgroundColor: (tab==='details') && '#1446A0', color: (tab==='details') && 'white'}}>Details</button>
-                <button value='comments' onClick={onClick} style={{backgroundColor: (tab==='comments') && '#1446A0', color: (tab==='comments') && 'white'}}>Comments</button>
-                <button value='issues' onClick={onClick} style={{backgroundColor: (tab==='issues') && '#1446A0', color: (tab==='issues') && 'white'}}>Issues</button>
+          {/* buttons */}
+          <div className={MatchCSS.containerTab}> 
+            {!recyclebin ? <>
+              <button value='details' onClick={onClick} style={{backgroundColor: (tab==='details') && '#1446A0', color: (tab==='details') && 'white'}}>Details</button>
+              <button value='comments' onClick={onClick} style={{backgroundColor: (tab==='comments') && '#1446A0', color: (tab==='comments') && 'white'}}>Comments</button>
+              <button value='issues' onClick={onClick} style={{backgroundColor: (tab==='issues') && '#1446A0', color: (tab==='issues') && 'white'}}>Issues</button>
 
-                {(userData.privilege==='admin' || userData.privilege==='moderator') && <>
-                  <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
-                  <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>
-                </>}</> 
-                :
+              {(userData.privilege==='admin' || userData.privilege==='moderator') && <>
+                <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
+                <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>
+              </>}</> 
+              :
 
-              <button onClick={restore} className={MatchCSS.restoreButton}>
-                {matchLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}
-              </button>
-              }
-            </div>
-
-            {tab==='comments' && <Comments matchid={matchid}/>}
-            {tab==='issues' && <Issues targetid={matchid} targetType='match'/>}
-            {tab==='history' && <EditHistories id={matchid} forPage='match'/>}
-
+            <button onClick={restore} className={MatchCSS.restoreButton}>
+              {matchLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}
+            </button>
+            }
           </div>
 
+          {tab==='comments' && <Comments matchid={matchid}/>}
+          {tab==='issues' && <Issues targetid={matchid} targetType='match'/>}
+          {tab==='history' && <EditHistories id={matchid} forPage='match'/>}
           {tab==='details' && <>
             <EventThumbnail event={match.event} page='match' details={`${(match.top8) ? (`${match?.top8Round}`) : `Swiss Round ${match?.swissRound}`}`}/>
 
@@ -112,10 +109,9 @@ function Match() {
                 <a href={`${match.player2deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> :
                 <div className={MatchCSS.unavailable}>Deck list not available</div>
               }
-            </div> 
+            </div> </>}
           </>}
-            </>}
-          </div>
+        </div>
           
       </div>
       

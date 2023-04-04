@@ -3,6 +3,9 @@
     flex-direction: column;
     gap: 10px;
     padding-top: 10px;
+    width: 100%;
+    max-width: 600px;
+
 }
 
 .form{
@@ -42,6 +45,7 @@
 .statusButtons{
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .hr{
@@ -72,6 +76,9 @@
     border-color: lightgray;
     border-width: 2px;
     border-style: solid;
+
+    height: 4em;
+    width: 100%;
 }
 
 .submitButton{

@@ -74,29 +74,42 @@ function Comments({matchid}) {
 
   return (
     <div className={CommentsCSS.parent}>
-      <div className={CommentsCSS.pageButtons}>
+
+      {/* pagination buttons*/}
+      {/* <div className={CommentsCSS.pageButtons}>
         {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => {setPage(i)}}>{i+1}</button>)}
-      </div>
+      </div> */}
+
       <MoonLoader size={60} loading={commentLoading} cssOverride={{alignSelf: 'center'}}/> 
+
+      {/* comments */}
       {comments?.map((comment) => (<>
         <div key={comment._id} className={CommentsCSS.comment}>
+
+          {/* delete button */}
           {(userData?.privilege === 'admin') ? (<button className={CommentsCSS.deleteButton} onClick={(e) => promptDelete(e, comment._id)}><FontAwesomeIcon icon={faTrash} /></button>) : <></>}
+
+          {/* profile pic */}
           <img src={window.location.origin + `/profilePics/${comment.picture}.png`} className={CommentsCSS.img}/>
-          <div>
-            <div className={CommentsCSS.commenter}>{comment.name}</div>
-            <div className={CommentsCSS.commentContainer}>
-              <div className={CommentsCSS.commentBody}>{comment.body}</div>
-            </div>
+          
+          {/* name and comment container */}
+          <div className={CommentsCSS.nameAndCommentContainer}>
+            <div className={CommentsCSS.commenter} style={{fontSize: comment?.name.length > 19 && '.7em'}}>{comment.name}</div>
+            <p className={CommentsCSS.commentBody}>{comment.body}</p>
           </div>
         </div>
         <hr className={CommentsCSS.hr}/>
       </>))}
+
+      {/* comment form */}
       {((userData?.name) ? (
         <form onSubmit={onSubmit} className={CommentsCSS.form}>
-          <textarea placeholder='Leave a comment on this match!' name="newCommentBody" rows='4' cols='30' value={newCommentBody} onChange={onChange} id=""  className={CommentsCSS.textarea}>Comment</textarea>
+          <textarea placeholder='Leave a comment on this match!' name="newCommentBody" value={newCommentBody} onChange={onChange} id=""  className={CommentsCSS.textarea}>Comment</textarea>
           <input type='submit' value='Comment' className={CommentsCSS.submitButton}/>
         </form>
       ) : <></>)}
+
+      {/* popup */}
       <Popup trigger={popup}>
         <div>
           <h1>Are you sure you want to <b style={{color: 'red'}}>delete</b> this comment? </h1>
@@ -107,6 +120,7 @@ function Comments({matchid}) {
           <button className={PopupCSS.cancelButton} onClick={(e) => cancelDelete(e)}>Cancel</button>
         </div>
       </Popup>
+
     </div>
   )
 }

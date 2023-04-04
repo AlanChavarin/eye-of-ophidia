@@ -37,23 +37,30 @@ function EditHistories({id, forPage}) {
         
     }, [page])
 
-  return (<div className={EditHistoryCSS.parent}>
+  return (
+    <div className={EditHistoryCSS.parent}>
+
         <div className={CommentsCSS.pageButtons}>
             {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page ? CommentsCSS.selectedButton : ''} onClick={() => {setPage(i)}}>{i+1}</button>)}
         </div>
+
         <div className={EditHistoryCSS.dropdownContainer}>
-        <MoonLoader size={60} loading={editLoading} cssOverride={{alignSelf: 'center'}}/> 
+
+            <MoonLoader size={60} loading={editLoading} cssOverride={{alignSelf: 'center'}}/> 
+
             {(forPage==='match') && history?.map((editHistory, i, arr) => (
                 <EditHistory editHistory={editHistory} key={i}
                 previousHistory={(i!==arr.length-1) ? arr[i+1] : null}
                 />
             ))}
+            
             {(forPage==='event') && history?.map((editHistory, i, arr) => (
                 <EventEditHistory editHistory={editHistory} key={i}
                 previousHistory={(i!==arr.length-1) ? arr[i+1] : null}
                 />
             ))}
         </div>
+
     </div>)
 }
 export default EditHistories

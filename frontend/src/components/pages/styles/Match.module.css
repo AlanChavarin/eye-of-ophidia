@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
     display: flex;
-    position: relative
+    position: relative;
 }
 
 .videoFeedbackContainer{
@@ -154,8 +154,9 @@
 
     .detailsContainer{
         width: 100%;
-        align-self: center;
         margin: 10px 0px 0px 0px;
+        align-items: center;
+        padding: 0px;
     }
 
     .playerContainer{

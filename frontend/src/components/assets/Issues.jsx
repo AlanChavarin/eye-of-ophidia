@@ -64,6 +64,7 @@ function Issues({targetid, targetType}) {
 
   return (
     <div className={IssuesCSS.parent}>
+
         <div className={IssuePageCSS.buttonContainer}>
             <button onClick={() => setStatusFilter('')} className={`
                 ${IssuePageCSS.button}
@@ -85,29 +86,37 @@ function Issues({targetid, targetType}) {
                 ${statusFilter==='closed' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
             `}>Closed</button>
         </div>
+
         <div className={CommentsCSS.pageButtons}>
             {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => {setPage(i)}}>{i+1}</button>)}
         </div>
+
         <MoonLoader size={60} loading={issueLoading} cssOverride={{alignSelf: 'center'}}/> 
+
         {issues?.map((issue) => (
             <Issue issue={issue}/>
         ))}
+
         {(targetid) && <>
             <br/>
             <hr className={IssuesCSS.hr}/>
             <form onSubmit={onSubmit} className={IssuesCSS.form}>
                 <div style={{alignSelf: 'center', fontWeight: '600'}}>Is there an issue with this match/event? Submit an issue down below!</div>
+
                 <div className={IssuesCSS.formContainer}>
                     <label className={IssuesCSS.label}>Title</label>
                     <input placeholder='Issue title' name='title' type="text" onChange={onChange} value={title} className={IssuesCSS.input}/>
                 </div>
+
                 <div className={IssuesCSS.formContainer}>
                     <label className={IssuesCSS.label}>Body</label>
-                    <textarea placeholder='Write the details of the issue with this match/event' name='body' id="" cols="30" rows="7" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
+                    <textarea placeholder='Write the details of the issue with this match/event' name='body' id="" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
                 </div>
+
                 <input type="submit" value='Submit Issue' className={IssuesCSS.submitButton} style={{boxShadow: '3px 3px 2px black'}}/>
+
             </form>
-            </>}
+        </>}
             
         
     </div>

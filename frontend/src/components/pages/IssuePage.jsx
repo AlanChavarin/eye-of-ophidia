@@ -47,6 +47,7 @@ function IssuePage() {
         ${tab==='event' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
         `}>Event Issues</button>
       </div>
+
       <div style={{margin: '10px'}} className={IssuePageCSS.buttonContainer}>
         <button onClick={() => setStatusFilter('')} className={`
           ${IssuePageCSS.button}
@@ -67,7 +68,6 @@ function IssuePage() {
           ${IssuePageCSS.button}
           ${statusFilter==='closed' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
         `}>Closed</button>
-
       </div>
 
       <div style={{margin: '10px'}} className={IssuePageCSS.buttonContainer}>
@@ -80,7 +80,6 @@ function IssuePage() {
           ${IssuePageCSS.button}
           ${order===-1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
         `}>Oldest</button>
-
       </div>
 
       <MoonLoader size={60} loading={issueLoading} cssOverride={{alignSelf: 'center'}}/> 

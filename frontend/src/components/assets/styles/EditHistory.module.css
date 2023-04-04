@@ -5,6 +5,10 @@
     width: 100%;
 }
 
+.parent * {
+    word-break: break-word;
+}
+
 .dropdownContainer{
     display: flex;
     flex-direction: column;
@@ -67,4 +71,10 @@
 .edit{
     background-color: pink;
     border-radius: 3px;
+}
+
+@media(width < 500px){
+    .parent *{
+        font-size: .9em;
+    }
 }
