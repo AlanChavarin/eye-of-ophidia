@@ -12,6 +12,9 @@ const getMatches = asyncHandler(async (req, res) => {
     if(!req.query.page){skip = 0} 
     else {skip = parseInt(req.query.page*limit)}
 
+    order = parseInt(req.query.order)
+    !(order === 1 || order ===-1) && (order = -1)
+
     find = {}
 
     if(!req.recyclebin){
@@ -49,14 +52,13 @@ const getMatches = asyncHandler(async (req, res) => {
         find["event.startDate"] = {"$lt": date}
     }
 
-    
-
     const pipeline = [
         {"$match": find},
         { "$facet": {
             "matches": [
                 { "$skip": skip },
-                { "$limit": limit }
+                { "$limit": limit },
+                { "$sort": {"event.startDate": order}}
             ],
             "count": [
                 { "$count": "count" }

@@ -5,14 +5,14 @@ import UserContext from '../../context/UserContext'
 
 //assets
 import HeroSelect from './HeroSelect'
+import Order from './Order'
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
 
 //css
 import SearchFormCSS from './styles/SearchForm.module.css'
-import IssuePageCSS from '../pages/styles/IssuePage.module.css'
 
 function SearchForm({page}) {
     const {userData} = useContext(UserContext)
@@ -63,12 +63,16 @@ function SearchForm({page}) {
     return (
         <div className={SearchFormCSS.parent}>
             <form className={SearchFormCSS.searchform} onSubmit={onSubmit}>
+                {/* Search bar */}
                 <div className={SearchFormCSS.searchBar}> 
                     <button className={SearchFormCSS.searchButton}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
                     <input className={SearchFormCSS.searchInput} type='text' name='text' value={text} onChange={onChange} placeholder={`Search for ${page}`}/>
                 </div>
 
+                {/* parameters container */}
                 <div className={SearchFormCSS.parametersContainer}>
+
+                    {/* hero parameters */}
                     {(page==='matches') && <div className={SearchFormCSS.hero}>
                         <label style={{fontWeight: '500'}}>Hero Matchup: </label>
                         <div className={SearchFormCSS.container}>   
@@ -80,22 +84,18 @@ function SearchForm({page}) {
                         </div>
                     </div>}
 
-                    {page==='events' && <div className={IssuePageCSS.buttonContainer}>
-                        <button 
-                        onClick={(e) => {e.preventDefault(); changeOrder(-1)}}
-                        className={`${IssuePageCSS.button} ${order===-1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}`}>Newest</button>
-                        <button 
-                        onClick={(e) => {e.preventDefault(); changeOrder(1)}}
-                        className={`${IssuePageCSS.button} ${order===1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}`}>Oldest</button>
-                    </div>}
-
-                    <div className={SearchFormCSS.hero}>
+                    {/* Date range container */}
+                    {<div className={SearchFormCSS.hero}>
                         <label style={{fontWeight: '500'}}>Date Range: </label>
                         <input type="date" name='startDate' value={startDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
                         <label className={SearchFormCSS.vs}> - </label>
                         <input type="date" name='endDate' value={endDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
-                    </div>
+                    </div>}
 
+                    {/* Order Container */}
+                    <Order order={order} setOrder={changeOrder}/>
+
+                    {/* Recyclebin checkbox */}
                     {userData?.privilege==='admin' && <div className={SearchFormCSS.container} style={{flexDirection: 'row'}}>
                         <label style={{fontSize: '.6em'}}>Recyclebin</label>
                         <input type="checkbox" name='recyclebin' onChange={onChangeChecked} value={recyclebin}/>

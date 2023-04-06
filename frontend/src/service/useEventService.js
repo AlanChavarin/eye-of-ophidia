@@ -29,7 +29,6 @@ const useEventService = () => {
     }
 
     const getEvents = async (text, startDate, endDate, page, limit, order, recyclebin) => {
-        console.log(text, startDate, endDate, page, limit, order, recyclebin)
         setLoading(true)
         return new Promise(resolve => (
             fetch(API_URL + `${recyclebin ? '/recyclebin/':''}` + '?'

@@ -1,0 +1,18 @@
+.button{
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+    max-width: min-content;
+    white-space: nowrap;
+    cursor: pointer;
+
+    background-color: lightgray;
+    color: black;
+    box-shadow: 3px 3px 2px #272727;
+
+    margin: 8px 0px 8px 0px;
+}
+
+.button:hover{
+    background-color: rgb(168, 168, 168);
+}

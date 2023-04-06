@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react'
 
 //assets
 import IssuePageComponent from '../assets/IssuePageComponent'
+import Order from '../assets/Order'
 
 //service
 import useIssueService from '../../service/useIssueService'
@@ -19,7 +20,7 @@ function IssuePage() {
   const [issues, setIssues] = useState()
   const [tab, setTab] = useState('match')
   const [statusFilter, setStatusFilter] = useState('pending')
-  const [order, setOrder] = useState(1)
+  const [order, setOrder] = useState(-1)
 
   const limit = 10
   const [page, setPage] = useState(0)
@@ -70,7 +71,9 @@ function IssuePage() {
         `}>Closed</button>
       </div>
 
-      <div style={{margin: '10px'}} className={IssuePageCSS.buttonContainer}>
+      <Order order={order} setOrder={setOrder} style={{padding: '10px'}}/>
+
+      {/* <div style={{margin: '10px'}} className={IssuePageCSS.buttonContainer}>
         <button onClick={() => setOrder(1)} style={{fontSize: '.8em', padding: '5px'}} className={`
           ${IssuePageCSS.button}
           ${order===1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
@@ -80,7 +83,7 @@ function IssuePage() {
           ${IssuePageCSS.button}
           ${order===-1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
         `}>Oldest</button>
-      </div>
+      </div> */}
 
       <MoonLoader size={60} loading={issueLoading} cssOverride={{alignSelf: 'center'}}/> 
 
