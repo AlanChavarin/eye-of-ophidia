@@ -71,12 +71,12 @@ function IssuePage() {
       </div>
 
       <div style={{margin: '10px'}} className={IssuePageCSS.buttonContainer}>
-        <button onClick={() => setOrder(1)} className={`
+        <button onClick={() => setOrder(1)} style={{fontSize: '.8em', padding: '5px'}} className={`
           ${IssuePageCSS.button}
           ${order===1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
         `}>Newest</button>
 
-        <button onClick={() => setOrder(-1)} className={`
+        <button onClick={() => setOrder(-1)}  style={{fontSize: '.8em', padding: '5px'}} className={`
           ${IssuePageCSS.button}
           ${order===-1 ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
         `}>Oldest</button>
@@ -92,6 +92,8 @@ function IssuePage() {
         {issues?.map((issue) => (<IssuePageComponent issue={issue} key={issue._id}/>))}
         {!issues && <div>No {tab} issues currently</div>}
       </div>
+
+      {issues?.length === 0 && <p className={IssuePageCSS.noIssuesFound}>No issues found</p>}
 
       <br />
       

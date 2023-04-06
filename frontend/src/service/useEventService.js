@@ -28,13 +28,17 @@ const useEventService = () => {
         })
     }
 
-    const getEvents = async (text, page, limit, order, recyclebin) => {
+    const getEvents = async (text, startDate, endDate, page, limit, order, recyclebin) => {
+        console.log(text, startDate, endDate, page, limit, order, recyclebin)
         setLoading(true)
-        !text && (text='')
-        !page && (page=0)
-        !limit && (limit=7)
         return new Promise(resolve => (
-            fetch(API_URL + `${recyclebin ? 'recyclebin/':''}` + '?text=' + text + '&page=' + page + '&limit=' + limit + '&order=' + order, {
+            fetch(API_URL + `${recyclebin ? '/recyclebin/':''}` + '?'
+            + `${text ? '&text=' + text : ''}` 
+            + `${startDate ? '&startDate=' + startDate : ''}`
+            + `${endDate ? '&endDate=' + endDate : ''}`
+            + `${page ? '&page=' + page : ''}`
+            + `${limit ? '&limit=' + limit : ''}`
+            + `${order ? '&order=' + order : ''}`, {
                 method: 'GET',
                 headers: {
                     'Content-type': 'application/json',

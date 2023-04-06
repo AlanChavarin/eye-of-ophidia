@@ -88,10 +88,12 @@ function PostEvent() {
           <label>Event Name <span style={{color: 'red'}}>*</span></label>
           <input type="text" name='name' value={name} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
+        
         <div className={PostMatchCSS.container}>
           <label>Location Name <span style={{color: 'red'}}>*</span></label>
           <input type="text" name='location' value={location} onChange={onChange} required className={PostMatchCSS.input}/>
         </div>
+
         <div className={PostMatchCSS.container}>
           <label>Format <span style={{color: 'red'}}>*</span></label>
           <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>

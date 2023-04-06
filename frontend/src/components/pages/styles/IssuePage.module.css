@@ -56,3 +56,9 @@
 .buttonUnselected:hover{
     background-color: #cab1b0;
 }
+
+.noIssuesFound{
+    text-align: center;
+    font-size: 1.2em;
+    
+}

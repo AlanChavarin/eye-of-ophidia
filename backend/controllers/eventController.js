@@ -19,16 +19,32 @@ const getEvents = asyncHandler(async (req, res) => {
     else {limit = parseInt(req.query.limit)}
     if(!req.query.page){skip = 0} 
     else {skip = parseInt(req.query.page*limit)}
-    if(!req.recyclebin){req.recyclebin = false}
 
     order = parseInt(req.query.order)
-    !(order === 1 || order ===-1) && (order = 1)
+    !(order === 1 || order ===-1) && (order = -1)
+
+    find = {}
+
+    if(!req.recyclebin){
+        find["deleted"] = false
+    } else {
+        find["deleted"] = true
+    }
+
+    
 
     if(req.query.text){
-        find = {"$text": {"$search": req.query.text},
-            "deleted": req.recyclebin}
-    } else {
-        find = {"deleted": req.recyclebin}
+        find["$text"] = {"$search": req.query.text}
+    }
+
+    if(req.query.startDate){
+        const date = new Date(req.query.startDate)
+        find["startDate"] = {"$gte": date}
+    }
+
+    if(req.query.endDate){
+        const date = new Date(req.query.endDate)
+        find["startDate"] = {"$lt": date}
     }
 
     const pipeline = [

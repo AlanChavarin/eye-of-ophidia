@@ -28,12 +28,20 @@ const useMatchService = () => {
         })
     }
 
-    const getMatches = async (text, hero1, hero2, page, limit, recyclebin) => {
+    const getMatches = async (text, hero1, hero2, startDate, endDate, page, limit, recyclebin) => {
         setLoading(true)
         !page && (page=0)
         !limit && (limit=10)
         return new Promise(resolve => (
-            fetch(API_URL + `${recyclebin ? 'recyclebin':''}` + '?text=' + text + '&hero1=' + hero1 + '&hero2=' + hero2 + '&page=' + page + '&limit=' + limit, {
+            fetch(API_URL + `${recyclebin ? '/recyclebin/':''}` + '?' + 
+            + `${text ? '&text=' + text : ''}` 
+            + `${hero1 ? '&hero1=' + hero1 : ''}`
+            + `${hero2 ? '&hero2=' + hero2 : ''}`
+            + `${startDate ? '&startDate=' + startDate : ''}`
+            + `${endDate ? '&endDate=' + endDate : ''}`
+            + `${page ? '&page=' + page : ''}`
+            + `${limit ? '&limit=' + limit : ''}`,
+            {
                 method: 'GET',
                 headers: {
                     'Content-type': 'application/json',

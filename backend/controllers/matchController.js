@@ -12,49 +12,44 @@ const getMatches = asyncHandler(async (req, res) => {
     if(!req.query.page){skip = 0} 
     else {skip = parseInt(req.query.page*limit)}
 
-    if(!req.recyclebin){req.recyclebin = false}
+    find = {}
 
-    if(req.query.hero1 && req.query.hero2 && req.query.text){
-        find = {
-                "$text": {"$search": req.query.text},
-                "$or": [{"player1hero": req.query.hero1, "player2hero": req.query.hero2, },
-                    {"player1hero": req.query.hero2, "player2hero": req.query.hero1, }],
-                "deleted": req.recyclebin
-            }
-    } else if(req.query.hero1 && req.query.hero2){
-        find = {
-                "$or": [{"player1hero": req.query.hero1, "player2hero": req.query.hero2, },
-                    {"player1hero": req.query.hero2, "player2hero": req.query.hero1, }],
-                "deleted": req.recyclebin
-            }
-    } else if(req.query.hero1 && req.query.text){
-        find = {
-                "$text": {"$search": req.query.text},
-                "$or": [{"player1hero": req.query.hero1},
-                    {"player2hero": req.query.hero1 }],
-                "deleted": req.recyclebin
-            }
-    } else if(req.query.hero2 && req.query.text){
-        find = {
-            "$text": {"$search": req.query.text},
-            "$or": [{"player1hero": req.query.hero2},
-                {"player2hero": req.query.hero2, }],
-            "deleted": req.recyclebin
-        }
-    }
-    else if(req.query.hero1){
-        find = {
-            "$or": [{"player1hero": req.query.hero1},{"player2hero": req.query.hero1}],
-            "deleted": req.recyclebin
-        }
-    } else if(req.query.text){
-        find = { 
-            "$text": {"$search": req.query.text},
-            "deleted": req.recyclebin
-        }
+    if(!req.recyclebin){
+        find["deleted"] = false
     } else {
-        find = {"deleted": req.recyclebin}
+        find["deleted"] = true
     }
+
+    if(req.query.text){
+        find["$text"] = {"$search": req.query.text}
+    }
+
+    if(req.query.hero1 && req.query.hero2){
+        find["$or"] = [
+            {"player1hero": req.query.hero1, "player2hero": req.query.hero2, }, 
+            {"player1hero": req.query.hero2, "player2hero": req.query.hero1, }
+        ]
+    } else if(req.query.hero1){
+        find["$or"] = [
+            {"player1hero": req.query.hero1}, {"player2hero": req.query.hero1}, 
+        ]
+    } else if(req.query.hero2){
+        find["$or"] = [
+            {"player1hero": req.query.hero2} , {"player2hero": req.query.hero2}, 
+        ]
+    }
+
+    if(req.query.startDate){
+        const date = new Date(req.query.startDate)
+        find["event.startDate"] = {"$gte": date}
+    }
+
+    if(req.query.endDate){
+        const date = new Date(req.query.endDate)
+        find["event.startDate"] = {"$lt": date}
+    }
+
+    
 
     const pipeline = [
         {"$match": find},

@@ -36,6 +36,7 @@ const useIssueService = () => {
                 if(data.errorMessage){
                     throw new Error(data.errorMessage)
                 }
+                setLoading(false)
                 resolve(data)
             })
             .catch(error => err(error))

@@ -26,13 +26,15 @@ function Events() {
   const [count, setCount] = useState('')
 
   const text = searchParams.get('text')
+  const startDate = searchParams.get('startDate')
+  const endDate = searchParams.get('endDate')
   let recyclebin = searchParams.get('recyclebin')
   !recyclebin && (recyclebin=false)
   const order = searchParams.get('order')
 
   useEffect(() => {
     setEvents()
-    getEvents(text, page, limit, order, recyclebin)
+    getEvents(text, startDate, endDate, page, limit, order, recyclebin)
     .then(data => {
       setEvents(data.events)
       setCount(data.count)

@@ -39,7 +39,7 @@ function Issue({issue}) {
 
   return (
     <div key={issue._id} className={IssuesCSS.issueContainer}>
-        <MoonLoader size={30} loading={issueLoading} cssOverride={{alignSelf: 'center'}}/> 
+        <MoonLoader size={30} loading={issueLoading && !issueData} cssOverride={{alignSelf: 'center'}}/> 
 
         {(issueData) && <>
             <div className={IssuesCSS.issueTitle}>Subject: {issue.title}</div>

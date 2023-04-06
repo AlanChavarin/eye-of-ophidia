@@ -23,6 +23,8 @@ function SearchResults() {
     const text = searchParams.get('text')
     const hero1 =  searchParams.get('hero1')
     const hero2 =  searchParams.get('hero2')
+    const startDate =  searchParams.get('startDate')
+    const endDate =  searchParams.get('endDate')
     let recyclebin =  searchParams.get('recyclebin')
     !recyclebin && (recyclebin=false)
 
@@ -31,7 +33,7 @@ function SearchResults() {
     const [count, setCount] = useState('')
 
     useEffect(() => {
-      getMatches(text, hero1, hero2, page, limit, recyclebin)
+      getMatches(text, hero1, hero2, startDate, endDate, page, limit, recyclebin)
       .then(data => {
         setMatches(data.matches)
         setCount(data.count)
