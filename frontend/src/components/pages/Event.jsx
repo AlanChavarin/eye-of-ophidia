@@ -68,17 +68,24 @@ function Event() {
     <div className={EventCSS.parent}>
         <MoonLoader size={100} loading={eventLoading}/> 
         {event && (<>
+
+            {/* event container */}
             <div className={EventCSS.eventContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${backgroundImage})`}}>
+                {/* corner container */}
                 <div className={EventCSS.cornerContainer}>
-                {!recyclebin ? <>
-                    {(userData.privilege==='admin') && <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}><FontAwesomeIcon icon={faEdit} /></Link>}
-                    <button onClick={() => setTab('issues')} className={EventCSS.cornerItem}>Issues</button>
-                    {(userData.privilege==='admin') && <button onClick={() => setTab('editHistory')} className={EventCSS.cornerItem}>Edit History</button>}
-                    </> :
-                    <button onClick={restore} className={`${EventCSS.restoreButton} ${EventCSS.cornerItem}`}>
-                        {eventLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}
-                    </button>
-                }
+                    {!recyclebin ? <>
+                        <button onClick={() => setTab('issues')} className={EventCSS.cornerItem}>Issues</button>
+
+                        {(userData.privilege==='admin') && <>
+                            <button onClick={() => setTab('editHistory')} className={EventCSS.cornerItem}>Edit History</button>
+                            <button onClick={() => navigate(`/postmatch/?event=${event.name}`)} className={EventCSS.cornerItem}> Post Match </button>
+                            <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}><FontAwesomeIcon icon={faEdit} /></Link>
+                        </>}
+                        </> :
+                        <button onClick={restore} className={`${EventCSS.restoreButton} ${EventCSS.cornerItem}`}>
+                            {eventLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}
+                        </button>
+                    }
                 </div>
                 
                 <div className={EventCSS.eventName}>{event.name}</div>

@@ -128,13 +128,14 @@ const postMatch = asyncHandler(async (req, res) => {
         description: description,
         deleted: false
     })
+
     postMatchEdit(match, req.user._id)
-    if(!await Name.exists({name: player1name})){
-        Name.create({name: player1name})
-    } 
-    if(!await Name.exists({name: player2name})){
-        Name.create({name: player2name})
-    } 
+
+    if(!await Name.exists({name: player1name})){Name.create({name: player1name})} 
+    if(!await Name.exists({name: player2name})){Name.create({name: player2name})} 
+
+    req.query.dontUpdateLinks !== 'true' && updateDeckLinks(req.body)
+
     res.status(200).json(match)
 })
 
@@ -151,6 +152,7 @@ const updateMatch = asyncHandler(async (req, res) => {
     }
     const match = await Match.findOneAndUpdate({_id: req.params.matchid, deleted: false}, req.body, {runValidators: true, new: true})
     postMatchEdit(match, req.user._id)
+    req.query.dontUpdateLinks !== 'true' && updateDeckLinks(req.body)
     res.status(200).json(match)
     
 })
@@ -180,6 +182,58 @@ const getNameLinkPairsbyEvent = asyncHandler(async (req, res) => {
 
     res.status(200).json(pairs)
 })
+
+//internal use only
+const updateDeckLinks = async (formData) => {
+
+    const {player1name, player1hero, player1deck, 
+        player2name, player2hero, player2deck,
+        format
+    } = formData
+
+    let {event} = formData
+    event.name && (event = event.name)
+
+    if(player1deck){
+        await Match.updateMany({
+            'event.name': event, 
+            'player1name': player1name,
+            'player1hero': player1hero,
+            'format': format,
+            deleted: false
+        }, {'player1deck': player1deck}, 
+        {runValidators: true, new: true})
+
+        await Match.updateMany({
+            'event.name': event, 
+            'player2name': player1name,
+            'player2hero': player1hero,
+            'format': format,
+            deleted: false
+        }, {'player2deck': player1deck}, 
+        {runValidators: true, new: true})
+    }
+
+    if(player2deck){
+        await Match.updateMany({
+            'event.name': event, 
+            'player2name': player2name,
+            'player2hero': player2hero,
+            'format': format,
+            deleted: false
+        }, {'player1deck': player1deck}, 
+        {runValidators: true, new: true})
+
+        await Match.updateMany({
+            'event.name': event, 
+            'player1name': player2name,
+            'player1hero': player2hero,
+            'format': format,
+            deleted: false
+        }, {'player1deck': player2deck}, 
+        {runValidators: true, new: true})
+    }
+}
 
 module.exports = {
     getMatches,

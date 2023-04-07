@@ -7,9 +7,10 @@ function HeroSelect({name, onChange, required, value, type}) {
     const [heroData, setHeroData] = useState([])
 
     useEffect(() => {
+      console.log(type)
       if(type==='adult'){
-        getAdultHeroNames()
-        .then(data => setHeroData(data))
+      getAdultHeroNames()
+      .then(data => setHeroData(data))
       } else if (type==='young'){
         getYoungHeroNames()
         .then(data => setHeroData(data))
@@ -17,7 +18,6 @@ function HeroSelect({name, onChange, required, value, type}) {
         getHeroes()
         .then(data => setHeroData(data))
       }
-      
     }, [type])
     
   return (

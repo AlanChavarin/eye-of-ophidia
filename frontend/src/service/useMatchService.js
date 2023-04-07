@@ -33,7 +33,7 @@ const useMatchService = () => {
         !page && (page=0)
         !limit && (limit=10)
         return new Promise(resolve => (
-            fetch(API_URL + `${recyclebin ? '/recyclebin/':''}` + '?' + 
+            fetch(API_URL + `${recyclebin ? '/recyclebin/':''}` + '?' 
             + `${text ? '&text=' + text : ''}` 
             + `${hero1 ? '&hero1=' + hero1 : ''}`
             + `${hero2 ? '&hero2=' + hero2 : ''}`
@@ -77,11 +77,11 @@ const useMatchService = () => {
         ))
     }
 
-    const postMatch = async (formData, matchid) => {
+    const postMatch = async (formData, dontUpdateLinks, matchid) => {
         setLoading(true)
         !matchid && (matchid='')
         return new Promise(resolve => (
-            fetch(API_URL + matchid, {
+            fetch(API_URL + matchid + `?&dontUpdateLinks=${dontUpdateLinks}`, {
                 method: matchid ? 'PUT' : 'POST',
                 headers: {
                     'Content-type': 'application/json',

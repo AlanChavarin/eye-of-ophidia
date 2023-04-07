@@ -1,6 +1,6 @@
 //react
 import {useState, useEffect} from 'react'
-import {useParams, useNavigate} from 'react-router-dom'
+import {useParams, useNavigate, useSearchParams} from 'react-router-dom'
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -36,6 +36,10 @@ function PostMatch() {
   const navigate = useNavigate()
   const {matchid} = useParams()
 
+  const [searchParams] = useSearchParams()
+
+  const eventName = searchParams.get('event')
+
   const [eventNames, setEventNames] = useState([])
   const [eventData, setEventData] = useState()
   const [formData, setFormData] = useState({
@@ -48,7 +52,7 @@ function PostMatch() {
     player2deck: '',
 
     top8: '',
-    swissRound: -1,
+    swissRound: null,
     top8Round: 'None',
 
     event: '',
@@ -62,12 +66,14 @@ function PostMatch() {
   const [deletePopup, setDeletePopup] = useState(false)
   const [heroType, setHeroType] = useState('')
   const [nameLinkPairs, setNameLinkPairs] = useState({})
+  const [dontUpdateLinks, setDontUpdateLinks] = useState(false)
 
   useEffect(() => {
     if(matchid){
       getMatch(matchid)
       .then(data => setFormData({...data, event: data.event.name, top8: data.top8 ? 'true' : 'false'}))
     }
+
     getEvents()
     .then(data => {
       setEventData(data.events)
@@ -75,6 +81,8 @@ function PostMatch() {
       data.events?.map((event) => eventNames.push(event.name))
       setEventNames(eventNames)
     })
+    .then(() => eventName && setFormData(prev => ({...prev, event: eventName})))
+    
   }, [])
 
   useEffect(() => {
@@ -97,43 +105,17 @@ function PostMatch() {
         }))
       }
     })
-    
   }, [event])
 
   useEffect(() => {
     if(format==='Classic Constructed'){
       setHeroType('adult')
     }
-    if(format==='Blitz' || format==='Draft' || format==='Sealed'){
+    else if(format==='Blitz' || format==='Draft' || format==='Sealed'){
       setHeroType('young')
     }
-    if(format===''){
-      setHeroType('')
-    }
+    else if(format===''){setHeroType('')}
   }, [format])
-
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }))
-  }
-
-  const onSubmit = (e) => {
-    e.preventDefault()
-    postMatch(formData, matchid)
-    .then(match => navigate(`/matches/${match._id}`))
-  }
-
-  const onDelete = (e) => {
-    e.preventDefault()
-    deleteMatch(matchid)
-    .then(data => {
-      if(data){
-        navigate('/')
-      }
-    })
-  }
 
   useEffect(() => {
     if(event!=='' && format!==''){
@@ -159,6 +141,29 @@ function PostMatch() {
       }))
     }
   }, [player2name])
+
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }))
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+    postMatch(formData, dontUpdateLinks, matchid)
+    .then(match => navigate(`/matches/${match._id}`))
+  }
+
+  const onDelete = (e) => {
+    e.preventDefault()
+    deleteMatch(matchid)
+    .then(data => {
+      if(data){
+        navigate('/')
+      }
+    })
+  }
 
   return (
     <div className={PostMatchCSS.parent}>
@@ -253,6 +258,10 @@ function PostMatch() {
         <div className={PostMatchCSS.container}>
           <label>Player 2 Deck Link</label>
           <input type="url" name='player2deck' value={player2deck} onChange={onChange} className={PostMatchCSS.input}/>
+        </div>
+
+        <div className={PostMatchCSS.container} style={{flexDirection: 'row'}}>
+          <input type="checkbox" checked={!dontUpdateLinks} onChange={() => setDontUpdateLinks(!dontUpdateLinks)} className={PostMatchCSS.input}/> <div style={{fontSize: '.8em'}}>Sync Deck Links (recomended)</div> 
         </div>
 
         <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton}> 

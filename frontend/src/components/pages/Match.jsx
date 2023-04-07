@@ -99,7 +99,7 @@ function Match() {
               <div className={MatchCSS.playerName}>{match.player1name}</div>
               {match.player1deck ? 
                 <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> :
-                <div className={MatchCSS.unavailable}>Deck list not available</div>
+                <div className={MatchCSS.unavailable}>Deck list N/A</div>
               }
             </div>
 
@@ -107,7 +107,7 @@ function Match() {
               <div className={MatchCSS.playerName}>{match.player2name}</div>
               {match.player2deck ? 
                 <a href={`${match.player2deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> :
-                <div className={MatchCSS.unavailable}>Deck list not available</div>
+                <div className={MatchCSS.unavailable}>Deck list N/A</div>
               }
             </div> </>}
           </>}
