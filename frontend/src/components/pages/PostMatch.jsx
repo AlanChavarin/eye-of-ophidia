@@ -30,7 +30,7 @@ import MoonLoader from 'react-spinners/MoonLoader'
 import ClipLoader from 'react-spinners/ClipLoader'
 
 function PostMatch() {
-  const {matchLoading, postMatch, getMatch, deleteMatch} = useMatchService()
+  const {matchLoading, postMatch, getMatch, deleteMatch, getNameLinkPairs} = useMatchService()
   const {getEvents} = useEventService()
 
   const navigate = useNavigate()
@@ -48,25 +48,25 @@ function PostMatch() {
     player2deck: '',
 
     top8: '',
-    swissRound: null,
+    swissRound: -1,
     top8Round: 'None',
 
     event: '',
     format: '',
     link: '',
     timeStamp: '', 
-    // description: '',
     fullLink: '',
   })
+  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, format, timeStamp, fullLink, top8, swissRound, top8Round} = formData
+
   const [deletePopup, setDeletePopup] = useState(false)
   const [heroType, setHeroType] = useState('')
-
-  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, description, format, timeStamp, fullLink, top8, swissRound, top8Round} = formData
+  const [nameLinkPairs, setNameLinkPairs] = useState({})
 
   useEffect(() => {
     if(matchid){
       getMatch(matchid)
-      .then(data => setFormData({...data, event: data.event.name}))
+      .then(data => setFormData({...data, event: data.event.name, top8: data.top8 ? 'true' : 'false'}))
     }
     getEvents()
     .then(data => {
@@ -97,6 +97,7 @@ function PostMatch() {
         }))
       }
     })
+    
   }, [event])
 
   useEffect(() => {
@@ -134,6 +135,31 @@ function PostMatch() {
     })
   }
 
+  useEffect(() => {
+    if(event!=='' && format!==''){
+      getNameLinkPairs(event, format)
+      .then(data => setNameLinkPairs(data)) 
+    }
+  }, [event, format])
+
+  useEffect(() => {
+    if(nameLinkPairs[player1name]){
+      setFormData(prev => ({
+        ...prev,
+        player1deck: nameLinkPairs[player1name]
+      }))
+    }
+  }, [player1name])
+
+  useEffect(() => {
+    if(nameLinkPairs[player2name]){
+      setFormData(prev => ({
+        ...prev,
+        player2deck: nameLinkPairs[player2name]
+      }))
+    }
+  }, [player2name])
+
   return (
     <div className={PostMatchCSS.parent}>
       <form onSubmit={onSubmit} className={PostMatchCSS.form} id='form1'>
@@ -158,15 +184,15 @@ function PostMatch() {
 
         <div className={PostMatchCSS.top8OrSwissContainer}>
           <div className={PostMatchCSS.container}>
-            <div onChange={onChange}>
+            <div>
               <label>Top 8</label>
-              <input type="radio" name="top8" value={true} required/>
+              <input type="radio" name="top8" value={'true'} required checked={top8==='true'} onChange={onChange}/>
             </div>
-            <div onChange={onChange}>
+            <div>
               <label>Swiss</label>
-              <input type="radio" name="top8" value={false} required/>
+              <input type="radio" name="top8" value={'false'} required checked={top8==='false'} onChange={onChange}/>
             </div>
-          </div>
+         </div>
           
           {top8==='true' && 
             <div className={PostMatchCSS.container}>
@@ -179,6 +205,7 @@ function PostMatch() {
               </select>
             </div>
           }
+
           {top8==='false' &&
             <div className={PostMatchCSS.swissRoundContainer}>
               <label><span style={{color: 'red'}}>*</span>Swiss Round:</label>
@@ -227,12 +254,6 @@ function PostMatch() {
           <label>Player 2 Deck Link</label>
           <input type="url" name='player2deck' value={player2deck} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
-      
-        {/* <div className={LoginCSS.container}>
-          <label>Description</label>
-          <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={LoginCSS.input}></textarea>
-        </div> */}
-        {/* <input type="submit" className={PostMatchCSS.submitButton}/> */}
 
         <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton}> 
           {matchLoading ? <ClipLoader color='white' size={20}/>
@@ -259,19 +280,3 @@ function PostMatch() {
   )
 }
 export default PostMatch
-
-/* <div className={LoginCSS.container}>
-  <label>Date</label>
-  <input type="date" name='date' value={date} onChange={onChange} required className={LoginCSS.input}/>
-</div> */
-
-/* <select required={true} name="event" className={HeroSelectCSS.select} onChange={onChange} value={event}>
-  <option value=''>None</option>
-  {eventData.map((event) => (<option value={event.name} value2={event.format} key={event._id}>{event.name}</option>))}
-</select> */
-
-{/* <input type="text" list='event' name='event' onChange={onChange} value={event}/>
-<datalist id='event'>
-  <option value=''>None</option>
-  {eventData.map((event) => (<option value={event.name} value2={event.format} key={event._id}>{event.name}</option>))}
-</datalist> */}

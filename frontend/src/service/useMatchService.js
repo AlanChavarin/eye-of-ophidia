@@ -148,6 +148,22 @@ const useMatchService = () => {
         })
     }
 
+    const getNameLinkPairs = async (eventName, format) => {
+        setLoading(true)
+        return new Promise(resolve => (
+            fetch(API_URL + `namelinkpairs/?event=${eventName}&format=${format}`)
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                setLoading(false)
+                resolve(data)
+            })
+            .catch(error => err(error))
+        ))
+    }
+
     const err = (error) => {
         console.error(error.message)
         addAlert(error.message, 'error')
@@ -161,7 +177,8 @@ const useMatchService = () => {
         postMatch, 
         deleteMatch, 
         getMatchesByEvent,
-        restoreMatch
+        restoreMatch,
+        getNameLinkPairs
     }
 }
 

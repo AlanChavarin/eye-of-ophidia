@@ -165,6 +165,22 @@ const restoreMatch = asyncHandler(async (req, res) => {
     res.status(200).json(match)
 })
 
+const getNameLinkPairsbyEvent = asyncHandler(async (req, res) => {
+    const matches = await Match.find({'event.name': req.query.event, 'format': req.query.format, deleted: false})
+    
+    let pairs = {}
+    matches.map(match => {
+        if(match.player1deck){
+            pairs[match.player1name] = match.player1deck
+        }
+        if(match.player2deck){
+            pairs[match.player2name] = match.player2deck
+        }
+    })
+
+    res.status(200).json(pairs)
+})
+
 module.exports = {
     getMatches,
     getMatchesByEvent,
@@ -173,4 +189,5 @@ module.exports = {
     updateMatch,
     deleteMatch,
     restoreMatch,
+    getNameLinkPairsbyEvent
 }
