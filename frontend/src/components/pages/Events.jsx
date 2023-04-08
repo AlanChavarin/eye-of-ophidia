@@ -41,6 +41,10 @@ function Events() {
     })
   }, [searchParams, page, order])
 
+  useEffect(() => {
+    setPage(0)
+  }, [searchParams])
+
   return (
     <div className={EventsCSS.parent}>
       <SearchForm page='events'/>

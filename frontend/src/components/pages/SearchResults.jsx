@@ -41,6 +41,10 @@ function SearchResults() {
       })
     }, [searchParams, page])
 
+    useEffect(() => {
+      setPage(0)
+    }, [searchParams])
+
   return (
     <div className={SearchResultsCSS.parent}>
       <SearchForm page='matches'/>

@@ -7,7 +7,7 @@ const protect = asyncHandler(async (req, res, next) => {
         try {
             const decodedUserId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)
             req.user = await User.findById(decodedUserId.id)
-            if(req.user.privilege==='banned'){
+            if(req.user && req.user?.privilege==='banned'){
                 res.status(400)
                 throw new Error('Banned')
             }
