@@ -76,9 +76,9 @@ function Comments({matchid}) {
     <div className={CommentsCSS.parent}>
 
       {/* pagination buttons*/}
-      {/* <div className={CommentsCSS.pageButtons}>
+      <div className={CommentsCSS.pageButtons}>
         {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => {setPage(i)}}>{i+1}</button>)}
-      </div> */}
+      </div>
 
       <MoonLoader size={60} loading={commentLoading} cssOverride={{alignSelf: 'center'}}/> 
 
@@ -98,9 +98,11 @@ function Comments({matchid}) {
             <p className={CommentsCSS.commentBody}>{comment.body}</p>
           </div>
         </div>
-        <hr className={CommentsCSS.hr}/>
+        
       </>))}
 
+      <hr className={CommentsCSS.hr}/>
+      
       {/* comment form */}
       {((userData?.name) ? (
         <form onSubmit={onSubmit} className={CommentsCSS.form}>

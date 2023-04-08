@@ -74,7 +74,7 @@ function User({user}) {
       {(dropdown && !warning) && 
         <div className={UsersCSS.dropdown} id={data._id}>
           Change user privileges:
-          {(userData==='admin') && <button id={data._id} onClick={() => fireWarning('moderator')}>Moderator</button>}
+          {(userData.privilege==='admin') && <button id={data._id} onClick={() => fireWarning('moderator')}>Moderator</button>}
           <button id={data._id} onClick={() => fireWarning('user')}>User</button>
           <button id={data._id} onClick={() => fireWarning('banned')}>Banned</button>
         </div>

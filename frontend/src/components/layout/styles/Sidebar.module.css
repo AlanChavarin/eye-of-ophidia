@@ -33,6 +33,7 @@
 .item{
     font-size: 1.3em;
     padding: 15px 10px 15px 10px;
+    white-space: nowrap;
 }
 
 .item:hover{

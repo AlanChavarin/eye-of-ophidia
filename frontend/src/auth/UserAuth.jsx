@@ -22,7 +22,6 @@ function UserAuth({privilege}) {
             }
         }
         case 'user': {
-            console.log(userData)
             if(userData?.privilege === 'admin' || userData?.privilege === 'moderator' || userData?.privilege === 'user'){
                 return <Outlet />
             } else {

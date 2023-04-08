@@ -83,6 +83,7 @@
     border-width: 1px;
     border-style: solid;
     width: 90%;
+    min-width: 200px;
 }
 
 .img{

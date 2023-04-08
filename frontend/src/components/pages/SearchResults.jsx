@@ -29,7 +29,7 @@ function SearchResults() {
     let recyclebin =  searchParams.get('recyclebin')
     !recyclebin && (recyclebin=false)
 
-    const limit = 30
+    const limit = 40
     const [page, setPage] = useState(0)
     const [count, setCount] = useState('')
 
@@ -47,13 +47,13 @@ function SearchResults() {
 
       <div className={SearchResultsCSS.matchThumbnails} style={{marginTop: '20px'}}>
         <MoonLoader size={70} loading={matchLoading}/>
-        {matches?.map((match) => (
+        {!matchLoading && matches?.map((match) => (
           <MatchThumbnail key={match._id} match={match} recyclebin={recyclebin}/>
         ))}
       </div> 
 
       <div className={CommentsCSS.pageButtons}>
-        {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => setPage(i)}>{i+1}</button>)}
+        {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page ? CommentsCSS.selectedButton : ''} onClick={() => setPage(i)}>{i+1}</button>)}
       </div>
     </div>
   )

@@ -8,7 +8,13 @@ export const getYoutubeParams = (link) => {
             params = params + '?'
             time = 0
         } else {
-            time = params.substring(params.indexOf('=')+1, params.length)
+            const url = new URL(link)
+            const arr = url.search.substring(1, url.search.length).split('&')
+            arr.map(param => {
+                if(param.substring(0, 2)==='t='){
+                    time = param.substring(2, params.length)
+                }
+            })
         }
         const ytid = params.substring(0, params.indexOf('?'))
         return [ytid, time]

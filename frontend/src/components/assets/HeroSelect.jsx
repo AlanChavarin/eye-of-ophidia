@@ -7,7 +7,6 @@ function HeroSelect({name, onChange, required, value, type}) {
     const [heroData, setHeroData] = useState([])
 
     useEffect(() => {
-      console.log(type)
       if(type==='adult'){
       getAdultHeroNames()
       .then(data => setHeroData(data))
@@ -25,10 +24,3 @@ function HeroSelect({name, onChange, required, value, type}) {
   )
 }
 export default HeroSelect
-
-// <div>
-//     <select name={name} onChange={onChange} required={required} value={value} className={HeroSelectCSS.select}>
-//       <option value=''>None</option>
-//       {heroData.map((hero) => (<option value={hero} key={hero}>{hero}</option>))}
-//     </select>
-// </div>

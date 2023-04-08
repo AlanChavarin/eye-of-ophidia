@@ -17,6 +17,8 @@ import Events from "./components/pages/Events"
 import Event from "./components/pages/Event"
 import IssuePage from './components/pages/IssuePage'
 import Users from './components/pages/Users'
+import RequestPasswordReset from "./components/pages/RequestPasswordReset"
+import PasswordReset from "./components/pages/PasswordReset"
 
 //tools
 import {BrowserRouter as Router, Route, Routes, useSearchParams} from 'react-router-dom'
@@ -55,11 +57,13 @@ function App() {
               <Route path='/login' element={<Login />}/>
               <Route path='/logout' element={<Logout />}/>
               <Route path='/verify/:token' element={<Verify />}/>
-              <Route path='/issuepage' element={<IssuePage />}/>
+              <Route path='/requestpasswordreset' element={<RequestPasswordReset />}/>
+              <Route path='/passwordreset' element={<PasswordReset />}/>
               <Route element={<UserAuth privilege='user'/>}>
                 <Route path='/me' element={<Me />}/>
               </Route>
               <Route element={<UserAuth privilege='moderator'/>}>
+                <Route path='/issuepage' element={<IssuePage />}/>
                 <Route path='/postmatch' element={<PostMatch />}/>
                 <Route path='/postmatch/:matchid' element={<PostMatch />}/>
                 <Route path='/postevent' element={<PostEvent />}/>

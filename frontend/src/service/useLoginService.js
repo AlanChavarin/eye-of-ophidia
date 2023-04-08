@@ -41,6 +41,7 @@ const useLoginService = () => {
             const {name, email, password, password2} = formData
             //check if passwords match
             if(password !== password2){
+                addAlert('passwords do not match!', 'error')
                 throw new Error('passwords do not match!')
             } else {
                 fetch(API_URL + 'register', {
@@ -205,6 +206,65 @@ const useLoginService = () => {
         })
     }
 
+    const requestPasswordReset = async(email) => {
+        setLoading(true)
+        return new Promise(resolve => {
+            fetch(API_URL + 'forgotuserpassword', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                setLoading(false)
+                addAlert('Password reset email has been sent!', 'success')
+                resolve(data)
+            })
+            .catch(error => err(error))
+        })
+    }
+
+    const passwordReset = async(userid, token, formData) => {
+        setLoading(true)
+        const {password, password2} = formData
+        if(password !== password2){
+            addAlert('passwords do not match!', 'error')
+            throw new Error('passwords do not match!')
+        } else {
+            return new Promise(resolve => {
+                fetch(API_URL + 'resetuserpassword', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userid: userid,
+                        token: token,
+                        password: password
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.errorMessage){
+                        throw new Error(data.errorMessage)
+                    }
+                    setLoading(false)
+                    addAlert('Password has been reset!', 'success')
+                    resolve(data)
+                })
+                .catch(error => err(error))
+            })
+        }
+        
+    }
+
     const err = (error) => {
         console.error(error.message)
         addAlert(error.message, 'error')
@@ -212,7 +272,7 @@ const useLoginService = () => {
     }
 
     return {postLogin, postRegistration, resendVerificationEmail, putVerify, getMe, changepfp,
-        loginLoading, getUsers, changePrivileges}
+        loginLoading, getUsers, changePrivileges, requestPasswordReset, passwordReset}
 }
 
 export default useLoginService

@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler')
 const Match = require('../models/matchModel')
 const Event = require('../models/eventModel')
 const Name = require('../models/nameModel')
+const Issue = require('../models/issueModel')
 const {postMatchEdit} = require('./matchEditHistoryController') 
 const ObjectId = require('mongodb').ObjectId
 
@@ -159,6 +160,7 @@ const updateMatch = asyncHandler(async (req, res) => {
 
 const deleteMatch = asyncHandler(async (req, res) => {
     const match = await Match.findByIdAndUpdate(req.params.id, {deleted: true}, {new: true})
+    await Issue.deleteMany({target: req.params.id})
     res.status(200).json(match)
 })
 

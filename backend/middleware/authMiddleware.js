@@ -6,12 +6,16 @@ const protect = asyncHandler(async (req, res, next) => {
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         try {
             const decodedUserId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)
-            req.user = await User.findById(decodedUserId)
+            req.user = await User.findById(decodedUserId.id)
+            if(req.user.privilege==='banned'){
+                res.status(400)
+                throw new Error('Banned')
+            }
             next()
         } catch (error) {
             console.log(error)
             res.status(400)
-            throw new Error('Not Authorized')
+            throw new Error('Not Authorized - ' + error)
         }
     } else {
         res.status(400)
