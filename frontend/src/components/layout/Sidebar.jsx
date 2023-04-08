@@ -60,11 +60,11 @@ function Sidebar() {
 
 
                 {!(userData.name) ? 
-                    <Link to='/login' className={SidebarCSS.item}>
+                    <Link to='/login' className={SidebarCSS.loginItem} >
                         <div>Login/Register</div>
                     </Link>
                 : 
-                    <Link to='/logout' className={SidebarCSS.item}>
+                    <Link to='/logout' className={SidebarCSS.loginItem}>
                         <div>Logout</div>
                     </Link>
                 }

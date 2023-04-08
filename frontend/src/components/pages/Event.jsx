@@ -83,7 +83,7 @@ function Event() {
                         </>}
                         </> :
                         <button onClick={restore} className={`${EventCSS.restoreButton} ${EventCSS.cornerItem}`}>
-                            {eventLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}
+                            {eventLoading ? <ClipLoader size={15} color='white'/> : <>Restore Event</>}
                         </button>
                     }
                 </div>

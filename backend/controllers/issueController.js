@@ -35,7 +35,13 @@ const getIssues = asyncHandler(async (req, res) => {
             "issues": [
                 { "$skip": skip },
                 { "$limit": limit },
-                {"$sort": {"createdDate": order}}
+                {"$sort": {"createdDate": order}},
+                { "$lookup": {
+                    from: "users",
+                    localField: "creator",
+                    foreignField: "_id",
+                    as: "creatorDetails"
+                }}
             ],
             "count": [
                 { "$count": "count" }
@@ -44,10 +50,17 @@ const getIssues = asyncHandler(async (req, res) => {
     ]
 
     const issuesQuery = await Issue.aggregate(pipeline)
+
     const data = {
         "issues": issuesQuery[0].issues,
         "count": issuesQuery[0].count[0]?.count
     }
+
+    data.issues.map(issue => {
+        issue.creatorDetails = issue.creatorDetails[0]
+        issue.name = issue.creatorDetails.name
+        issue.ownerDetails = ''
+    })
     
     res.status(200).json(data)
 })

@@ -214,7 +214,7 @@ function PostMatch() {
           {top8==='false' &&
             <div className={PostMatchCSS.swissRoundContainer}>
               <label><span style={{color: 'red'}}>*</span>Swiss Round:</label>
-              <input type="number" name='swissRound' value={swissRound} onChange={onChange} className={PostMatchCSS.input} style={{width: '30px'}}/>
+              <input type="number" name='swissRound' value={swissRound} onChange={onChange} className={PostMatchCSS.input} style={{width: '40px', marginLeft: '5px'}}/>
             </div>
           }
         </div>

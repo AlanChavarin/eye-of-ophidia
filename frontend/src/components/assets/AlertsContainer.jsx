@@ -15,7 +15,7 @@ function AlertsContainer() {
   return (
     <div className={AlertCSS.container}>
         {alerts.map(alert => {
-            return <Alert alert={alert} key={alert.id}/>
+          return <Alert alert={alert} key={alert.id}/>
         })}
     </div>
     

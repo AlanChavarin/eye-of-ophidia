@@ -1,5 +1,5 @@
 //react
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useContext} from 'react'
 import PropTypes from 'prop-types'
 
 //service
@@ -16,7 +16,11 @@ import CommentsCSS from '../assets/styles/Comments.module.css'
 //loader
 import MoonLoader from 'react-spinners/MoonLoader'
 
+//context
+import UserContext from '../../context/UserContext'
+
 function Issues({targetid, targetType}) {
+    const {userData} = useContext(UserContext)
     const {issueLoading, getIssues, postIssue} = useIssueService()
     const [issues, setIssues] = useState()
     const [formData, setFormData] = useState({
@@ -101,19 +105,21 @@ function Issues({targetid, targetType}) {
             <br/>
             <hr className={IssuesCSS.hr}/>
             <form onSubmit={onSubmit} className={IssuesCSS.form}>
-                <div style={{alignSelf: 'center', fontWeight: '600'}}>Is there an issue with this match/event? Submit an issue down below!</div>
-
-                <div className={IssuesCSS.formContainer}>
-                    <label className={IssuesCSS.label}>Title</label>
-                    <input placeholder='Issue title' name='title' type="text" onChange={onChange} value={title} className={IssuesCSS.input}/>
+                <div style={{alignSelf: 'center', fontWeight: '600'}}>
+                    Is there an issue with this match/event? {`${userData.name ? 'Submit an issue down below!' : 'Please login/register to submit the issue with us and get it fixed as soon as possible!'}`}
                 </div>
+                {userData.name && <>
+                    <div className={IssuesCSS.formContainer}>
+                        <label className={IssuesCSS.label}>Title</label>
+                        <input placeholder='Issue title' name='title' type="text" onChange={onChange} value={title} className={IssuesCSS.input}/>
+                    </div>
 
-                <div className={IssuesCSS.formContainer}>
-                    <label className={IssuesCSS.label}>Body</label>
-                    <textarea placeholder='Write the details of the issue with this match/event' name='body' id="" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
-                </div>
-
+                    <div className={IssuesCSS.formContainer}>
+                        <label className={IssuesCSS.label}>Body</label>
+                        <textarea placeholder='Write the details of the issue with this match/event' name='body' id="" value={body} onChange={onChange} className={IssuesCSS.textarea}></textarea>
+                    </div>
                 <input type="submit" value='Submit Issue' className={IssuesCSS.submitButton} style={{boxShadow: '3px 3px 2px black'}}/>
+                </>}
 
             </form>
         </>}

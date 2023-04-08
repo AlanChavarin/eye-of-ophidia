@@ -28,6 +28,11 @@ function Footer() {
           <div>Logout</div>
         </Link>
       </> : <></>}
+      {(!userData.name) && <>
+        <Link to='/login' className={FooterCSS.item}>
+          <div style={{fontWeight: '650'}}>Login/Register</div>
+        </Link>
+      </>}
       
     </div>
   )

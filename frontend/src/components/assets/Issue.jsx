@@ -77,7 +77,7 @@ function Issue({issue}) {
         </>)}
             </div>
             <div style={{fontSize: 'smaller'}}>
-                Created at {issueData?.createdDate.slice(0, 10)}
+                Submitted by <span style={{fontSize: issueData?.name.length > 19 && '.7em'}}>{issueData?.name}</span> at {issueData?.createdDate.slice(0, 10)} 
             </div>
         </>}
     </div>

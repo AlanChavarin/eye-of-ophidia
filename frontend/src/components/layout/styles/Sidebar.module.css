@@ -39,6 +39,13 @@
     background-color: lightgrey;
 }
 
+.loginItem{
+    font-size: 1.2em;
+    padding: 15px 10px 15px 10px;
+    position: absolute;
+    bottom: 20px;
+}
+
 @media(width < 500px){
     .sidebar{
         width: 250px;

@@ -15,49 +15,47 @@ function Navbar() {
   const {userData, setSidebar} = useContext(UserContext)
 
   return (
-    <div className={`${NavbarCSS.navbar}`}>
-      <button className={NavbarCSS.bars} onClick={() => setSidebar(true)}> 
-        <div><FontAwesomeIcon icon={faBars}/></div>
-      </button>
+    <div className={`${NavbarCSS.navbar} ${NavbarCSS.navbarLoggedIn}`}>
+      {userData?.name &&
+        <button className={NavbarCSS.bars} onClick={() => setSidebar(true)}> 
+          <div><FontAwesomeIcon icon={faBars}/></div>
+        </button>
+      }
 
-      <Link to='/' className={NavbarCSS.item}>
-        <div><FontAwesomeIcon icon={faEye} />Eye of Ophidia</div>
-      </Link>
+      <div className={`${userData?.name ? NavbarCSS.flexboxContainerLoggedIn : NavbarCSS.flexboxContainerLoggedOut}`}>
 
-      <Link to='/events' className={NavbarCSS.item}>
-        <div>Events</div>
-      </Link>
-      
-      {(userData.privilege === 'admin' || userData.privilege === 'moderator' ) && (
-        <>
-          <Link to='/postmatch' className={NavbarCSS.item}>
-            <div>Submit a new match!</div>
-          </Link>
-          <Link to='/postevent' className={NavbarCSS.item}>
-            <div>Submit a new event</div>
-          </Link>
-          <Link to='/issuepage' className={NavbarCSS.item}>
-            <div>Issues</div>
-          </Link>
-          <Link to='/users' className={NavbarCSS.item}>
-            <div>Users</div>
-          </Link>
-          
-        </>
-      )}
-
-      {(userData.name) && <>
-        <Link to='/me' className={NavbarCSS.item}>
-          <div>{userData.name}</div>
+        <Link to='/' className={NavbarCSS.item}>
+          <div><FontAwesomeIcon icon={faEye} />Eye of Ophidia</div>
         </Link>
-      </>}
-      
-      {(!userData.name) && <>
-        <Link to='/login' className={NavbarCSS.item}>
-          <div>Login/Register</div>
+
+        <Link to='/events' className={NavbarCSS.item}>
+          <div>Events</div>
         </Link>
-      </>}
-      
+        
+        {(userData.privilege === 'admin' || userData.privilege === 'moderator' ) && (
+          <>
+            <Link to='/postmatch' className={NavbarCSS.item}>
+              <div>Submit a new match!</div>
+            </Link>
+            <Link to='/postevent' className={NavbarCSS.item}>
+              <div>Submit a new event</div>
+            </Link>
+            <Link to='/issuepage' className={NavbarCSS.item}>
+              <div>Issues</div>
+            </Link>
+            <Link to='/users' className={NavbarCSS.item}>
+              <div>Users</div>
+            </Link>
+            
+          </>
+        )}
+
+        {userData.name && <>
+          <Link to='/me' className={NavbarCSS.item}>
+            <div>{userData.name}</div>
+          </Link>
+        </>}
+      </div>
     </div>
   )
 }
