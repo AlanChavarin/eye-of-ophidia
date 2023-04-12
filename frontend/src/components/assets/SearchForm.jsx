@@ -86,20 +86,18 @@ function SearchForm({page}) {
 
                 {/* parameters container */}
                 <div className={SearchFormCSS.parametersContainer}>
-
-                    {/* hero parameters */}
-                    {(page==='matches') && <div className={SearchFormCSS.hero}>
-                        <label style={{fontWeight: '500'}}>Hero Matchup: </label>
-                        <div className={SearchFormCSS.container}>   
-                            <HeroSelect name='hero1' onChange={onChange} value={hero1}/>
-                        </div>
-                        <label className={SearchFormCSS.vs}>VS</label>
-                        <div className={SearchFormCSS.container}>
-                            <HeroSelect name='hero2' onChange={onChange} value={hero2}/>
-                        </div>
-                    </div>}
-
                     {parameters && <>
+                        {(page==='matches') && <div className={SearchFormCSS.hero}>
+                            <label style={{fontWeight: '500'}}>Hero Matchup: </label>
+                            <div className={SearchFormCSS.container}>   
+                                <HeroSelect name='hero1' onChange={onChange} value={hero1}/>
+                            </div>
+                            <label className={SearchFormCSS.vs}>VS</label>
+                            <div className={SearchFormCSS.container}>
+                                <HeroSelect name='hero2' onChange={onChange} value={hero2}/>
+                            </div>
+                        </div>}
+
                         <div className={SearchFormCSS.hero}>
                             <label style={{fontWeight: '500'}}>Date Range: </label>
                             <input type="date" name='startDate' value={startDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
