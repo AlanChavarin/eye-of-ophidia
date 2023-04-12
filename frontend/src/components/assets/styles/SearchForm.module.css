@@ -31,9 +31,20 @@
     border-top-left-radius: 20px;
 }
 
-.searchButton:hover{
-    background-color: lightgray;
+.searchButton:hover, .sliderButton:hover{
+    background-color: rgb(185, 185, 185);
 }
+
+.sliderButton{
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+
 
 .hero{
     display: flex;

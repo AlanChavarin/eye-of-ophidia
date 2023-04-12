@@ -9,7 +9,7 @@ import Order from './Order'
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faSliders} from '@fortawesome/free-solid-svg-icons'
 
 //css
 import SearchFormCSS from './styles/SearchForm.module.css'
@@ -28,6 +28,8 @@ function SearchForm({page}) {
         reyclebin: false,
     })
     const {text, hero1, hero2, startDate, endDate, order, recyclebin} = formData
+
+    const [parameters, setParameters] = useState(false)
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -60,6 +62,14 @@ function SearchForm({page}) {
         }
         navigate(navigationUrl)
     }
+
+    const onSliderClick = (e) => {
+        e.preventDefault()
+        setParameters(!parameters)
+
+    }
+
+
     return (
         <div className={SearchFormCSS.parent}>
             <form className={SearchFormCSS.searchform} onSubmit={onSubmit}>
@@ -67,6 +77,11 @@ function SearchForm({page}) {
                 <div className={SearchFormCSS.searchBar}> 
                     <button className={SearchFormCSS.searchButton}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
                     <input className={SearchFormCSS.searchInput} type='text' name='text' value={text} onChange={onChange} placeholder={`Search for ${page}`}/>
+                    <button 
+                    className={SearchFormCSS.sliderButton} 
+                    onClick={(e) => onSliderClick(e)}
+                    style={{backgroundColor: parameters && 'lightgray'}}
+                    ><FontAwesomeIcon icon={faSliders}/></button>
                 </div>
 
                 {/* parameters container */}
@@ -84,22 +99,24 @@ function SearchForm({page}) {
                         </div>
                     </div>}
 
-                    {/* Date range container */}
-                    {<div className={SearchFormCSS.hero}>
-                        <label style={{fontWeight: '500'}}>Date Range: </label>
-                        <input type="date" name='startDate' value={startDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
-                        <label className={SearchFormCSS.vs}> - </label>
-                        <input type="date" name='endDate' value={endDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
-                    </div>}
+                    {parameters && <>
+                        <div className={SearchFormCSS.hero}>
+                            <label style={{fontWeight: '500'}}>Date Range: </label>
+                            <input type="date" name='startDate' value={startDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
+                            <label className={SearchFormCSS.vs}> - </label>
+                            <input type="date" name='endDate' value={endDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
+                        </div>
+                        
+                        <div style={{fontWeight: '500'}}>
+                            Sort by: <Order order={order} setOrder={changeOrder}/>
+                        </div>
+                        
 
-                    {/* Order Container */}
-                    <Order order={order} setOrder={changeOrder}/>
-
-                    {/* Recyclebin checkbox */}
-                    {userData?.privilege==='admin' && <div className={SearchFormCSS.container} style={{flexDirection: 'row'}}>
-                        <label style={{fontSize: '.6em'}}>Recyclebin</label>
-                        <input type="checkbox" name='recyclebin' onChange={onChangeChecked} value={recyclebin}/>
-                    </div>}
+                        {userData?.privilege==='admin' && <div className={SearchFormCSS.container} style={{flexDirection: 'row'}}>
+                            <label style={{fontSize: '.6em'}}>Recyclebin</label>
+                            <input type="checkbox" name='recyclebin' onChange={onChangeChecked} value={recyclebin}/>
+                        </div>}
+                    </>}
                 </div>
             </form>
         </div>
