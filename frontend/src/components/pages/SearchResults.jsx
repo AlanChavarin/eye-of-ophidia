@@ -29,7 +29,7 @@ function SearchResults() {
     let recyclebin =  searchParams.get('recyclebin')
     !recyclebin && (recyclebin=false)
 
-    const limit = 40
+    const limit = 50
     const [page, setPage] = useState(0)
     const [count, setCount] = useState('')
 
@@ -54,6 +54,7 @@ function SearchResults() {
         {!matchLoading && matches?.map((match) => (
           <MatchThumbnail key={match._id} match={match} recyclebin={recyclebin}/>
         ))}
+        {!count && <p style={{fontWeight: '600'}}>Search query found no matches. </p>}
       </div> 
 
       <div className={CommentsCSS.pageButtons}>

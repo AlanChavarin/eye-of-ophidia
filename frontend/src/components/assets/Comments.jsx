@@ -82,6 +82,8 @@ function Comments({matchid}) {
 
       <MoonLoader size={60} loading={commentLoading} cssOverride={{alignSelf: 'center'}}/> 
 
+      {!count && <p style={{textAlign: 'center'}}>No Comments yet. </p>}
+
       {/* comments */}
       {comments?.map((comment) => (<>
         <div key={comment._id} className={CommentsCSS.comment}>

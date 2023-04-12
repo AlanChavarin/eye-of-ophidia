@@ -96,6 +96,7 @@ function Issues({targetid, targetType}) {
         </div>
 
         <MoonLoader size={60} loading={issueLoading} cssOverride={{alignSelf: 'center'}}/> 
+        {!count && <p style={{textAlign: 'center'}}>No Issues yet. </p>}
 
         {issues?.map((issue) => (
             <Issue issue={issue}/>

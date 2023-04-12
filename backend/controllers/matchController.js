@@ -189,8 +189,7 @@ const getNameLinkPairsbyEvent = asyncHandler(async (req, res) => {
 const updateDeckLinks = async (formData) => {
 
     const {player1name, player1hero, player1deck, 
-        player2name, player2hero, player2deck,
-        format
+        player2name, player2hero, player2deck, format
     } = formData
 
     let {event} = formData
@@ -223,7 +222,7 @@ const updateDeckLinks = async (formData) => {
             'player2hero': player2hero,
             'format': format,
             deleted: false
-        }, {'player1deck': player1deck}, 
+        }, {'player2deck': player2deck}, 
         {runValidators: true, new: true})
 
         await Match.updateMany({

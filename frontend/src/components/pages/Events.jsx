@@ -21,7 +21,7 @@ function Events() {
   const [searchParams] = useSearchParams()
   const [events, setEvents] = useState()
 
-  const limit = 10
+  const limit = 35
   const [page, setPage] = useState(0)
   const [count, setCount] = useState('')
 
@@ -50,10 +50,11 @@ function Events() {
       <SearchForm page='events'/>
       
       <div className={EventsCSS.eventThumbnails}>
-      <MoonLoader size={70} loading={eventLoading}/> 
-      {events?.map((event) => (
-        <EventThumbnail event={event} key={event._id} page='event' recyclebin={recyclebin}/>
-      ))}  
+        <MoonLoader size={70} loading={eventLoading}/> 
+        {events?.map((event) => (
+          <EventThumbnail event={event} key={event._id} page='event' recyclebin={recyclebin}/>
+        ))}  
+        {!count && <p style={{fontWeight: '600'}}>Search query found no events. </p>}
       </div>
       <div className={CommentsCSS.pageButtons}>
         {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => setPage(i)}>{i+1}</button>)}

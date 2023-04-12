@@ -5,10 +5,12 @@ const User = require('../models/userModel')
 const protect = asyncHandler(async (req, res, next) => {
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         try {
-            const decodedUserId = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)
-            req.user = await User.findById(decodedUserId.id)
+            const decodedUser = jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET)
+            req.user = await User.findById(decodedUser.id)
+            if(!req.user){
+                throw new Error('User not found')
+            }
             if(req.user && req.user?.privilege==='banned'){
-                res.status(400)
                 throw new Error('Banned')
             }
             next()
