@@ -38,7 +38,11 @@ function PostMatch() {
 
   const [searchParams] = useSearchParams()
 
-  const eventName = searchParams.get('event')
+  let query = {}
+
+  for(const entry of searchParams.entries()){
+    query[entry[0]] = entry[1]
+  }
 
   const [eventNames, setEventNames] = useState([])
   const [eventData, setEventData] = useState()
@@ -51,9 +55,9 @@ function PostMatch() {
     player2hero: '',
     player2deck: '',
 
-    top8: '',
-    swissRound: null,
-    top8Round: 'None',
+    top8: query.top8round ? query.top8round : '',
+    swissRound: (query.top8round==='false' || !query.top8round) ? query.round : null,
+    top8Round: query.top8round==='true' ? query.round : 'None',
 
     event: '',
     format: '',
@@ -74,14 +78,14 @@ function PostMatch() {
       .then(data => setFormData({...data, event: data.event.name, top8: data.top8 ? 'true' : 'false'}))
     }
 
-    getEvents()
+    getEvents(null, null, null, null, 1000)
     .then(data => {
       setEventData(data.events)
       let eventNames = []
       data.events?.map((event) => eventNames.push(event.name))
       setEventNames(eventNames)
     })
-    .then(() => eventName && setFormData(prev => ({...prev, event: eventName})))
+    .then(() => query.eventName && setFormData(prev => ({...prev, event: query.eventName})))
     
   }, [])
 
@@ -141,6 +145,21 @@ function PostMatch() {
       }))
     }
   }, [player2name])
+
+  useEffect(() => {
+    if(top8==='true'){
+      setFormData(prev => ({
+        ...prev,
+        swissRound: null
+      }))
+    } else if (top8==='false'){
+      setFormData(prev => ({
+        ...prev,
+        top8Round: 'None'
+      }))
+    }
+  }, [top8])
+
 
   const onChange = (e) => {
     setFormData((prevState) => ({

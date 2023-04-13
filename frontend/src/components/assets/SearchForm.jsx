@@ -1,6 +1,6 @@
 //react
-import {useState, useContext} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {useState, useContext, useEffect} from 'react'
+import {useNavigate, useSearchParams} from 'react-router-dom'
 import UserContext from '../../context/UserContext'
 
 //assets
@@ -17,19 +17,26 @@ import SearchFormCSS from './styles/SearchForm.module.css'
 function SearchForm({page}) {
     const {userData} = useContext(UserContext)
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
  
     const [formData, setFormData] = useState({
-        text: "",
-        hero1: "",
-        hero2: "",
-        startDate: "",
-        endDate: "",
-        order: 0,
-        reyclebin: false,
+        text: searchParams.get('text'),
+        hero1: searchParams.get('hero1'),
+        hero2: searchParams.get('hero2'),
+        startDate: searchParams.get('startDate'),
+        endDate: searchParams.get('endDate'),
+        order: searchParams.get('order'),
+        reyclebin: searchParams.get('recyclebin') ? searchParams.get('recyclebin') : false,
     })
     const {text, hero1, hero2, startDate, endDate, order, recyclebin} = formData
 
     const [parameters, setParameters] = useState(false)
+
+    useEffect(() => {
+        for(const key in formData){
+            (key!=='text' && formData[key]) && setParameters(true)
+        }
+    }, [])
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -53,6 +60,7 @@ function SearchForm({page}) {
     }
 
     const onSubmit = (e) => {
+        e.target[0].blur()
         e.preventDefault()
         let navigationUrl = `/${page}/?`
         for(const field in formData){

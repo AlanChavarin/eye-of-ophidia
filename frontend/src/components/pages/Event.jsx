@@ -35,6 +35,7 @@ function Event() {
     const [backgroundImage, setBackgroundImage] = useState()
     const [tab, setTab] = useState('matches')
     const [searchParams] = useSearchParams()
+    const [lastRound, setLastRound] = useState()
 
     let recyclebin = searchParams.get('recyclebin')
     !recyclebin && (recyclebin=false)
@@ -46,7 +47,21 @@ function Event() {
 
     useEffect(() => {
         event && getMatchesByEvent(event.name)
-        .then(data => setMatches(data))
+        .then(data => {
+            setMatches(data)
+            const round = data[data.length-1]
+            if(!round.top8){
+                setLastRound({
+                    top8: false,
+                    round: round.swissRound
+                })
+            } else {
+                setLastRound({
+                    top8: true,
+                    round: round.top8Round
+                })
+            }
+        })
     }, [event])
 
     useEffect(() => {
@@ -57,9 +72,7 @@ function Event() {
         if(recyclebin){
             restoreEvent(eventid)
             .then(data => {
-                if(data){
-                    navigate(`/events/${eventid}`)
-                }
+                data && navigate(`/events/${eventid}`)
             })
         }
     }
@@ -68,7 +81,6 @@ function Event() {
     <div className={EventCSS.parent}>
         <MoonLoader size={100} loading={eventLoading}/> 
         {event && (<>
-
             {/* event container */}
             <div className={EventCSS.eventContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${backgroundImage})`}}>
                 {/* corner container */}
@@ -78,7 +90,11 @@ function Event() {
 
                         {(userData.privilege==='admin') && <>
                             <button onClick={() => setTab('editHistory')} className={EventCSS.cornerItem}>Edit History</button>
-                            <button onClick={() => navigate(`/postmatch/?event=${event.name}`)} className={EventCSS.cornerItem}> Post Match </button>
+                            <button 
+                            onClick={() => navigate(`/postmatch/?eventName=${event.name}&top8round=${lastRound?.top8}&round=${lastRound?.round}`)} 
+                            className={EventCSS.cornerItem}> 
+                                Post Match 
+                            </button>
                             <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}><FontAwesomeIcon icon={faEdit} /></Link>
                         </>}
                         </> :
