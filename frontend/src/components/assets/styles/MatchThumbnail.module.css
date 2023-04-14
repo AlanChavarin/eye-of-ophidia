@@ -55,7 +55,7 @@
 .default{
     width: 20vw;
     height: 200px;
-    min-width: 200px;
+    min-width: 300px;
     max-width: 400px;
 }
 
@@ -90,9 +90,9 @@
     background-color: rgb(156, 155, 155)
 }
 
-@media(orientation: portrait),(width < 900px){
+@media(orientation: portrait),(width < 968px){
     .default{
-        width: 95vw;
+        min-width: 350px;
     }
 }
 
@@ -104,8 +104,9 @@
     }
 }
 
-@media(width < 350px){
+@media(width < 450px){
     .default{
         height: 150px;
+        width: 96wv;
     }
 }

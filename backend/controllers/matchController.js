@@ -7,14 +7,14 @@ const {postMatchEdit} = require('./matchEditHistoryController')
 const ObjectId = require('mongodb').ObjectId
 
 const getMatches = asyncHandler(async (req, res) => {
-    var skip, limit, find
+    let skip, limit, find, order
     if(!req.query.limit){limit = 10} 
     else {limit = parseInt(req.query.limit)}
     if(!req.query.page){skip = 0} 
     else {skip = parseInt(req.query.page*limit)}
 
     order = parseInt(req.query.order)
-    !(order === 1 || order ===-1) && (order = -1)
+    !(order === 1 || order === -1) && (order = -1)
 
     find = {}
 
@@ -43,23 +43,25 @@ const getMatches = asyncHandler(async (req, res) => {
         ]
     }
 
-    if(req.query.startDate){
-        const date = new Date(req.query.startDate)
-        find["event.startDate"] = {"$gte": date}
-    }
 
-    if(req.query.endDate){
-        const date = new Date(req.query.endDate)
-        find["event.startDate"] = {"$lt": date}
+    const date1 = new Date(req.query.startDate)
+    const date2 = new Date(req.query.endDate)
+
+    if(req.query.startDate && req.query.endDate){
+        find["event.startDate"] = {"$gte": date1, "$lte": date2}
+    } else if(req.query.startDate){
+        find["event.startDate"] = {"$gte": date1}
+    } else if(req.query.endDate){
+        find["event.startDate"] = {"$lte": date2}
     }
 
     const pipeline = [
         {"$match": find},
         { "$facet": {
             "matches": [
+                { "$sort": {"event.startDate": order}},
                 { "$skip": skip },
                 { "$limit": limit },
-                { "$sort": {"event.startDate": order}}
             ],
             "count": [
                 { "$count": "count" }

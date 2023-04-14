@@ -1,7 +1,7 @@
 import EventThumbnailCSS from './styles/EventThumbnail.module.css'
 import {Link} from 'react-router-dom'
 
-function EventThumbnail({event, page, details, recyclebin}) {
+function EventThumbnail({event, page, recyclebin, match}) {
 
   const num = event.startDate.substring(5, 7)
   const backgroundImage = window.location.origin + `/backgroundImages/${num}.jpg`
@@ -24,7 +24,13 @@ function EventThumbnail({event, page, details, recyclebin}) {
             </div>
             <div>{event.format}{event.format==='Mixed' && (<> Format</>)}</div>
             <div>{event.location}</div>
-            {(page==='matchPage') && (<div>{details}</div>)}
+            <hr />
+            {(page==='match' && match) && (<>
+              <div style={{alignSelf: 'center', fontSize: '1.1em'}}>
+                {match.top8 && <>{match.top8Round}</>}
+                {!match.top8 && <>Swiss Round: {match.swissRound}</>}
+              </div>
+            </>)}
           </div>
         </>
         )}

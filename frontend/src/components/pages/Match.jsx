@@ -93,7 +93,7 @@ function Match() {
           {tab==='issues' && <Issues targetid={matchid} targetType='match'/>}
           {tab==='history' && <EditHistories id={matchid} forPage='match'/>}
           {tab==='details' && <>
-            <EventThumbnail event={match.event} page='match' details={`${(match.top8) ? (`${match?.top8Round}`) : `Swiss Round ${match?.swissRound}`}`}/>
+            <EventThumbnail event={match.event} page='match' match={match}/>
 
             <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player1hero)})`}}>
               <div className={MatchCSS.playerName}>{match.player1name}</div>

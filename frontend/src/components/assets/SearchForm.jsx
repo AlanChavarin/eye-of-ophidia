@@ -74,7 +74,19 @@ function SearchForm({page}) {
     const onSliderClick = (e) => {
         e.preventDefault()
         setParameters(!parameters)
+    }
 
+    const onClear = (e) => {
+        e.preventDefault()
+        setFormData({
+            text: '',
+            hero1: '', 
+            hero2: '', 
+            startDate: '',
+            endDate: '',
+            order: '',
+            reyclebin: false,
+        })
     }
 
 
@@ -93,8 +105,9 @@ function SearchForm({page}) {
                 </div>
 
                 {/* parameters container */}
-                <div className={SearchFormCSS.parametersContainer}>
-                    {parameters && <>
+                {parameters && <>
+                    <div className={SearchFormCSS.parametersContainer}>
+                        
                         {(page==='matches') && <div className={SearchFormCSS.hero}>
                             <label style={{fontWeight: '500'}}>Hero Matchup: </label>
                             <div className={SearchFormCSS.container}>   
@@ -122,8 +135,11 @@ function SearchForm({page}) {
                             <label style={{fontSize: '.6em'}}>Recyclebin</label>
                             <input type="checkbox" name='recyclebin' onChange={onChangeChecked} value={recyclebin}/>
                         </div>}
-                    </>}
-                </div>
+
+                        <button className={SearchFormCSS.bigSearchButton}>Search</button>
+                        <button className={SearchFormCSS.clearButton} onClick={(e) => onClear(e)}>Reset</button>
+                    </div>
+                </>}
             </form>
         </div>
     )
