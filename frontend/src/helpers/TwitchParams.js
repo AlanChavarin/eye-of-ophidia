@@ -1,5 +1,10 @@
 export const getTwitchParams = (link) => {
     let params = []
+
+    if(!link){
+        return false
+    }
+
     if(link.includes('?t=')){
         params[0] = link.substring(link.indexOf('/videos/') + 8, link.indexOf('?'))
         params[1] = link.substring(link.indexOf('?t=') + 3, link.length)
