@@ -61,6 +61,8 @@ const matchSchema = mongoose.Schema({
     }},
 
     format: {type: String, required: true, enum: formats},
+    twitch: Boolean,
+    twitchTimeStamp: String,
     link: {type: String, required: true}, 
     timeStamp: {type: Number},
     description: String, 

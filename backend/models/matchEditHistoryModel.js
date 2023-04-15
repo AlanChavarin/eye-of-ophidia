@@ -39,6 +39,7 @@ const matchEditHistorySchema = mongoose.Schema({
     swissRound: {type: Number},
     top8Round: {type: String, enum: top8Rounds},
     format: {type: String, required: true, enum: formats},
+    twitch: Boolean,
     link: {type: String, required: true}, 
     timeStamp: {type: Number},
     description: String, 

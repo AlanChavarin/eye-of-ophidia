@@ -24,6 +24,7 @@ import PopupCSS from '../assets/styles/Popup.module.css'
 
 //tools
 import { getYoutubeParams } from '../../helpers/YoutubeParams'
+import { getTwitchParams } from '../../helpers/TwitchParams'
 
 //loader
 import MoonLoader from 'react-spinners/MoonLoader'
@@ -61,11 +62,13 @@ function PostMatch() {
 
     event: '',
     format: '',
+    twitch: false,
+    twitchTimeStamp: '',
     link: '',
     timeStamp: '', 
     fullLink: '',
   })
-  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, link, format, timeStamp, fullLink, top8, swissRound, top8Round} = formData
+  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, twitch, twitchTimeStamp, link, format, timeStamp, fullLink, top8, swissRound, top8Round} = formData
 
   const [deletePopup, setDeletePopup] = useState(false)
   const [heroType, setHeroType] = useState('')
@@ -90,14 +93,27 @@ function PostMatch() {
   }, [])
 
   useEffect(() => {
-    const params = getYoutubeParams(fullLink)
-    if(params){
-      setFormData((prevState) => ({
-        ...prevState,
-        link: params[0],
-        timeStamp: params[1]
-      }))
+    let params
+    if(!twitch){
+      params = getYoutubeParams(fullLink)
+      if(params){
+        setFormData((prevState) => ({
+          ...prevState,
+          link: params[0],
+          timeStamp: params[1]
+        }))
+      }
+    } else {
+      params = getTwitchParams(fullLink)
+      if(params){
+        setFormData((prevState) => ({
+          ...prevState,
+          link: params[0],
+          twitchTimeStamp: params[1]
+        }))
+      }
     }
+    
   }, [fullLink])
 
   useEffect(() => {
@@ -165,6 +181,13 @@ function PostMatch() {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value
+    }))
+  }
+
+  const onChangeCheckBox = (checked) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      twitch: checked
     }))
   }
 
@@ -238,20 +261,42 @@ function PostMatch() {
           }
         </div>
 
-        <div className={PostMatchCSS.container}>
-          <div style={{display: 'flex'}}><label>Youtube Video Link </label><PostMatchInfoDropdown /></div>
-          <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={PostMatchCSS.input}/>
+        <div className={PostMatchCSS.container} style={{flexDirection: 'row'}}>
+          <label>Twitch.tv link</label>
+          <input type="checkbox" checked={twitch} onChange={() => onChangeCheckBox(!twitch)} className={PostMatchCSS.input}/>
         </div>
-        <div className={PostMatchCSS.container}>
-          <label>Match Timestamp (in total seconds) <span style={{color: 'red'}}>*</span></label>
-          <input type="number" name='timeStamp' value={timeStamp} onChange={onChange} required className={PostMatchCSS.input} style={{width: '60px'}}/>
-        </div>
-        <div className={PostMatchCSS.container}>
-          <label>Youtube Video id <span style={{color: 'red'}}>*</span></label>
-          <input type="text" name='link' value={link} onChange={onChange} required className={PostMatchCSS.input}/>
-        </div>
-        
-      
+
+        {!twitch ? <>
+
+          <div className={PostMatchCSS.container}>
+            <div style={{display: 'flex'}}><label>Youtube Video Link </label><PostMatchInfoDropdown /></div>
+            <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={PostMatchCSS.input}/>
+          </div>
+          <div className={PostMatchCSS.container}>
+            <label>Match Timestamp (in total seconds) <span style={{color: 'red'}}>*</span></label>
+            <input type="number" name='timeStamp' value={timeStamp} onChange={onChange} required className={PostMatchCSS.input} style={{width: '60px'}}/>
+          </div>
+          <div className={PostMatchCSS.container}>
+            <label>Youtube Video id <span style={{color: 'red'}}>*</span></label>
+            <input type="text" name='link' value={link} onChange={onChange} required className={PostMatchCSS.input}/>
+          </div>
+
+        </> : <>
+
+          <div className={PostMatchCSS.container}>
+            <div style={{display: 'flex'}}><label>Twitch Video Link </label><PostMatchInfoDropdown twitch={true} /></div>
+            <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={PostMatchCSS.input}/>
+          </div>
+          <div className={PostMatchCSS.container}>
+            <label>Twitch Match Timestamp<span style={{color: 'red'}}>*</span></label>
+            <input type="text" name='twitchTimeStamp' value={twitchTimeStamp} onChange={onChange} required className={PostMatchCSS.input}/>
+          </div>
+          <div className={PostMatchCSS.container}>
+            <label>Twitch Video id<span style={{color: 'red'}}>*</span></label>
+            <input type="text" name='link' value={link} onChange={onChange} required className={PostMatchCSS.input}/>
+          </div>
+
+        </>}
 
         <div className={PostMatchCSS.container}>
           <label>Player 1 Hero <span style={{color: 'red'}}>*</span></label>

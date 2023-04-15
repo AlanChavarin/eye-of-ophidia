@@ -63,7 +63,10 @@ function Match() {
 
         <div className={MatchCSS.videoFeedbackContainer}>
           <div className={MatchCSS.videoContainer}>
-            {(match) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp===0 ? 1 : match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
+            {(match && !match.twitch) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp===0 ? 1 : match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
+
+            {(match && match.twitch) && <iframe src={`https://player.twitch.tv/?video=${match.link}&time=${match.twitchTimeStamp ? match.twitchTimeStamp : '1s'}&parent=${process.env.NODE_ENV==='production' ? 'www.eyeofophidia.net' : 'localhost'}`} frameborder="0" allowfullscreen="true" scrolling="no"></iframe>
+}
           </div>
         </div>
 

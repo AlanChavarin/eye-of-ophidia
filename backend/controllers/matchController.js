@@ -103,7 +103,7 @@ const getMatch = asyncHandler(async (req, res) => {
 const postMatch = asyncHandler(async (req, res) => {
     const {player1name, player1hero, player1deck, 
         player2name, player2hero, player2deck,
-        format, event, link, timeStamp, description, top8, swissRound, top8Round,
+        format, event, twitch, twitchTimeStamp, link, timeStamp, description, top8, swissRound, top8Round,
     } = req.body
     const eventData = await Event.findOne({name: event})
     if(top8 === 'true'){
@@ -126,6 +126,8 @@ const postMatch = asyncHandler(async (req, res) => {
 
         format: format,
         event: eventData,
+        twitch: twitch,
+        twitchTimeStamp: twitchTimeStamp,
         link: link,
         timeStamp: timeStamp,
         description: description,
