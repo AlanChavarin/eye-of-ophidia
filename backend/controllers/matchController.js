@@ -55,6 +55,10 @@ const getMatches = asyncHandler(async (req, res) => {
         find["event.startDate"] = {"$lte": date2}
     }
 
+    if(req.query.format){
+        find["format"] = req.query.format
+    }
+
     const pipeline = [
         {"$match": find},
         { "$facet": {

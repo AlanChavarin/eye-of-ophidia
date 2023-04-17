@@ -28,7 +28,10 @@ function MatchThumbnail({match, page, recyclebin}) {
             {match.event.name}
           </div>
           <div className={MatchThumbnailCSS.date}>
-            {(match.top8) ? (`${match?.top8Round}`) : `Swiss Round ${match?.swissRound}`}
+            {(match.top8) ? (`${match?.top8Round}`) : `Round ${match?.swissRound}`}
+          </div>
+          <div className={MatchThumbnailCSS.date}>
+            {match.format !== 'Classic Constructed' && match.format}
           </div>
           <div className={MatchThumbnailCSS.date}>
             {match.event.startDate.substr(0, 10)}

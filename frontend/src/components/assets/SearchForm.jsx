@@ -13,6 +13,7 @@ import { faMagnifyingGlass, faSliders} from '@fortawesome/free-solid-svg-icons'
 
 //css
 import SearchFormCSS from './styles/SearchForm.module.css'
+import HeroSelectCSS from './styles/HeroSelect.module.css'
 
 function SearchForm({page}) {
     const {userData} = useContext(UserContext)
@@ -25,10 +26,11 @@ function SearchForm({page}) {
         hero2: searchParams.get('hero2'),
         startDate: searchParams.get('startDate'),
         endDate: searchParams.get('endDate'),
+        format: searchParams.get('format'),
         order: searchParams.get('order'),
         reyclebin: searchParams.get('recyclebin') ? searchParams.get('recyclebin') : false,
     })
-    const {text, hero1, hero2, startDate, endDate, order, recyclebin} = formData
+    const {text, hero1, hero2, startDate, endDate, format, order, recyclebin} = formData
 
     const [parameters, setParameters] = useState(false)
 
@@ -84,6 +86,7 @@ function SearchForm({page}) {
             hero2: '', 
             startDate: '',
             endDate: '',
+            format: '',
             order: '',
             reyclebin: false,
         })
@@ -124,6 +127,17 @@ function SearchForm({page}) {
                             <input type="date" name='startDate' value={startDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
                             <label className={SearchFormCSS.vs}> - </label>
                             <input type="date" name='endDate' value={endDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
+                        </div>
+
+                        <div className={SearchFormCSS.hero}>
+                            <label style={{fontWeight: '500'}}>Format: </label>
+                            <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
+                                <option value=''>None</option>
+                                <option value="Classic Constructed">Classic Constructed</option>
+                                <option value="Blitz">Blitz</option>
+                                <option value="Draft">Draft</option>
+                                <option value="Sealed">Sealed</option>
+                            </select>
                         </div>
                         
                         <div style={{fontWeight: '500'}}>

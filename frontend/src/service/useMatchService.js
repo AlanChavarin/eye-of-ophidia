@@ -28,7 +28,7 @@ const useMatchService = () => {
         })
     }
 
-    const getMatches = async (text, hero1, hero2, startDate, endDate, page, limit, order, recyclebin) => {
+    const getMatches = async (text, hero1, hero2, startDate, endDate, format, page, limit, order, recyclebin) => {
         setLoading(true)
         !page && (page=0)
         !limit && (limit=10)
@@ -39,6 +39,7 @@ const useMatchService = () => {
             + `${hero2 ? '&hero2=' + hero2 : ''}`
             + `${startDate ? '&startDate=' + startDate : ''}`
             + `${endDate ? '&endDate=' + endDate : ''}`
+            + `${format ? '&format=' + format : ''}`
             + `${page ? '&page=' + page : ''}`
             + `${limit ? '&limit=' + limit : ''}`
             + `${order ? '&order=' + order : ''}`,
