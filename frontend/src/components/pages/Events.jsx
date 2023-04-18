@@ -16,21 +16,21 @@ import CommentsCSS from '../assets/styles/Comments.module.css'
 //loader
 import MoonLoader from 'react-spinners/MoonLoader'
 
+//helper
+import getQuery from '../../helpers/getQuery'
+
+//assets
+import PageButtons from '../assets/PageButtons'
+
 function Events() {
   const {eventLoading, getEvents} = useEventService()
   const [searchParams] = useSearchParams()
   const [events, setEvents] = useState()
 
-  const limit = 35
-  const [page, setPage] = useState(0)
-  const [count, setCount] = useState('')
+  const {text, startDate, endDate, recyclebin, order, page} = getQuery()
 
-  const text = searchParams.get('text')
-  const startDate = searchParams.get('startDate')
-  const endDate = searchParams.get('endDate')
-  let recyclebin = searchParams.get('recyclebin')
-  !recyclebin && (recyclebin=false)
-  const order = searchParams.get('order')
+  const limit = 35
+  const [count, setCount] = useState('')
 
   useEffect(() => {
     setEvents()
@@ -40,10 +40,6 @@ function Events() {
       setCount(data.count)
     })
   }, [searchParams, page, order])
-
-  useEffect(() => {
-    setPage(0)
-  }, [searchParams])
 
   return (
     <div className={EventsCSS.parent}>
@@ -56,9 +52,7 @@ function Events() {
         ))}  
         {!count && <p style={{fontWeight: '600'}}>Search query found no events. </p>}
       </div>
-      <div className={CommentsCSS.pageButtons}>
-        {count && Array.from(Array(Math.floor(count/limit + 1)), (e, i) => <button className={i===page && CommentsCSS.selectedButton} onClick={() => setPage(i)}>{i+1}</button>)}
-      </div>
+      <PageButtons count={count} limit={limit} />
     </div>
     
   )

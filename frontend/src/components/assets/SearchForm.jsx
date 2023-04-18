@@ -1,6 +1,6 @@
 //react
 import {useState, useContext, useEffect} from 'react'
-import {useNavigate, useSearchParams} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import UserContext from '../../context/UserContext'
 
 //assets
@@ -15,21 +15,14 @@ import { faMagnifyingGlass, faSliders} from '@fortawesome/free-solid-svg-icons'
 import SearchFormCSS from './styles/SearchForm.module.css'
 import HeroSelectCSS from './styles/HeroSelect.module.css'
 
+//helper
+import getQuery from '../../helpers/getQuery'
+
 function SearchForm({page}) {
     const {userData} = useContext(UserContext)
     const navigate = useNavigate()
-    const [searchParams] = useSearchParams()
- 
-    const [formData, setFormData] = useState({
-        text: searchParams.get('text'),
-        hero1: searchParams.get('hero1'),
-        hero2: searchParams.get('hero2'),
-        startDate: searchParams.get('startDate'),
-        endDate: searchParams.get('endDate'),
-        format: searchParams.get('format'),
-        order: searchParams.get('order'),
-        reyclebin: searchParams.get('recyclebin') ? searchParams.get('recyclebin') : false,
-    })
+
+    const [formData, setFormData] = useState(getQuery())
     const {text, hero1, hero2, startDate, endDate, format, order, recyclebin} = formData
 
     const [parameters, setParameters] = useState(false)
@@ -92,7 +85,6 @@ function SearchForm({page}) {
         })
     }
 
-
     return (
         <div className={SearchFormCSS.parent}>
             <form className={SearchFormCSS.searchform} onSubmit={onSubmit}>
@@ -129,16 +121,19 @@ function SearchForm({page}) {
                             <input type="date" name='endDate' value={endDate} onChange={onChange} className={SearchFormCSS.dateRange}/>
                         </div>
 
-                        <div className={SearchFormCSS.hero}>
-                            <label style={{fontWeight: '500'}}>Format: </label>
-                            <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
-                                <option value=''>None</option>
-                                <option value="Classic Constructed">Classic Constructed</option>
-                                <option value="Blitz">Blitz</option>
-                                <option value="Draft">Draft</option>
-                                <option value="Sealed">Sealed</option>
-                            </select>
-                        </div>
+                        { page==='matches' && 
+                            <div className={SearchFormCSS.hero}>
+                                <label style={{fontWeight: '500'}}>Format: </label>
+                                <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
+                                    <option value=''>None</option>
+                                    <option value="Classic Constructed">Classic Constructed</option>
+                                    <option value="Blitz">Blitz</option>
+                                    <option value="Draft">Draft</option>
+                                    <option value="Sealed">Sealed</option>
+                                </select>
+                            </div>
+                        }
+                        
                         
                         <div style={{fontWeight: '500'}}>
                             Sort by: <Order order={order} setOrder={changeOrder}/>
