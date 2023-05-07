@@ -50,6 +50,28 @@
     justify-content: center;
 }
 
+.dayGroupings{
+    display: flex;
+    flex-direction: column;
+}
+
+.labelThumbnailContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dayLabel{
+    text-align: center;
+    font-weight: 600;           
+    color: black;
+    padding: 40px 0px 40px 0px;
+    margin: 30px 0px 30px 0px;
+    font-size: 2em;
+    border-bottom: 3px solid rgb(85, 85, 85);
+    width: 300px;
+}
+
 @media(orientation: portrait), (width: 720px){
     .eventContainer{
         height: 330px;
@@ -82,6 +104,10 @@
 }
 
 @media(width < 610px){
+    .eventContainer{
+        height: 240px;
+    }
+
     .eventName{
         font-size: 1.3em;
     } 
@@ -93,9 +119,13 @@
     .eventDescription > *{
         font-size: 1em;
     }
+
+    .dayLabel{
+        padding: 20px 0px 20px 0px;
+        margin: 15px 0px 15px 0px;
+        font-size: 1.5em;
+    }
 }
-
-
 
 .verticalLine{
     height: 80%;
@@ -110,6 +140,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+    font-weight: 700;
 }
 
 .cornerItem{

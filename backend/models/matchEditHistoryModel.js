@@ -32,6 +32,8 @@ const matchEditHistorySchema = mongoose.Schema({
         },
         startDate: Date,
         endDate: Date,
+        dayRoundArr: [Number],
+        top8Day: Boolean,
         description: String,
     },
 

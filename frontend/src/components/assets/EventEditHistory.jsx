@@ -52,6 +52,10 @@ function EditHistory({editHistory, previousHistory}) {
           <div>
             <div className={`${h(5)}`}><b>Description: </b>{editHistory.description}</div>
           </div>
+          <div>
+            <div className={`${h(6)}`}><b>Dedicated Top 8 Day: </b>{editHistory.top8day ? 'Yes' : 'No'}</div>
+            <div className={`${h(7)}`}><b>Rounds per day array:</b>{editHistory?.dayRoundArr?.length}</div>
+          </div>
         </div>
       )}
     </div>

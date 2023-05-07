@@ -21,6 +21,9 @@ import PopupCSS from '../assets/styles/Popup.module.css'
 import MoonLoader from 'react-spinners/MoonLoader'
 import ClipLoader from 'react-spinners/ClipLoader'
 
+//helpers
+import { getTimeDifference } from '../../helpers/timeDifference'
+
 function PostEvent() {
   const navigate = useNavigate()
   const {eventid} = useParams()
@@ -31,13 +34,15 @@ function PostEvent() {
     format: 'Classic Constructed',
     startDate: '',
     endDate: '',
+    top8Day: false,
+    dayRoundArr: [],
     description: ''
   })
   const [isMultiDay, setIsMultiDay] = useState(false)
 
   const [deletePopup, setDeletePopup] = useState(false)
 
-  const {name, location, format, startDate, endDate, description} = formData
+  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr} = formData
 
   useEffect(() => {
     if(eventid){
@@ -46,6 +51,9 @@ function PostEvent() {
         data.startDate = data.startDate?.substring(0,10)
         data.endDate = data.endDate?.substring(0,10)
         setFormData(data)
+        if(data.endDate){
+          setIsMultiDay(true)
+        }
       })
     }
   }, [])
@@ -57,8 +65,37 @@ function PostEvent() {
     }))
   }
 
-  const onChangeChecked = (e) => {
+  const onChangeCheckedMultiDay = (e) => {
     setIsMultiDay(e.target.checked)
+  }
+
+  const onChangeCheckedTop8Day = (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.checked
+    }))
+    if(!e.target.checked){
+      setDayRoundArr(dayRoundArr.slice(0, dayRoundArr.length-1))
+    }
+  } 
+
+  const onChangeDayRoundArray = (e) => {
+    let tempArr = [...dayRoundArr]
+    tempArr[e.target.getAttribute('index')] = parseInt(e.target.value)
+    for(let i = 0; i < tempArr.length;i++){
+      if(tempArr[i] >= tempArr[i+1]){
+        tempArr[i+1] = parseInt(tempArr[i]) + 1
+      }
+    }
+    setDayRoundArr(tempArr)
+
+  }
+
+  const setDayRoundArr = (newArray) => {
+    setFormData(prev => ({
+      ...prev,
+      dayRoundArr: newArray
+    }))
   }
 
   const onSubmit = (e) => {
@@ -107,9 +144,8 @@ function PostEvent() {
 
         <div>
           <label>Multiday Event</label>
-          <input type="checkbox" name='recyclebin' onChange={onChangeChecked}/>
+          <input type="checkbox" value={isMultiDay} onChange={onChangeCheckedMultiDay}/>
         </div>
-        
 
         <div className={PostMatchCSS.container}>
           <label>{isMultiDay ? <>Start Date</> : <>Date</>}</label>
@@ -121,7 +157,25 @@ function PostEvent() {
             <label>End Date</label>
             <input type="date" name='endDate' value={endDate} onChange={onChange} required className={PostMatchCSS.input}/>
           </div>
+
+          <div>
+            <label>Dedicated day for top 8</label>
+            <input type="checkbox" name="top8Day" value={top8Day} onChange={onChangeCheckedTop8Day}/>
+          </div>
+
+          <div className={PostMatchCSS.container}>
+            {(getTimeDifference(startDate, endDate) > -1) 
+              && Array.from(Array(getTimeDifference(startDate, endDate) + !top8Day),
+               (e, i) => <div key={i}>
+                <label>Last swiss round of day {i + 1}: </label>
+                <input type="number" value={dayRoundArr[i]} index={i} onChange={(e) => onChangeDayRoundArray(e)} style={{width: '50px'}}/>
+            </div>)}
+            {top8Day && <div>
+              <label>Day {getTimeDifference(startDate, endDate) + 1}: Top 8 only</label>
+            </div>}
+          </div>
         </> }
+
         
         <div className={PostMatchCSS.container}>
           <label>Description</label>

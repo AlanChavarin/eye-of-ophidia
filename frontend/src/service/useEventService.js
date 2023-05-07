@@ -61,7 +61,7 @@ const useEventService = () => {
         if(!eventid){
             eventid = ''
         } 
-        const {name, location, format, startDate, endDate, description} = formData
+        const {name, location, format, startDate, endDate, top8Day, dayRoundArr, description} = formData
         return new Promise(resolve => (
             fetch(API_URL + eventid, {
                 method: eventid ? 'PUT' : 'POST',
@@ -75,6 +75,8 @@ const useEventService = () => {
                     format: format, 
                     startDate: startDate, 
                     endDate: endDate,
+                    top8Day: top8Day,
+                    dayRoundArr: dayRoundArr,
                     description: description
                 })
             })

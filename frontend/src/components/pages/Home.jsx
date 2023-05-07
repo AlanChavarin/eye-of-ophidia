@@ -16,7 +16,7 @@ function Home() {
         <div className={HomeCSS.infoItem}>
           <FontAwesomeIcon icon={faMagnifyingGlass} className={HomeCSS.itemIcon}/>
           <div>
-            <p>Search for all recorded <b>Flesh and Blood matches </b>from across different official and community run events.</p>
+            <p>Search for all recorded <b>Flesh and Blood feature matches </b>from across different official and community run events.</p>
           </div>
         </div>
         <div className={HomeCSS.infoItem}>
@@ -31,7 +31,7 @@ function Home() {
           <FontAwesomeIcon icon={faTrophy} className={HomeCSS.itemIcon}/>
           <div>
             <p>Browse and search for <b>Events</b></p>
-            <p>Event pages will show all recorded matches from that event. </p>
+            <p>Event pages will show all recorded feature matches from that event. </p>
           </div>
         </div>
       </div>

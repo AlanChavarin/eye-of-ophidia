@@ -18,6 +18,8 @@ const eventEditHistorySchema = mongoose.Schema({
     },
     startDate: Date,
     endDate: Date,
+    dayRoundArr: [Number],
+    top8Day: Boolean,
     description: String,
     //edit history specific
     editor: {

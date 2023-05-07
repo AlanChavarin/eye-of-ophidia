@@ -13,6 +13,32 @@ function MatchThumbnail({match, page, recyclebin}) {
   const hero1url = window.location.origin + `/images/${encodeURI(match.player1hero)}.jpg`
   const hero2url = window.location.origin + `/images/${encodeURI(match.player2hero)}.jpg`
 
+  const getMatchDate = () => {
+    if(match.top8){
+      if(match.event.endDate){
+        return match.event.endDate.substr(0, 10)
+      } else {
+        return match.event.startDate.substr(0, 10)
+      }
+    }
+
+    if(!match.event.dayRoundArr || (match.event?.dayRoundArr.length < 2)){
+      return match.event.startDate.substr(0, 10)
+    }
+
+    const round = parseInt(match.swissRound)
+    const arr = match.event.dayRoundArr
+    let tempDate = new Date(match.event.startDate.substr(0, 10))
+    for(let i = 0; i < arr.length; i++){
+      if(round <= arr[i]){
+        tempDate.setDate(tempDate.getDate() + i)
+        return tempDate.toISOString().toString().substring(0, 10)
+      }
+    }
+
+    return match.event.startDate.substr(0, 10)
+  }
+
   return (
     <Link to={'/matches/' + match._id + `${recyclebin ? '?recyclebin=true':''}`} className={`
     ${MatchThumbnailCSS.match} 
@@ -34,7 +60,7 @@ function MatchThumbnail({match, page, recyclebin}) {
             {match.format !== 'Classic Constructed' && match.format}
           </div>
           <div className={MatchThumbnailCSS.date}>
-            {match.event.startDate.substr(0, 10)}
+            {getMatchDate()}
           </div>
         </div>
 

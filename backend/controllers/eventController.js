@@ -78,6 +78,8 @@ const postEvent = asyncHandler(async (req, res) => {
         format: req.body.format,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
+        top8Day: req.body.top8Day,
+        dayRoundArr: req.body.dayRoundArr,
         description: req.body.description,
         deleted: false,
     })
