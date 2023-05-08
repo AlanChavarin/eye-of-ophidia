@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
 const cors = require('cors')
 const {errorHandler} = require('./middleware/errorMiddleware')
+const {sanitate} = require('./middleware/sanitateMiddleware')
 const path = require('path')
 
 app.use(cors({
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGO_URI, () => {
     console.log('connected to database')
 })
 
+app.use(sanitate)
 app.use(express.json()) 
 app.use(express.urlencoded({extended: false}))
 
@@ -41,3 +43,4 @@ app.get('*', (req, res) => {
 })
 
 app.use(errorHandler)
+
