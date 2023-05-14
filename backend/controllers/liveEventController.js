@@ -8,7 +8,18 @@ const getLiveEvent = asyncHandler(async (req, res) => {
 })
 
 const postLiveEvent = asyncHandler(async (req, res) => {
-    await LiveEvent.updateOne({}, {embed: req.body.embed})
+    if(await LiveEvent.findOne({})){
+        await LiveEvent.updateOne({}, {
+            site: req.body.site,
+            link: req.body.link,
+        })
+    } else {
+        await LiveEvent.create({
+            site: req.body.site,
+            link: req.body.link,
+        })
+    }
+    
     res.status(200).json({message: 'OK'})
 })
 

@@ -15,3 +15,12 @@ export const getTwitchParams = (link) => {
     
     return params
 }
+
+export const getTwitchChannelName = (link) => {
+    let name
+    if(!link){
+        return false
+    }
+    name = link.substring(link.indexOf('.tv/') + 4, link.length)
+    return name
+}

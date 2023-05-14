@@ -1,0 +1,68 @@
+.parent{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.formParent{
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid grey;
+    box-shadow: 0px 0px 8px lightgray;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.moveToBottom{
+    order: 1;
+}
+
+.xButton{
+    background-color: lightgray;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+
+    text-decoration: none;
+    text-shadow: none;
+    font-weight: 550;
+    font-size: small;
+
+    box-shadow: 2px 2px 2px black;
+
+    align-self: center;
+
+    white-space: nowrap;
+
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.xButton:hover{
+    cursor: pointer;
+    background-color: rgb(161, 161, 161);
+}
+
+.videoContainer{
+    position:relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    height: 0%;
+}
+
+.videoContainer iframe{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    border-radius: 10px;
+    border-color: lightgray;
+    border-width: 2px;
+    border-style: solid;
+}
