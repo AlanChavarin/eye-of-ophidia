@@ -49,7 +49,7 @@ function Event() {
     }, [])
 
     useEffect(() => {
-        event && getMatchesByEvent(event.name)
+        event && getMatchesByEvent(eventid)
         .then(data => {
             setMatches(data)
             const round = data[data.length-1]

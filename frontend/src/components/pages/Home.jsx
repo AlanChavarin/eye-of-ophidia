@@ -1,7 +1,5 @@
 import SearchForm from '../assets/SearchForm'
-import LiveEvent from '../assets/LiveEvent'
 import HomeCSS from './styles/Home.module.css'
-
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,7 +12,6 @@ function Home() {
       <p className={HomeCSS.p}><FontAwesomeIcon icon={faEye} className={HomeCSS.icon}/>Eye of Ophidia</p>
       <SearchForm page='matches'/>
       {/* live event */}
-      <LiveEvent />
       {/* info on site */}
       <div className={HomeCSS.infoContainer}>
         <div className={HomeCSS.infoItem}>
