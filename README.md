@@ -1,1 +1,11 @@
-https://www.eyeofophidia.net Eye of Ophida is an app that will allow Flesh and Blood players to search through a catalog of all major recorded competitive Flesh and Blood matches. They can use key terms such as the hero's match ups, specific players, and specific events. The community can suggest new big tournaments to be added to the catalog as well as trusted community members will be entering all important match data.
+
+<img style="display: block; margin: auto;" src="mdimages/EyeofOphidia.PNG">
+<p style="font-size: 20px">
+    <a href="https://www.eyeofophidia.net">
+        <strong>Eye of Ophidia</strong>
+    </a>
+    is a tool that catalouges all streamed matches from official and community ran tournaments and events for Flesh and Blood TCG.
+    <br>
+    Users can search matches via text search, or can use parameters such as hero matchup, date range and/or tournament format. Users may also head to the event page, where they can search for events and view all matches from a specific event. Match pages will link an embed to either to either a Twitch or Youtube VOD at the exact timestamp of when the match begins. 
+    <br>
+</p>
