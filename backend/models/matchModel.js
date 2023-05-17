@@ -36,6 +36,7 @@ const matchSchema = mongoose.Schema({
         },
         startDate: Date,
         endDate: Date,
+        notATypicalTournamentStructure: Boolean,
         dayRoundArr: [Number],
         top8Day: Boolean,
         description: String
@@ -68,6 +69,11 @@ const matchSchema = mongoose.Schema({
     link: {type: String, required: true}, 
     timeStamp: {type: Number},
     description: String, 
+    date: { //only used if event has notATypicalTournament set to true
+        type: Date,
+        min: this.event?.startDate,
+        max: this.event?.endDate,
+    }, 
     deleted: Boolean
 })
 

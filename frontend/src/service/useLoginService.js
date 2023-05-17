@@ -1,8 +1,9 @@
 import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
+const API_URL =  `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/users/'
 
 const useLoginService = () => {
-    const API_URL =  `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/users/'
+   
     const {addAlert} = useContext(AlertContext)
     const [loginLoading, setLoading] = useState(false)
 

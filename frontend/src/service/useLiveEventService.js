@@ -1,10 +1,16 @@
 import AlertContext from '../context/AlertContext'
 import {useContext, useState} from 'react'
 
+const API_URL =  `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/liveEvent/'
+
 const useLiveEventService = () => {
-    const API_URL =  `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/liveEvent/'
     const {addAlert} = useContext(AlertContext)
     const [liveEventLoading, setLoading] = useState(false)
+    const err = (error) => {
+        console.error(error.message)
+        addAlert(error.message, 'error')
+        setLoading(false)
+    }
 
     const getLiveEvent = async () => {
         setLoading(true)
@@ -49,11 +55,7 @@ const useLiveEventService = () => {
         ))
     }
 
-    const err = (error) => {
-        console.error(error.message)
-        addAlert(error.message, 'error')
-        setLoading(false)
-    }
+    
 
     return {getLiveEvent, postLiveEvent, liveEventLoading}
 }

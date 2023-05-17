@@ -1,8 +1,9 @@
 import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
+const API_URL = `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/events/'
 
 const useEventService = () => {
-    const API_URL = `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/events/'
+    
     const {addAlert} = useContext(AlertContext)
     const [eventLoading, setLoading] = useState(false)
 
@@ -61,7 +62,7 @@ const useEventService = () => {
         if(!eventid){
             eventid = ''
         } 
-        const {name, location, format, startDate, endDate, top8Day, dayRoundArr, description} = formData
+        const {name, location, format, startDate, endDate, top8Day, dayRoundArr, notATypicalTournamentStructure, description} = formData
         return new Promise(resolve => (
             fetch(API_URL + eventid, {
                 method: eventid ? 'PUT' : 'POST',
@@ -77,7 +78,8 @@ const useEventService = () => {
                     endDate: endDate,
                     top8Day: top8Day,
                     dayRoundArr: dayRoundArr,
-                    description: description
+                    description: description,
+                    notATypicalTournamentStructure: notATypicalTournamentStructure,
                 })
             })
             .then(res => res.json())

@@ -24,9 +24,6 @@ import EventCSS from './styles/Event.module.css'
 import MoonLoader from 'react-spinners/MoonLoader'
 import ClipLoader from 'react-spinners/ClipLoader'
 
-//helpers
-import { getTimeDifference } from '../../helpers/timeDifference'
-
 function Event() {
     const navigate = useNavigate()
     const {userData} = useContext(UserContext)
@@ -65,12 +62,10 @@ function Event() {
                 })
             }
         })
-    }, [event])
 
-    useEffect(() => {
         event && (setBackgroundImage(window.location.origin + `/backgroundImages/${event.startDate.substring(5, 7)}.jpg`))
     }, [event])
-
+    
     const restore = () => {
         if(recyclebin){
             restoreEvent(eventid)
@@ -141,33 +136,37 @@ function Event() {
             <Issues targetid={event._id} targetType='event'/>
             </>
             )}
-            {(tab==='matches') && <div className={EventCSS.dayGroupings}>
-                <MoonLoader size={70} loading={matchLoading || eventLoading}/> 
-                {(matches && event.endDate && event.dayRoundArr) ? 
-                    <>
-                        {Array.from(Array(event.dayRoundArr.length), (e, i) => <div className={EventCSS.labelThumbnailContainer}>
-                            <div className={EventCSS.dayLabel}>Day {i + 1}</div>
-                            <div className={EventCSS.matchThumbnailContainer}>
-                                {matches.filter(match => filter(match, i))
-                                    .map((match) => (<MatchThumbnail key={match._id} match={match}/>))}
-                                {(matches.filter(match => filter(match, i)).length < 1) && <>No Vods Available :{'('}</>}
+
+            {/* matches */}
+            {(tab==='matches') && 
+                <div className={EventCSS.dayGroupings}>
+                    <MoonLoader size={70} loading={matchLoading || eventLoading}/> 
+                    {(matches && event.endDate && event.dayRoundArr && !event.notATypicalTournamentStructure) ? 
+                        <>
+                            {Array.from(Array(event.dayRoundArr.length), (e, i) => <div className={EventCSS.labelThumbnailContainer}>
+                                <div className={EventCSS.dayLabel}>Day {i + 1}</div>
+                                <div className={EventCSS.matchThumbnailContainer}>
+                                    {matches.filter(match => filter(match, i))
+                                        .map((match) => (<MatchThumbnail key={match._id} match={match}/>))}
+                                    {(matches.filter(match => filter(match, i)).length < 1) && <>No Vods Available :{'('}</>}
+                                </div>
+                            </div>)}
+                            <div className={EventCSS.labelThumbnailContainer}>
+                                <div className={EventCSS.dayLabel}>Top8</div>
+                                <div className={EventCSS.matchThumbnailContainer}>
+                                    {matches.filter(match => match.top8)
+                                        .map((match) => (<MatchThumbnail key={match._id} match={match}/>))
+                                    }
+                                </div>
                             </div>
-                        </div>)}
-                    <div className={EventCSS.labelThumbnailContainer}>
-                        <div className={EventCSS.dayLabel}>Top8</div>
+                        </> 
+                        : 
                         <div className={EventCSS.matchThumbnailContainer}>
-                            {matches.filter(match => match.top8)
-                                .map((match) => (<MatchThumbnail key={match._id} match={match}/>))}
+                            {matches?.map((match) => (<MatchThumbnail key={match._id} match={match}/>))}
                         </div>
-                    </div>
-                    
-                    </> 
-                    : 
-                    <div className={EventCSS.matchThumbnailContainer}>
-                        {matches?.map((match) => (<MatchThumbnail key={match._id} match={match}/>))}
-                    </div>
-                }
-            </div>}
+                    }
+                </div>
+            }
             {(tab==='editHistory') && <>
                 <button onClick={() => setTab('matches')} className={EventCSS.cornerItem} style={{position: 'relative'}}>Back to event matches <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
                 <EditHistories id={eventid} forPage='event'/>

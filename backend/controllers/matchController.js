@@ -88,8 +88,9 @@ const getMatchesByEvent = asyncHandler(async (req, res) => {
     if(!req.recyclebin){req.recyclebin = false}
     if(ObjectId.isValid(req.params.event)){
         matches = await Match.find({'event._id': req.params.event, deleted: req.recyclebin})
+        .sort({top8: 1, swissRound: 1})
     } else {
-        matches = await Match.find({'event.name': req.params.event, deleted: req.recyclebin})
+        matches = await Match.find({'event.name': req.params.event, deleted: req.recyclebin}).sort({top8: 1, swissRound: 1})
     }
     res.status(200).json(matches)
 })
@@ -107,7 +108,7 @@ const getMatch = asyncHandler(async (req, res) => {
 const postMatch = asyncHandler(async (req, res) => {
     const {player1name, player1hero, player1deck, 
         player2name, player2hero, player2deck,
-        format, event, twitch, twitchTimeStamp, link, timeStamp, description, top8, swissRound, top8Round,
+        format, event, twitch, twitchTimeStamp, link, timeStamp, description, top8, swissRound, top8Round, date
     } = req.body
     const eventData = await Event.findOne({name: event})
     if(top8 === 'true'){
@@ -135,6 +136,7 @@ const postMatch = asyncHandler(async (req, res) => {
         link: link,
         timeStamp: timeStamp,
         description: description,
+        date: date,
         deleted: false
     })
 

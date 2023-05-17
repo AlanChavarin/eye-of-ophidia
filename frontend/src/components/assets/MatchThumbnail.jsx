@@ -14,6 +14,10 @@ function MatchThumbnail({match, page, recyclebin}) {
   const hero2url = window.location.origin + `/images/${encodeURI(match.player2hero)}.jpg`
 
   const getMatchDate = () => {
+    if(match.event.notATypicalTournamentStructure && match.date){
+      return match.date.substring(0,10)
+    }
+
     if(match.top8){
       if(match.event.endDate){
         return match.event.endDate.substr(0, 10)

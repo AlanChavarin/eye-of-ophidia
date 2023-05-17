@@ -37,13 +37,9 @@ function LiveEvent() {
     const [fullLink, setFullLink] = useState('')
 
     useEffect(() => {
-      getTheLiveEvent()
-    }, [])
-
-    const getTheLiveEvent = () => {
       getLiveEvent()
       .then(data => setLiveEvent(data))
-    }
+    }, [])
 
     const onClick = (newValue) => {
       setDropdown(newValue)
@@ -58,8 +54,9 @@ function LiveEvent() {
           link: '',
         })
         setFullLink('')
-        getTheLiveEvent()
         setDropdown(false)
+        getLiveEvent()
+        .then(data => setLiveEvent(data))
       })
     }
 
@@ -76,9 +73,9 @@ function LiveEvent() {
 
     useEffect(() => {
       let id
-      if(formData.site == 'youtube'){
+      if(formData.site === 'youtube'){
         id = getYoutubeParams(fullLink)[0]
-      } else  if (formData.site == 'twitch'){
+      } else  if (formData.site === 'twitch'){
         id = getTwitchChannelName(fullLink)
       } else {
         id = ''
@@ -96,9 +93,9 @@ function LiveEvent() {
       {!dropdown ? 
         <>{liveEvent.link && 
           <div className={LiveEventCSS.videoContainer}>
-            {liveEvent.site == 'youtube' && <iframe src={`https://www.youtube.com/embed/${liveEvent.link}?&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
+            {liveEvent.site === 'youtube' && <iframe src={`https://www.youtube.com/embed/${liveEvent.link}?&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
 
-            {liveEvent.site == 'twitch' && <iframe src={`https://player.twitch.tv/?channel=${liveEvent.link}&parent=${process.env.NODE_ENV==='production' ? 'www.eyeofophidia.net' : 'localhost'}`} frameborder="0" allowfullscreen="true" scrolling="no"></iframe>}
+            {liveEvent.site === 'twitch' && <iframe src={`https://player.twitch.tv/?channel=${liveEvent.link}&parent=${process.env.NODE_ENV==='production' ? 'www.eyeofophidia.net' : 'localhost'}`} frameborder="0" allowfullscreen="true" scrolling="no"></iframe>}
           </div>
         }</> : <div className={LiveEventCSS.formParent}>
 

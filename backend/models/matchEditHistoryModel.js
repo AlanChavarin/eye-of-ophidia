@@ -32,6 +32,7 @@ const matchEditHistorySchema = mongoose.Schema({
         },
         startDate: Date,
         endDate: Date,
+        notATypicalTournamentStructure: Boolean,
         dayRoundArr: [Number],
         top8Day: Boolean,
         description: String,
@@ -45,6 +46,7 @@ const matchEditHistorySchema = mongoose.Schema({
     link: {type: String, required: true}, 
     timeStamp: {type: Number},
     description: String, 
+    date: Date,
     deleted: Boolean,
     //edit history specific
     editor: {

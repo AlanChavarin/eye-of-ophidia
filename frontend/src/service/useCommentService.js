@@ -1,31 +1,31 @@
 import {useContext, useState} from 'react'
 import AlertContext from '../context/AlertContext'
+const API_URL = `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/comments/'
 
 const useCommentService = () => {
-  const API_URL = `${process.env.REACT_APP_API && process.env.NODE_ENV==='development' ? process.env.REACT_APP_API : ''}` + '/api/comments/'
   const {addAlert} = useContext(AlertContext)
   const [commentLoading, setLoading] = useState(false)
 
   const getComments = async (matchid, page, limit) => {
-        setLoading(true)
-        !page && (page=0)
-        !limit && (limit=10)
-        if(matchid){
-          return new Promise( resolve => (
-            fetch(API_URL + matchid + '?page=' + page + '&limit=' + limit)
-            .then(res => res.json())
-            .then((data) => {
-                if(data.errorMessage){
-                  throw new Error(data.errorMessage)
-                }
-                setLoading(false)
-                resolve(data)
-            })
-            .catch(error => err(error))
-          ))
-        } else {
-          throw new Error('matchid doesnt exist')
-        }
+      setLoading(true)
+      !page && (page=0)
+      !limit && (limit=10)
+      if(matchid){
+        return new Promise( resolve => (
+          fetch(API_URL + matchid + '?page=' + page + '&limit=' + limit)
+          .then(res => res.json())
+          .then((data) => {
+              if(data.errorMessage){
+                throw new Error(data.errorMessage)
+              }
+              setLoading(false)
+              resolve(data)
+          })
+          .catch(error => err(error))
+        ))
+      } else {
+        throw new Error('matchid doesnt exist')
+      }
     }
 
   const postComment = async (newCommentBody, matchid) => {

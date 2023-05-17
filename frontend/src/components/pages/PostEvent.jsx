@@ -36,13 +36,12 @@ function PostEvent() {
     endDate: '',
     top8Day: false,
     dayRoundArr: [],
-    description: ''
+    description: '',
+    notATypicalTournamentStructure: false,
   })
   const [isMultiDay, setIsMultiDay] = useState(false)
-
   const [deletePopup, setDeletePopup] = useState(false)
-
-  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr} = formData
+  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure} = formData
 
   useEffect(() => {
     if(eventid){
@@ -62,6 +61,13 @@ function PostEvent() {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value
+    }))
+  }
+
+  const onChangeChecked = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.checked
     }))
   }
 
@@ -88,7 +94,6 @@ function PostEvent() {
       }
     }
     setDayRoundArr(tempArr)
-
   }
 
   const setDayRoundArr = (newArray) => {
@@ -143,21 +148,34 @@ function PostEvent() {
         </div>
 
         <div>
+          <label style={{fontSize: '12px'}}>Non-conventional tournament structure.</label>
+          <input type="checkbox" checked={notATypicalTournamentStructure} name='notATypicalTournamentStructure' value={notATypicalTournamentStructure} onChange={onChangeChecked}/>
+        </div>
+
+        <div>
           <label>Multiday Event</label>
-          <input type="checkbox" value={isMultiDay} onChange={onChangeCheckedMultiDay}/>
+          <input type="checkbox"  value={isMultiDay} onChange={onChangeCheckedMultiDay}/>
         </div>
 
         <div className={PostMatchCSS.container}>
-          <label>{isMultiDay ? <>Start Date</> : <>Date</>}</label>
-          <input type="date" name='startDate' value={startDate} onChange={onChange} required className={PostMatchCSS.input}/>
+          {(getTimeDifference(startDate, endDate) > 4 && !notATypicalTournamentStructure) &&
+             <span style={{color: '#ab2424'}}>
+              Event spans too many days for a conventional tournament structure (max 5). Change dates or check "Non-conventional tournament structure" on.
+            </span>}
+          <label>{isMultiDay ? <>Start Date</> : <>Date</>} </label>
+          <input type="date" name='startDate' value={startDate} onChange={onChange} required className={PostMatchCSS.input}
+          style={{backgroundColor: (getTimeDifference(startDate, endDate) > 4 && !notATypicalTournamentStructure) ? '#ff3333' : ''}}/>
         </div>
 
         {isMultiDay && <>
-          <div className={PostMatchCSS.container}>
+          <div className={PostMatchCSS.container} >
             <label>End Date</label>
-            <input type="date" name='endDate' value={endDate} onChange={onChange} required className={PostMatchCSS.input}/>
+            <input type="date" name='endDate' value={endDate} onChange={onChange} required className={PostMatchCSS.input}
+            style={{backgroundColor: (getTimeDifference(startDate, endDate) > 4 && !notATypicalTournamentStructure) ? '#ff3333' : ''}}/>
           </div>
-
+        </>}
+ 
+        { (isMultiDay && !notATypicalTournamentStructure && (getTimeDifference(startDate, endDate) < 5)) && <>
           <div>
             <label>Dedicated day for top 8</label>
             <input type="checkbox" name="top8Day" value={top8Day} onChange={onChangeCheckedTop8Day}/>

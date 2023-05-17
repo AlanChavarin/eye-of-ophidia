@@ -31,8 +31,6 @@ const getEvents = asyncHandler(async (req, res) => {
         find["deleted"] = true
     }
 
-    
-
     if(req.query.text){
         find["$text"] = {"$search": req.query.text}
     }
@@ -51,9 +49,9 @@ const getEvents = asyncHandler(async (req, res) => {
         {"$match": find},
         { "$facet": {
             "events": [
+                {"$sort": {"startDate": order}},
                 { "$skip": skip },
                 { "$limit": limit },
-                {"$sort": {"startDate": order}}
             ],
             "count": [
                 { "$count": "count" }
@@ -81,6 +79,7 @@ const postEvent = asyncHandler(async (req, res) => {
         top8Day: req.body.top8Day,
         dayRoundArr: req.body.dayRoundArr,
         description: req.body.description,
+        notATypicalTournamentStructure: req.body.notATypicalTournamentStructure,
         deleted: false,
     })
     postEventEdit(event, req.user._id)

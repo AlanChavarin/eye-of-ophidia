@@ -18,6 +18,7 @@ const eventEditHistorySchema = mongoose.Schema({
     },
     startDate: Date,
     endDate: Date,
+    notATypicalTournamentStructure: Boolean,
     dayRoundArr: [Number],
     top8Day: Boolean,
     description: String,

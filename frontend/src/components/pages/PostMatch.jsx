@@ -48,6 +48,7 @@ function PostMatch() {
 
   const [eventNames, setEventNames] = useState([])
   const [eventData, setEventData] = useState()
+  const [selectedEventData, setSelectedEventData] = useState()
   const [formData, setFormData] = useState({
     player1name: '',
     player1hero: '',
@@ -68,8 +69,9 @@ function PostMatch() {
     link: '',
     timeStamp: '', 
     fullLink: '',
+    date: '',
   })
-  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, twitch, twitchTimeStamp, link, format, timeStamp, fullLink, top8, swissRound, top8Round} = formData
+  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, twitch, twitchTimeStamp, link, format, timeStamp, fullLink, top8, swissRound, top8Round, date} = formData
 
   const [deletePopup, setDeletePopup] = useState(false)
   const [heroType, setHeroType] = useState('')
@@ -79,7 +81,7 @@ function PostMatch() {
   useEffect(() => {
     if(matchid){
       getMatch(matchid)
-      .then(data => setFormData({...data, event: data.event.name, top8: data.top8 ? 'true' : 'false'}))
+      .then(data => setFormData({...data, date: data.date?.substring(0, 10), event: data.event.name, top8: data.top8 ? 'true' : 'false'}))
     }
 
     getEvents(null, null, null, null, 1000)
@@ -125,8 +127,11 @@ function PostMatch() {
           format: thisEvent.format
         }))
       }
+      if(event === thisEvent.name){
+        setSelectedEventData(thisEvent)
+      }
     })
-  }, [event])
+  }, [event, eventData])
 
   useEffect(() => {
     if(format==='Classic Constructed'){
@@ -325,6 +330,13 @@ function PostMatch() {
           <input type="url" name='player2deck' value={player2deck} onChange={onChange} className={PostMatchCSS.input}/>
         </div>
 
+        {selectedEventData?.notATypicalTournamentStructure && 
+          <div className={PostMatchCSS.container}>
+            <label>Match Date</label>
+            <input type="date" name='date' value={date} onChange={onChange} className={PostMatchCSS.input}/>
+          </div>
+        }
+
         <div className={PostMatchCSS.container} style={{flexDirection: 'row'}}>
           <input type="checkbox" checked={!dontUpdateLinks} onChange={() => setDontUpdateLinks(!dontUpdateLinks)} className={PostMatchCSS.input}/> <div style={{fontSize: '.8em'}}>Sync Deck Links (recomended)</div> 
         </div>
@@ -334,7 +346,6 @@ function PostMatch() {
            : <>Submit</>}
         </button>
       </form>
-
 
       <Popup trigger={deletePopup}>
         <div>
