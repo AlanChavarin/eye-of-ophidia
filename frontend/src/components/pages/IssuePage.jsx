@@ -37,7 +37,13 @@ function IssuePage() {
 
   return (
     <div className={IssuePageCSS.parent}>
+      {/* target type buttons */}
       <div style={{margin: '10px'}} className={IssuePageCSS.buttonContainer}>
+        <button onClick={() => setTab('general')} className={`
+        ${IssuePageCSS.button}
+        ${tab==='general' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
+        `}>General Issues</button>
+
         <button onClick={() => setTab('match')} className={`
         ${IssuePageCSS.button}
         ${tab==='match' ? IssuePageCSS.buttonSelected : IssuePageCSS.buttonUnselected}
@@ -49,6 +55,7 @@ function IssuePage() {
         `}>Event Issues</button>
       </div>
 
+      {/* status buttons */}
       <div style={{margin: '10px'}} className={IssuePageCSS.buttonContainer}>
         <button onClick={() => setStatusFilter('')} className={`
           ${IssuePageCSS.button}

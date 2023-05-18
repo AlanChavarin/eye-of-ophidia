@@ -11,7 +11,6 @@ import SearchForm from '../assets/SearchForm'
 
 //css
 import EventsCSS from './styles/Events.module.css'
-import CommentsCSS from '../assets/styles/Comments.module.css'
 
 //loader
 import MoonLoader from 'react-spinners/MoonLoader'

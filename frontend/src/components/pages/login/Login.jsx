@@ -1,56 +1,44 @@
 //react
-import {useState, useContext} from 'react'
-import UserContext from '../../context/UserContext'
-import { useNavigate, Link} from 'react-router-dom'
+import {useReducer, useContext} from 'react'
+import {useNavigate, Link} from 'react-router-dom'
+
+//context
+import UserContext from '../../../context/UserContext'
 
 //service
-import useLoginService from '../../service/useLoginService'
+import useLoginService from '../../../service/useLoginService'
 
 //css
-import LoginCSS from './styles/Login.module.css'
+import LoginCSS from '../styles/Login.module.css'
 
 //loader
 import ClipLoader from 'react-spinners/ClipLoader'
 
+//reducer
+import { loginReducer, INITIAL_STATE } from './loginReducer'
+
 function Login() {
+  const {updateLoggedInUserData} = useContext(UserContext)
   const navigate = useNavigate()
   const {loginLoading, postLogin, postRegistration, resendVerificationEmail} = useLoginService()
-  const {updateLoggedInUserData} = useContext(UserContext)
-  const [registrationMode, setRegistrationMode] = useState(false)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    password2: ''
-  })
-  const [resendVerificationEmailData, setResendVerificationEmailData] = useState()
-
-  const {name, email, password, password2} = formData
+  const [state, dispatch] = useReducer(loginReducer, INITIAL_STATE)
+  const {form, registrationMode, resendVerificationEmailData} = state
+  const {name, email, password, password2} = form
 
   const onChange = (e) => {
     e.preventDefault()
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }))
+    dispatch({type:'UPDATE_FORM', payload:e})
   }
     
   const onSubmit = async (e) => {
     e.preventDefault()
     if(registrationMode){
-      postRegistration(formData)
-      .then(data => {
-        if(data){
-          setResendVerificationEmailData(data)
-        }
-      })
+      postRegistration(form)
+      .then(data => 
+        data && dispatch({type: 'UPDATE_RESENDVERIFICATIONEMAILDATA', payload: data}))
     } else {
-      postLogin(formData, updateLoggedInUserData)
-      .then(data => {
-        if(data){
-          navigate('/')
-        }
-      })
+      postLogin(form, updateLoggedInUserData)
+      .then(data => data && navigate('/'))
     }
   }
 
@@ -58,6 +46,10 @@ function Login() {
     if(resendVerificationEmailData){
       resendVerificationEmail(resendVerificationEmailData)
     }
+  }
+
+  const changeMode = (mode) => {
+    dispatch({type: 'UPDATE_REGISTRATION_MODE', payload: mode})
   }
 
   return (<div style={{display: 'flex', flexDirection: 'column'}}>
@@ -68,8 +60,8 @@ function Login() {
     <div className={LoginCSS.parent}>
         
       <div className={LoginCSS.registrationModeSection}>
-        <button onClick={() => setRegistrationMode(false)} className={`${LoginCSS.button} ${LoginCSS.buttonLogin} ${registrationMode ? LoginCSS.buttonUnselected : LoginCSS.buttonSelected}`}>Login</button>
-        <button onClick={() => setRegistrationMode(true)} className={`${LoginCSS.button} ${LoginCSS.buttonRegister} ${registrationMode ? LoginCSS.buttonSelected : LoginCSS.buttonUnselected}`}>Register</button>
+        <button onClick={() => changeMode(false)} className={`${LoginCSS.button} ${LoginCSS.buttonLogin} ${registrationMode ? LoginCSS.buttonUnselected : LoginCSS.buttonSelected}`}>Login</button>
+        <button onClick={() => changeMode(true)} className={`${LoginCSS.button} ${LoginCSS.buttonRegister} ${registrationMode ? LoginCSS.buttonSelected : LoginCSS.buttonUnselected}`}>Register</button>
       </div>
       <form className={LoginCSS.form} onSubmit={onSubmit} id="form1">
           {(registrationMode) ? (

@@ -7,18 +7,19 @@ import Sidebar from './components/layout/Sidebar'
 import Home from "./components/pages/Home"
 import SearchResults from "./components/pages/SearchResults"
 import Match from "./components/pages/Match"
-import Login from "./components/pages/Login"
+import Login from "./components/pages/login/Login"
 import Logout from "./components/pages/Logout"
 import Me from "./components/pages/Me"
-import PostMatch from "./components/pages/PostMatch"
-import PostEvent from "./components/pages/PostEvent"
+import PostMatch from "./components/pages/postMatch/PostMatch"
+import PostEvent from "./components/pages/postEvent/PostEvent"
 import Verify from "./components/pages/Verify"
 import Events from "./components/pages/Events"
-import Event from "./components/pages/Event"
+import Event from "./components/pages/event/Event"
 import IssuePage from './components/pages/IssuePage'
 import Users from './components/pages/Users'
 import RequestPasswordReset from "./components/pages/RequestPasswordReset"
 import PasswordReset from "./components/pages/PasswordReset"
+import PostIssue from "./components/pages/PostIssue"
 
 //tools
 import {BrowserRouter as Router, Route, Routes, useSearchParams} from 'react-router-dom'
@@ -61,6 +62,7 @@ function App() {
               <Route path='/passwordreset' element={<PasswordReset />}/>
               <Route element={<UserAuth privilege='user'/>}>
                 <Route path='/me' element={<Me />}/>
+                <Route path='/postissue' element={<PostIssue />}/>
               </Route>
               <Route element={<UserAuth privilege='moderator'/>}>
                 <Route path='/issuepage' element={<IssuePage />}/>

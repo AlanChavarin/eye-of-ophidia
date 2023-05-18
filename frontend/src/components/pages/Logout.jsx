@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom'
 function Logout() {
     const {updateLoggedInUserData} = useContext(UserContext)
 
-
     useEffect(() => {
         localStorage.setItem('user', '')
         updateLoggedInUserData()

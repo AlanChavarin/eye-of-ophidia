@@ -24,7 +24,7 @@ function EventThumbnail({event, page, recyclebin, match}) {
             </div>
             <div>{event.format}{event.format==='Mixed' && (<> Format</>)}</div>
             <div>{event.location}</div>
-            <hr />
+            {/* <hr /> */}
             {(page==='match' && match) && (<>
               <div style={{alignSelf: 'center', fontSize: '1.1em'}}>
                 {match.top8 && <>{match.top8Round}</>}

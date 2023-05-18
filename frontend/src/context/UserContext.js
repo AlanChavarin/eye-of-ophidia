@@ -2,19 +2,16 @@ import {createContext, useState, useEffect} from 'react'
 import useLoginService from '../service/useLoginService'
 const UserContext = createContext()
 
+
 export const UserProvider = ({children}) => {
+    const {getMe} = useLoginService()
     const [sidebar, setSidebar] = useState(false)
     const [userData, setUserData] = useState({
         name:'',
         email: '',
         karma: 0,
         privilege: ''
-    })
-    const {getMe} = useLoginService()
-
-    useEffect(() => {
-        updateLoggedInUserData()
-    }, [])
+    })  
 
     const updateLoggedInUserData = () => {
         const userToken = localStorage.getItem('user')
@@ -36,6 +33,10 @@ export const UserProvider = ({children}) => {
             })
         }
     }
+
+    useEffect(() => {
+        updateLoggedInUserData()
+    }, [])
 
     return <UserContext.Provider value={{
         userData,

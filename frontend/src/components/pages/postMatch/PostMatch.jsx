@@ -1,30 +1,29 @@
 //react
-import {useState, useEffect} from 'react'
+import {useReducer, useEffect} from 'react'
 import {useParams, useNavigate, useSearchParams} from 'react-router-dom'
+
+//reducer
+import { postMatchReducer, INITIAL_STATE } from './postMatchReducer'
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 //assets
-import Popup from '../assets/Popup'
-import SearchableDropdown from '../assets/SearchableDropdown'
-import HeroSelect from '../assets/HeroSelect'
-import NameSelect from '../assets/NameSelect'
-import PostMatchInfoDropdown from '../assets/PostMatchInfoDropdown'
+import Popup from '../../assets/Popup'
+import SearchableDropdown from '../../assets/SearchableDropdown'
+import HeroSelect from '../../assets/HeroSelect'
+import NameSelect from '../../assets/NameSelect'
+import PostMatchInfoDropdown from '../../assets/PostMatchInfoDropdown'
 
 //service
-import useEventService from '../../service/useEventService'
-import useMatchService from '../../service/useMatchService'
+import useEventService from '../../../service/useEventService'
+import useMatchService from '../../../service/useMatchService'
 
 //css
-import PostMatchCSS from './styles/PostMatch.module.css'
-import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
-import PopupCSS from '../assets/styles/Popup.module.css'
-
-//tools
-import { getYoutubeParams } from '../../helpers/YoutubeParams'
-import { getTwitchParams } from '../../helpers/TwitchParams'
+import PostMatchCSS from '../styles/PostMatch.module.css'
+import HeroSelectCSS from '../../assets/styles/HeroSelect.module.css'
+import PopupCSS from '../../assets/styles/Popup.module.css'
 
 //loader
 import MoonLoader from 'react-spinners/MoonLoader'
@@ -34,191 +33,90 @@ import ClipLoader from 'react-spinners/ClipLoader'
 function PostMatch() {
   const {matchLoading, postMatch, getMatch, deleteMatch, getNameLinkPairs} = useMatchService()
   const {getEvents} = useEventService()
-
   const navigate = useNavigate()
   const {matchid} = useParams()
-
   const [searchParams] = useSearchParams()
 
-  let query = {}
-
-  for(const entry of searchParams.entries()){
-    query[entry[0]] = entry[1]
-  }
-
-  const [eventNames, setEventNames] = useState([])
-  const [eventData, setEventData] = useState()
-  const [selectedEventData, setSelectedEventData] = useState()
-  const [formData, setFormData] = useState({
-    player1name: '',
-    player1hero: '',
-    player1deck: '',
-
-    player2name: '',
-    player2hero: '',
-    player2deck: '',
-
-    top8: query.top8round ? query.top8round : '',
-    swissRound: (query.top8round==='false' || !query.top8round) ? query.round : null,
-    top8Round: query.top8round==='true' ? query.round : 'None',
-
-    event: '',
-    format: '',
-    twitch: false,
-    twitchTimeStamp: '',
-    link: '',
-    timeStamp: '', 
-    fullLink: '',
-    date: '',
-  })
-  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, twitch, twitchTimeStamp, link, format, timeStamp, fullLink, top8, swissRound, top8Round, date} = formData
-
-  const [deletePopup, setDeletePopup] = useState(false)
-  const [heroType, setHeroType] = useState('')
-  const [nameLinkPairs, setNameLinkPairs] = useState({})
-  const [dontUpdateLinks, setDontUpdateLinks] = useState(false)
+  const [state, dispatch] = useReducer(postMatchReducer, INITIAL_STATE)
+  const {form, eventNames, eventData, selectedEventData, deletePopup, heroType, nameLinkPairs, dontUpdateLinks} = state
+  const {player1name, player1hero, player1deck, player2name, player2hero, player2deck, event, twitch, twitchTimeStamp, link, format, timeStamp, fullLink, top8, swissRound, top8Round, date} = form
 
   useEffect(() => {
-    if(matchid){
-      getMatch(matchid)
-      .then(data => setFormData({...data, date: data.date?.substring(0, 10), event: data.event.name, top8: data.top8 ? 'true' : 'false'}))
-    }
-
     getEvents(null, null, null, null, 1000)
-    .then(data => {
-      setEventData(data.events)
-      let eventNames = []
-      data.events?.map((event) => eventNames.push(event.name))
-      setEventNames(eventNames)
+    .then(data => dispatch({type: 'SET_EVENTDATA_AND_EVENTNAMES', payload: data}))
+    .then(() => dispatch({type: 'SET_FORM_BASED_ON_SEARCHPARAMS', payload: searchParams}))
+    .then(() => {
+      matchid && getMatch(matchid)
+      .then(data => dispatch({type: 'SET_FORM_EDITING_MATCH', payload: data}))
     })
-    .then(() => query.eventName && setFormData(prev => ({...prev, event: query.eventName})))
-    
   }, [])
 
   useEffect(() => {
-    let params
-    if(!twitch){
-      params = getYoutubeParams(fullLink)
-      if(params){
-        setFormData((prevState) => ({
-          ...prevState,
-          link: params[0],
-          timeStamp: params[1]
-        }))
-      }
-    } else {
-      params = getTwitchParams(fullLink)
-      if(params){
-        setFormData((prevState) => ({
-          ...prevState,
-          link: params[0],
-          twitchTimeStamp: params[1]
-        }))
-      }
-    }
-    
+    dispatch({type: 'SET_LINK_AND_TIMESTAMP', payload: fullLink})
   }, [fullLink])
 
   useEffect(() => {
-    eventData?.map(thisEvent => {
-      if(event === thisEvent.name && thisEvent.format !=='Mixed'){
-        setFormData(prevState => ({
-          ...prevState,
-          format: thisEvent.format
-        }))
-      }
-      if(event === thisEvent.name){
-        setSelectedEventData(thisEvent)
-      }
-    })
+    dispatch({type: 'SET_FORMAT_BASED_ON_EVENT_AND_SET_SELECTEDEVENTDATA'})
   }, [event, eventData])
 
   useEffect(() => {
-    if(format==='Classic Constructed'){
-      setHeroType('adult')
-    }
-    else if(format==='Blitz' || format==='Draft' || format==='Sealed'){
-      setHeroType('young')
-    }
-    else if(format===''){setHeroType('')}
+    dispatch({type: 'SET_HEROTYPE_BASED_ON_FORMAT'})
   }, [format])
 
   useEffect(() => {
     if(event!=='' && format!==''){
       getNameLinkPairs(event, format)
-      .then(data => setNameLinkPairs(data)) 
+      .then(data => 
+        dispatch({type: 'SET_NAMELINKPAIRS', payload: data})  
+      )
     }
   }, [event, format])
 
   useEffect(() => {
-    if(nameLinkPairs[player1name]){
-      setFormData(prev => ({
-        ...prev,
-        player1deck: nameLinkPairs[player1name]
-      }))
-    }
+    dispatch({type: 'SET_PLAYER1DECK_BASED_ON_PLAYER1NAME'})
   }, [player1name])
 
   useEffect(() => {
-    if(nameLinkPairs[player2name]){
-      setFormData(prev => ({
-        ...prev,
-        player2deck: nameLinkPairs[player2name]
-      }))
-    }
+    dispatch({type: 'SET_PLAYER2DECK_BASED_ON_PLAYER2NAME'})
   }, [player2name])
 
   useEffect(() => {
-    if(top8==='true'){
-      setFormData(prev => ({
-        ...prev,
-        swissRound: null
-      }))
-    } else if (top8==='false'){
-      setFormData(prev => ({
-        ...prev,
-        top8Round: 'None'
-      }))
-    }
+    dispatch({type: 'SET_SWISSROUND_OR_TOP8ROUND_BASED_ON_TOP8'})
   }, [top8])
 
-
   const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }))
+    dispatch({type: 'UPDATE_FORM', payload: e})
   }
 
-  const onChangeCheckBox = (checked) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      twitch: checked
-    }))
+  const onChangeChecked = (e) => {
+    dispatch({type: 'UPDATE_FORM_CHECKED', payload: e})
   }
 
   const onSubmit = (e) => {
     e.preventDefault()
-    postMatch(formData, dontUpdateLinks, matchid)
+    postMatch(form, dontUpdateLinks, matchid)
     .then(match => navigate(`/matches/${match._id}`))
+  }
+  
+  const setDeletePopup = (e, val) => {
+    e.preventDefault()
+    dispatch({type: 'SET_DELETEPOPUP', payload: val})
   }
 
   const onDelete = (e) => {
     e.preventDefault()
     deleteMatch(matchid)
     .then(data => {
-      if(data){
-        navigate('/')
-      }
+      if(data){navigate('/')}
     })
   }
 
   return (
     <div className={PostMatchCSS.parent}>
       <form onSubmit={onSubmit} className={PostMatchCSS.form} id='form1'>
-        {(matchid && !formData?.link) && <div><MoonLoader size={20} />Fetching match data...</div>}
+        {(matchid && !form?.link) && <div><MoonLoader size={20} />Fetching match data...</div>}
         <h3 style={{alignSelf: 'center'}}>{(matchid) ? (<>Edit Match</>):(<>Post New Match</>)}</h3>
-        {matchid && <button className={PostMatchCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
+        {matchid && <button className={PostMatchCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => setDeletePopup(e, true)}><FontAwesomeIcon icon={faTrash} /></button>}
         
         <div className={PostMatchCSS.container}>
           <label>Event <span style={{color: 'red'}}>*</span></label>
@@ -269,7 +167,7 @@ function PostMatch() {
 
         <div className={PostMatchCSS.container} style={{flexDirection: 'row'}}>
           <label>Twitch.tv link</label>
-          <input type="checkbox" checked={twitch} onChange={() => onChangeCheckBox(!twitch)} className={PostMatchCSS.input}/>
+          <input type="checkbox" checked={twitch} name='twitch' onChange={onChangeChecked} className={PostMatchCSS.input}/>
         </div>
 
         {!twitch ? <>
@@ -338,7 +236,8 @@ function PostMatch() {
         }
 
         <div className={PostMatchCSS.container} style={{flexDirection: 'row'}}>
-          <input type="checkbox" checked={!dontUpdateLinks} onChange={() => setDontUpdateLinks(!dontUpdateLinks)} className={PostMatchCSS.input}/> <div style={{fontSize: '.8em'}}>Sync Deck Links (recomended)</div> 
+          <input type="checkbox" checked={!dontUpdateLinks} 
+          onChange={() => dispatch({type: 'SET_DONTUPDATELINKS', payload: !dontUpdateLinks})} className={PostMatchCSS.input}/> <div style={{fontSize: '.8em'}}>Sync Deck Links (recomended)</div> 
         </div>
 
         <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton}> 
@@ -355,7 +254,7 @@ function PostMatch() {
         <div className={PostMatchCSS.popupButtons}>
           {matchLoading ? <ClipLoader size={25}/> : <>
             <button className={PopupCSS.deleteButton} onClick={onDelete}>Delete</button>
-            <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
+            <button className={PopupCSS.cancelButton} onClick={(e) => {setDeletePopup(e, false)}}>Cancel</button>
           </>}
         </div>
       </Popup>

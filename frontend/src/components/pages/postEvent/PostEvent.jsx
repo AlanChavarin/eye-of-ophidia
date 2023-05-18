@@ -1,47 +1,40 @@
 //react
-import {useState, useEffect} from 'react'
+import {useReducer, useEffect} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 
+//reducer
+import { postEventReducer, INITIAL_STATE } from './postEventReducer'
+
 //service
-import useEventService from '../../service/useEventService'
+import useEventService from '../../../service/useEventService'
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 //assets
-import Popup from '../assets/Popup'
+import Popup from '../../assets/Popup'
 
 //css
-import PostMatchCSS from './styles/PostMatch.module.css'
-import HeroSelectCSS from '../assets/styles/HeroSelect.module.css'
-import PopupCSS from '../assets/styles/Popup.module.css'
+import PostMatchCSS from '../styles/PostMatch.module.css'
+import HeroSelectCSS from '../../assets/styles/HeroSelect.module.css'
+import PopupCSS from '../../assets/styles/Popup.module.css'
 
 //loader
 import MoonLoader from 'react-spinners/MoonLoader'
 import ClipLoader from 'react-spinners/ClipLoader'
 
 //helpers
-import { getTimeDifference } from '../../helpers/timeDifference'
+import { getTimeDifference } from '../../../helpers/timeDifference'
 
 function PostEvent() {
   const navigate = useNavigate()
   const {eventid} = useParams()
   const {eventLoading, getEvent, postEvent, deleteEvent} = useEventService()
-  const [formData, setFormData] = useState({
-    name: '',
-    location: '',
-    format: 'Classic Constructed',
-    startDate: '',
-    endDate: '',
-    top8Day: false,
-    dayRoundArr: [],
-    description: '',
-    notATypicalTournamentStructure: false,
-  })
-  const [isMultiDay, setIsMultiDay] = useState(false)
-  const [deletePopup, setDeletePopup] = useState(false)
-  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure} = formData
+  const [state, dispatch] = useReducer(postEventReducer, INITIAL_STATE)
+  
+  const {form, isMultiDay, deletePopup} = state
+  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure} = form
 
   useEffect(() => {
     if(eventid){
@@ -49,39 +42,30 @@ function PostEvent() {
       .then(data => {
         data.startDate = data.startDate?.substring(0,10)
         data.endDate = data.endDate?.substring(0,10)
-        setFormData(data)
+        dispatch({type: 'SET_FORM', payload: data})
         if(data.endDate){
-          setIsMultiDay(true)
+          dispatch({type: 'UPDATE_ISMULTIDAY', payload: true})
         }
       })
     }
   }, [])
 
   const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }))
+    dispatch({type: 'UPDATE_FORM', payload: e})
   }
 
   const onChangeChecked = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.checked
-    }))
+    dispatch({type: 'UPDATE_FORM_CHECKED', payload: e})
   }
 
   const onChangeCheckedMultiDay = (e) => {
-    setIsMultiDay(e.target.checked)
+    dispatch({type: 'UPDATE_ISMULTIDAY', payload: e.target.checked})
   }
 
   const onChangeCheckedTop8Day = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.checked
-    }))
+    dispatch({type: 'UPDATE_FORM_CHECKED', payload: e})
     if(!e.target.checked){
-      setDayRoundArr(dayRoundArr.slice(0, dayRoundArr.length-1))
+      dispatch({type: 'UPDATE_DAYROUNDARR', payload: dayRoundArr.slice(0, dayRoundArr.length-1)})
     }
   } 
 
@@ -93,19 +77,12 @@ function PostEvent() {
         tempArr[i+1] = parseInt(tempArr[i]) + 1
       }
     }
-    setDayRoundArr(tempArr)
-  }
-
-  const setDayRoundArr = (newArray) => {
-    setFormData(prev => ({
-      ...prev,
-      dayRoundArr: newArray
-    }))
+    dispatch({type: 'UPDATE_DAYROUNDARR', payload: tempArr})
   }
 
   const onSubmit = (e) => {
     e.preventDefault()
-    postEvent(formData, eventid)
+    postEvent(form, eventid)
     .then(event => navigate(`/events/${event._id}`))
   }
 
@@ -122,9 +99,9 @@ function PostEvent() {
   return (
     <div className={PostMatchCSS.parent}>
       <form onSubmit={onSubmit} className={PostMatchCSS.form} id="form1">
-      {(eventid && !formData?.location) && <div><MoonLoader size={20} />Fetching event data...</div>}
+      {(eventid && !form?.name) && <div><MoonLoader size={20} />Fetching event data...</div>}
         <h3 style={{alignSelf: 'center'}}>{(eventid) ? (<>Edit Event</>):(<>Post New Event</>)}</h3>
-        {eventid && <button className={PostMatchCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); setDeletePopup(true)}}><FontAwesomeIcon icon={faTrash} /></button>}
+        {eventid && <button className={PostMatchCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); dispatch({type: 'UPDATE_DELETEPOPUP', payload: true})}}><FontAwesomeIcon icon={faTrash} /></button>}
 
         <div className={PostMatchCSS.container}>
           <label>Event Name <span style={{color: 'red'}}>*</span></label>
@@ -213,7 +190,7 @@ function PostEvent() {
         <div className={PostMatchCSS.popupButtons}>
           {eventLoading ? <ClipLoader size={25}/> : <>
             <button className={PopupCSS.deleteButton} onClick={onDelete}>Delete</button>
-            <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); setDeletePopup(false)}}>Cancel</button>
+            <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); dispatch({type: 'UPDATE_DELETEPOPUP', payload: true})}}>Cancel</button>
           </>}
         </div>
       </Popup>

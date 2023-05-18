@@ -9,6 +9,8 @@ router.get('/', getIssues)
 
 router.post('/:targetid', protect, postIssue)
 
+router.post('/generalissue', protect, postIssue)
+
 router.put('/:issueid', protect, protectModerator, changeIssueStatus)
 
 router.delete('/:issueid', protect, protectAdmin, deleteIssue)

@@ -34,12 +34,12 @@ function IssuePageComponent({issue}) {
   return (
     <div className={IssuePageComponentCSS.parent}>
       <MoonLoader size={60} loading={matchLoading || eventLoading} cssOverride={{alignSelf: 'center'}}/> 
-       {data && <>
-        {(issue.targetType==='match') && <MatchThumbnail match={data} page='issue'/>}
-        {(issue.targetType==='event') && <EventThumbnail event={data} page='issue'/>}
-        <Issue issue={issue}/>
-       </>} 
-        
+        {data && <>
+          {(issue.targetType==='match') && <MatchThumbnail match={data} page='issue'/>}
+          {(issue.targetType==='event') && <EventThumbnail event={data} page='issue'/>}
+          <Issue issue={issue}/>
+        </>} 
+        {issue.targetType==='general' && <Issue issue={issue}/>}
     </div>
   )
 }

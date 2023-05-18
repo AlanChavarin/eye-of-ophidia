@@ -1,0 +1,42 @@
+.parent{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+    width: 100%;
+    max-width: 600px;
+    height: 95%;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+
+    background-color: white;
+    border: 1px solid lightgrey;
+    border-radius: 7px;
+
+}
+
+.info{
+    align-self: 'center';
+    font-weight: '600';
+}
+
+@media(width < 601px){
+    .parent{
+        padding-top: 0px;
+        height: 100%;
+    }
+
+    .form{
+        border: none;
+        border-radius: 0px;
+    }
+
+    .info{
+        font-size: smaller;
+    }
+}

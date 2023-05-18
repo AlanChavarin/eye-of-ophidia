@@ -1,16 +1,19 @@
 //react
 import {useParams, Link, useSearchParams, useNavigate} from 'react-router-dom'
-import { useEffect, useState, useContext } from 'react'
-import UserContext from '../../context/UserContext'
+import { useReducer, useEffect, useContext } from 'react'
+import UserContext from '../../../context/UserContext'
+
+//reducer
+import { eventReducer, INITIAL_STATE } from './eventReducer'
 
 //service
-import useEventService from '../../service/useEventService'
-import useMatchService from '../../service/useMatchService'
+import useEventService from '../../../service/useEventService'
+import useMatchService from '../../../service/useMatchService'
 
 //assets
-import Issues from '../assets/Issues'
-import MatchThumbnail from '../assets/MatchThumbnail'
-import EditHistories from '../assets/EditHistories'
+import Issues from '../../assets/Issues'
+import MatchThumbnail from '../../assets/MatchThumbnail'
+import EditHistories from '../../assets/EditHistories'
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,53 +21,46 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 //css
-import EventCSS from './styles/Event.module.css'
+import EventCSS from '../styles/Event.module.css'
 
 //loader
 import MoonLoader from 'react-spinners/MoonLoader'
 import ClipLoader from 'react-spinners/ClipLoader'
+
+//helper
+import {filter} from './filterHelper'
 
 function Event() {
     const navigate = useNavigate()
     const {userData} = useContext(UserContext)
     const {eventLoading, getEvent, restoreEvent} = useEventService()
     const {matchLoading, getMatchesByEvent} = useMatchService()
+
     const {eventid} = useParams()
-    const [event, setEvent] = useState()
-    const [matches, setMatches] = useState()
-    const [backgroundImage, setBackgroundImage] = useState()
-    const [tab, setTab] = useState('matches')
     const [searchParams] = useSearchParams()
-    const [lastRound, setLastRound] = useState()
+
+    const [state, dispatch] = useReducer(eventReducer, INITIAL_STATE)
+    const {event, matches, backgroundImage, tab, lastRound} = state
 
     let recyclebin = searchParams.get('recyclebin')
     !recyclebin && (recyclebin=false)
 
     useEffect(() => {
         getEvent(eventid, recyclebin)
-        .then(data => setEvent(data))
+        .then(data => dispatch({type: 'SET_EVENT', payload: data}))
     }, [])
 
     useEffect(() => {
         event && getMatchesByEvent(eventid)
-        .then(data => {
-            setMatches(data)
-            const round = data[data.length-1]
-            if(!round?.top8){
-                setLastRound({
-                    top8: false,
-                    round: round?.swissRound
-                })
-            } else {
-                setLastRound({
-                    top8: true,
-                    round: round?.top8Round
-                })
-            }
+        .then(data => dispatch({type: 'SET_MATCHES_AND_LASTROUND', payload: data}))
+        .then(() => {
+            dispatch({type: 'SET_BACKGROUNDIMAGE', payload: window.location.origin + `/backgroundImages/${event.startDate.substring(5, 7)}.jpg`})
         })
-
-        event && (setBackgroundImage(window.location.origin + `/backgroundImages/${event.startDate.substring(5, 7)}.jpg`))
     }, [event])
+
+    const setTab = (tab) => {
+        dispatch({type: 'SET_TAB', payload: tab})
+    }
     
     const restore = () => {
         if(recyclebin){
@@ -72,21 +68,6 @@ function Event() {
             .then(data => {
                 data && navigate(`/events/${eventid}`)
             })
-        }
-    }
-
-    const filter = (match, i) => {
-        if(match.top8){
-            return false
-        }
-        if(i < 1){
-            if(match.swissRound <= event.dayRoundArr[i]){
-                return true
-            } else return false
-        } else {
-            if(match.swissRound > event.dayRoundArr[i-1] && match.swissRound <= event.dayRoundArr[i]){
-                return true
-            } else return false
         }
     }
 
@@ -120,7 +101,7 @@ function Event() {
                 <div className={EventCSS.eventName}>{event.name}</div>
                 <div className={EventCSS.div1}>
                     <div className={EventCSS.eventDetails}>
-                        <div>{event.startDate.substr(0, 10)} {event.endDate && `- ${event.endDate.substr(0, 10)}`} </div>
+                        <div>{event.startDate?.substr(0, 10)} {event.endDate && `- ${event.endDate.substr(0, 10)}`} </div>
                         <div>{event.format}{event.format==='Mixed' && (<> Format</>)}</div>
                         <div>{event.location}</div>
                     </div>
@@ -146,9 +127,9 @@ function Event() {
                             {Array.from(Array(event.dayRoundArr.length), (e, i) => <div className={EventCSS.labelThumbnailContainer}>
                                 <div className={EventCSS.dayLabel}>Day {i + 1}</div>
                                 <div className={EventCSS.matchThumbnailContainer}>
-                                    {matches.filter(match => filter(match, i))
+                                    {matches.filter(match => filter(match, i, event))
                                         .map((match) => (<MatchThumbnail key={match._id} match={match}/>))}
-                                    {(matches.filter(match => filter(match, i)).length < 1) && <>No Vods Available :{'('}</>}
+                                    {(matches.filter(match => filter(match, i, event)).length < 1) && <>No Vods Available :{'('}</>}
                                 </div>
                             </div>)}
                             <div className={EventCSS.labelThumbnailContainer}>
@@ -178,3 +159,24 @@ function Event() {
   )
 }
 export default Event
+
+
+// const [event, setEvent] = useState()
+// const [matches, setMatches] = useState()
+// const [backgroundImage, setBackgroundImage] = useState()
+// const [tab, setTab] = useState('matches')
+// const [lastRound, setLastRound] = useState()
+
+// setMatches(data)
+// const round = data[data.length-1]
+// if(!round?.top8){
+//     setLastRound({
+//         top8: false,
+//         round: round?.swissRound
+//     })
+// } else {
+//     setLastRound({
+//         top8: true,
+//         round: round?.top8Round
+//     })
+// }

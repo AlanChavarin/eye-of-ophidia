@@ -73,6 +73,35 @@ const useIssueService = () => {
         ))
     }
 
+    const postGeneralIssue = async (formData) => {
+        setLoading(true)
+        const {title, body} = formData
+        return new Promise(resolve => (
+            fetch(API_URL + 'generalissue', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('user')
+                },
+                body: JSON.stringify({
+                    title: title,
+                    body: body,
+                    targetType: 'general'
+                })
+            })
+            .then(res => res.json())
+            .then((data) => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                addAlert('Issue successfully posted! We will be taking a look soon.', 'success')
+                setLoading(false)
+                resolve(true)
+            })
+            .catch((error) => err(error))
+        ))
+    }
+
     const changeStatus = async (issueid, status) => {
         setLoading(true)
         return new Promise(resolve => (
@@ -105,7 +134,7 @@ const useIssueService = () => {
         setLoading(false)
     }
 
-    return {issueLoading, getIssues, getIssue, postIssue, changeStatus}
+    return {issueLoading, getIssues, getIssue, postIssue, changeStatus, postGeneralIssue}
 }
 
 export default useIssueService

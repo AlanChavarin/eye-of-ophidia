@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const ObjectId = require('mongodb').ObjectId
-const targetTypes = ['match', 'event']
+const targetTypes = ['match', 'event', 'general']
 
 const issueSchema = mongoose.Schema({
     title: {
@@ -10,7 +10,6 @@ const issueSchema = mongoose.Schema({
     body: String,
     target: {
         type: ObjectId,
-        required: true
     },
     targetType: {
         type: String,
