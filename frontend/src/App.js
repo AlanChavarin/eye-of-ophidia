@@ -60,9 +60,9 @@ function App() {
               <Route path='/verify/:token' element={<Verify />}/>
               <Route path='/requestpasswordreset' element={<RequestPasswordReset />}/>
               <Route path='/passwordreset' element={<PasswordReset />}/>
+              <Route path='/postissue' element={<PostIssue />}/>
               <Route element={<UserAuth privilege='user'/>}>
                 <Route path='/me' element={<Me />}/>
-                <Route path='/postissue' element={<PostIssue />}/>
               </Route>
               <Route element={<UserAuth privilege='moderator'/>}>
                 <Route path='/issuepage' element={<IssuePage />}/>

@@ -1,5 +1,7 @@
 //react
-import { useState } from "react"
+import { useState, useContext } from "react"
+import UserContext from "../../context/UserContext"
+import { Link } from "react-router-dom"
 
 //service
 import useIssueService from "../../service/useIssueService"
@@ -14,6 +16,7 @@ import ClipLoader from "react-spinners/ClipLoader"
 
 
 function PostIssue() {
+    const {userData} = useContext(UserContext)
     const {issueLoading, postGeneralIssue} = useIssueService()
 
     const [formData, setFormData] = useState({
@@ -37,15 +40,18 @@ function PostIssue() {
 
   return (
     <div className={PostIssueCSS.parent}>
-        <form onSubmit={onSubmit} className={PostIssueCSS.form} style={{height: '100%'}} id='form1'>
-                <div style={{alignSelf: 'center', fontWeight: '600'}} className={PostIssueCSS.info}>
-                    Is there an issue or suggestion with Eye of Ophidia that you would like to report? 
-                    <br />
-                    Feel free to report to us any missing events, missing matches, or any errors we may have with our data.
-                    <br />
-                    Any info and help would be would be greatly appreciated! 
-                </div>
 
+        <div style={{alignSelf: 'center', fontWeight: '600'}} className={PostIssueCSS.info}>
+            Is there an issue or suggestion with Eye of Ophidia that you would like to report? 
+            <br />
+            Feel free to report to us any missing events, missing matches, or any errors we may have with our data.
+            <br />
+            Any info and help would be would be greatly appreciated! 
+        </div>
+
+        { userData.name ?
+             <form onSubmit={onSubmit} className={PostIssueCSS.form} style={{height: '100%'}} id='form1'>
+                
                 <div className={IssuesCSS.formContainer}>
                     <label className={IssuesCSS.label}>Title</label>
                     <input placeholder='Issue title' name='title' type="text" onChange={onChange} value={title} className={IssuesCSS.input}/>
@@ -65,6 +71,10 @@ function PostIssue() {
                 </button>
 
             </form>
+            :
+            <p>Please <Link to='/login' style={{fontWeight: 'bold'}}>login/register</Link> to access this form</p>
+        }
+       
     </div>
   )
 }

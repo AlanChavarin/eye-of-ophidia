@@ -1,10 +1,11 @@
 import SearchForm from '../assets/SearchForm'
 import HomeCSS from './styles/Home.module.css'
 import LiveEvent from '../assets/LiveEvent'
+import { Link } from 'react-router-dom'
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass, faSliders, faEye, faTrophy} from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faSliders, faEye, faTrophy, faFlag} from '@fortawesome/free-solid-svg-icons'
 
 function Home() {
 
@@ -37,7 +38,15 @@ function Home() {
             <p>Event pages will show all recorded feature matches from that event. </p>
           </div>
         </div>
+
       </div>
+      <div className={HomeCSS.infoItem}>
+          <FontAwesomeIcon icon={faFlag} className={HomeCSS.itemIcon}/>
+          <div>
+            <p>Missing <b>Events</b>?</p>
+            <p>Feel free to login and notify us of any missing events or issues with the site <Link to='/postissue' style={{fontWeight: 'bold'}}>here.</Link> </p>
+          </div>
+        </div>
     </div>
   )
 }
