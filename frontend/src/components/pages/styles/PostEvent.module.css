@@ -1,0 +1,23 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 15px;
+    width: 25vw;
+    min-width: 500px;
+}
+
+@media(width < 1000px){
+    .form{
+        min-width: 400px;
+    }
+}
+
+@media(width < 500px){
+    .form{
+        min-width:0px;
+        width: 92vw;
+        padding: 0px;
+        padding-bottom: 30px;
+    }
+}

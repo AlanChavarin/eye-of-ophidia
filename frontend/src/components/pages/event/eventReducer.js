@@ -23,6 +23,14 @@ export const eventReducer = (state, action) => {
                 ...state,
                 backgroundImage: action.payload
             }
+        case('SET_BACKGROUNDPOSITION') : 
+            return {
+                ...state,
+                event: {
+                    ...state.event,
+                    backgroundPosition: action.payload,
+                }
+            }
         case('SET_TAB') : 
             return {
                 ...state,

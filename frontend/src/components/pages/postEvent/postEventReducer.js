@@ -9,6 +9,8 @@ export const INITIAL_STATE = {
         dayRoundArr: [],
         description: '',
         notATypicalTournamentStructure: false,
+        image: null,
+        resetImage: false,
     },
     isMultiDay: false,
     deletePopup: false,
@@ -54,6 +56,22 @@ export const postEventReducer = (state, action) => {
             return {
                 ...state,
                 deletePopup: action.payload
+            }
+        case('UPDATE_IMAGE') : 
+            return {
+                ...state,
+                form: {
+                    ...state.form,
+                    image: action.payload.target.files[0]
+                }
+            }
+        case('DELETE_IMAGE') : 
+            return {
+                ...state,
+                form: {
+                    ...state.form,
+                    image: null
+                }
             }
         default:
             return state

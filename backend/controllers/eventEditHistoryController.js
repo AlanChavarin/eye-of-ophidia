@@ -59,7 +59,7 @@ const getEventEdit = asyncHandler(async (req, res) => {
 
 //used internally
 const postEventEdit = asyncHandler(async (freshlyEditedEvent, editor) => {
-    const {name, location, format, startDate, endDate, top8Day, dayRoundArr, description, _id, notATypicalTournamentStructure} = freshlyEditedEvent
+    const {name, location, format, startDate, endDate, top8Day, dayRoundArr, description, _id, notATypicalTournamentStructure, image} = freshlyEditedEvent
     
     const eventEdit = await EventEditHistory.create({
         name: name,
@@ -70,6 +70,7 @@ const postEventEdit = asyncHandler(async (freshlyEditedEvent, editor) => {
         top8Day: top8Day,
         dayRoundArr: dayRoundArr,
         description: description,
+        image: image,
         notATypicalTournamentStructure: notATypicalTournamentStructure,
 
         //edit specific 

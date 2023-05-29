@@ -163,6 +163,8 @@ const updateMatch = asyncHandler(async (req, res) => {
     }
     const match = await Match.findOneAndUpdate({_id: req.params.matchid, deleted: false}, req.body, {runValidators: true, new: true})
     postMatchEdit(match, req.user._id)
+    if(!await Name.exists({name: req.body.player1name})){Name.create({name: req.body.player1name})} 
+    if(!await Name.exists({name: req.body.player2name})){Name.create({name: req.body.player2name})} 
     req.query.dontUpdateLinks !== 'true' && updateDeckLinks(req.body)
     res.status(200).json(match)
     

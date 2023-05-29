@@ -14,11 +14,13 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
 //assets
 import Popup from '../../assets/Popup'
+import EventThumbnail from '../../assets/EventThumbnail'
 
 //css
 import PostMatchCSS from '../styles/PostMatch.module.css'
 import HeroSelectCSS from '../../assets/styles/HeroSelect.module.css'
 import PopupCSS from '../../assets/styles/Popup.module.css'
+import PostEventCSS from '../styles/PostEvent.module.css'
 
 //loader
 import MoonLoader from 'react-spinners/MoonLoader'
@@ -34,7 +36,7 @@ function PostEvent() {
   const [state, dispatch] = useReducer(postEventReducer, INITIAL_STATE)
   
   const {form, isMultiDay, deletePopup} = state
-  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure} = form
+  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure, image, resetImage} = form
 
   useEffect(() => {
     if(eventid){
@@ -80,6 +82,10 @@ function PostEvent() {
     dispatch({type: 'UPDATE_DAYROUNDARR', payload: tempArr})
   }
 
+  const onChangeImage = (e) => {
+    dispatch({type: 'UPDATE_IMAGE', payload: e})
+  }
+
   const onSubmit = (e) => {
     e.preventDefault()
     postEvent(form, eventid)
@@ -98,7 +104,7 @@ function PostEvent() {
 
   return (
     <div className={PostMatchCSS.parent}>
-      <form onSubmit={onSubmit} className={PostMatchCSS.form} id="form1">
+      <form onSubmit={onSubmit} className={PostEventCSS.form} id="form1" encType="multipart/form-data">
       {(eventid && !form?.name) && <div><MoonLoader size={20} />Fetching event data...</div>}
         <h3 style={{alignSelf: 'center'}}>{(eventid) ? (<>Edit Event</>):(<>Post New Event</>)}</h3>
         {eventid && <button className={PostMatchCSS.deleteButton} style={{position: 'absolute'}} onClick={(e) => {e.preventDefault(); dispatch({type: 'UPDATE_DELETEPOPUP', payload: true})}}><FontAwesomeIcon icon={faTrash} /></button>}
@@ -170,12 +176,27 @@ function PostEvent() {
             </div>}
           </div>
         </> }
-
         
         <div className={PostMatchCSS.container}>
           <label>Description</label>
           <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={PostMatchCSS.input}></textarea>
         </div>
+
+        <div className={PostMatchCSS.container} style={{display: 'flex', flexDirection: 'column', color: image?.size > 500000 ? 'red' : ''}}>
+          {image?.size > 500000 && <div style={{fontWeight: '700'}}>File size is too big (must be under 500kb)</div>}
+          <label>Thumbnail Image</label>
+          <input type="file" onChange={onChangeImage}/>
+        </div>
+
+        <div className={PostMatchCSS.container}>
+          <EventThumbnail event={form} page='event' disableLink={true}/>
+        </div>
+
+        <div>
+          <label>Reset image to default? (will not upload image)</label>
+          <input type="checkbox" name="resetImage" value={resetImage} onChange={onChangeChecked}/>
+        </div>
+
         <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton}> 
           {eventLoading ? <ClipLoader color='white' size={20}/>
            : <>Submit</>}
@@ -185,7 +206,7 @@ function PostEvent() {
       <Popup trigger={deletePopup}>
         <div>
           <h1>Are you sure you want to <b style={{color: 'red'}}>delete</b> this Event? </h1>
-        <div>It can be restored from the recycle bin at anytime if deleted.</div>
+          <div>It can be restored from the recycle bin at anytime if deleted.</div>
         </div>
         <div className={PostMatchCSS.popupButtons}>
           {eventLoading ? <ClipLoader size={25}/> : <>

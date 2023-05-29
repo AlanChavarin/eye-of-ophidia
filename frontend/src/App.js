@@ -21,6 +21,8 @@ import RequestPasswordReset from "./components/pages/RequestPasswordReset"
 import PasswordReset from "./components/pages/PasswordReset"
 import PostIssue from "./components/pages/PostIssue"
 
+import TestPage from "./components/pages/TestPage"
+
 //tools
 import {BrowserRouter as Router, Route, Routes, useSearchParams} from 'react-router-dom'
 
@@ -61,6 +63,7 @@ function App() {
               <Route path='/requestpasswordreset' element={<RequestPasswordReset />}/>
               <Route path='/passwordreset' element={<PasswordReset />}/>
               <Route path='/postissue' element={<PostIssue />}/>
+              <Route path='/testpage' element={<TestPage />}/>
               <Route element={<UserAuth privilege='user'/>}>
                 <Route path='/me' element={<Me />}/>
               </Route>

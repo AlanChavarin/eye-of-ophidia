@@ -57,30 +57,33 @@ const useEventService = () => {
         ))
     }
 
+//this version uses a FormData object to send an image
     const postEvent = async (formData, eventid) => {
         setLoading(true)
         if(!eventid){
             eventid = ''
         } 
-        const {name, location, format, startDate, endDate, top8Day, dayRoundArr, notATypicalTournamentStructure, description} = formData
+        if(!formData.endDate){
+            formData.endDate = ''
+        }
+        if(formData.resetImage){
+            formData.image = ''
+        }
+
+        const formDataObject = new FormData()
+        Object.keys(formData).forEach((key, i) => {
+            formDataObject.append(key, formData[key])
+        })
+
+        formDataObject.set('enctype', "multipart/form-data")
+
         return new Promise(resolve => (
             fetch(API_URL + eventid, {
                 method: eventid ? 'PUT' : 'POST',
                 headers: {
-                    'Content-type': 'application/json',
                     'Authorization': 'Bearer ' + localStorage.getItem('user')
                 },
-                body: JSON.stringify({
-                    name: name,
-                    location: location,
-                    format: format, 
-                    startDate: startDate, 
-                    endDate: endDate,
-                    top8Day: top8Day,
-                    dayRoundArr: dayRoundArr,
-                    description: description,
-                    notATypicalTournamentStructure: notATypicalTournamentStructure,
-                })
+                body: formDataObject
             })
             .then(res => res.json())
             .then((data) => {
@@ -88,6 +91,32 @@ const useEventService = () => {
                     throw new Error(data.errorMessage)
                 }
                 addAlert(`${data.name} event posted!`, 'success')
+                setLoading(false)
+                resolve(data)
+            })
+            .catch((error) => err(error))
+        ))
+    }
+
+    const editBackgroundPosition = async(backgroundPosition, eventid) => {
+        setLoading(true)
+        return new Promise(resolve => (
+            fetch(API_URL + 'editbackgroundposition/' + eventid, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('user')
+                },
+                body: JSON.stringify({
+                    backgroundPosition: backgroundPosition
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                addAlert(`${data.name} BG position edited!`, 'success')
                 setLoading(false)
                 resolve(data)
             })
@@ -147,7 +176,46 @@ const useEventService = () => {
         setLoading(false)
     }
 
-    return {eventLoading, getEvent, getEvents, postEvent, deleteEvent, restoreEvent}
+    return {eventLoading, getEvent, getEvents, postEvent, deleteEvent, restoreEvent, editBackgroundPosition}
 }
 
 export default useEventService
+
+
+ // const postEvent = async (formData, eventid) => {
+//     setLoading(true)
+//     if(!eventid){
+//         eventid = ''
+//     } 
+//     const {name, location, format, startDate, endDate, top8Day, dayRoundArr, notATypicalTournamentStructure, description} = formData
+//     return new Promise(resolve => (
+//         fetch(API_URL + eventid, {
+//             method: eventid ? 'PUT' : 'POST',
+//             headers: {
+//                 'Content-type': 'application/json',
+//                 'Authorization': 'Bearer ' + localStorage.getItem('user')
+//             },
+//             body: JSON.stringify({
+//                 name: name,
+//                 location: location,
+//                 format: format, 
+//                 startDate: startDate, 
+//                 endDate: endDate,
+//                 top8Day: top8Day,
+//                 dayRoundArr: dayRoundArr,
+//                 description: description,
+//                 notATypicalTournamentStructure: notATypicalTournamentStructure,
+//             })
+//         })
+//         .then(res => res.json())
+//         .then((data) => {
+//             if(data.errorMessage){
+//                 throw new Error(data.errorMessage)
+//             }
+//             addAlert(`${data.name} event posted!`, 'success')
+//             setLoading(false)
+//             resolve(data)
+//         })
+//         .catch((error) => err(error))
+//     ))
+// }

@@ -17,8 +17,7 @@ import EditHistories from '../../assets/EditHistories'
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
-import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 //css
 import EventCSS from '../styles/Event.module.css'
@@ -27,8 +26,13 @@ import EventCSS from '../styles/Event.module.css'
 import MoonLoader from 'react-spinners/MoonLoader'
 import ClipLoader from 'react-spinners/ClipLoader'
 
+//helper components
+import EventBackgroundAdjuster from './EventBackgroundAdjuster'
+
 //helper
 import {filter} from './filterHelper'
+import { getEventBackgroundImageURL } from './backgroundImageHelper'
+
 
 function Event() {
     const navigate = useNavigate()
@@ -47,16 +51,18 @@ function Event() {
 
     useEffect(() => {
         getEvent(eventid, recyclebin)
-        .then(data => dispatch({type: 'SET_EVENT', payload: data}))
-    }, [])
-
-    useEffect(() => {
-        event && getMatchesByEvent(eventid)
-        .then(data => dispatch({type: 'SET_MATCHES_AND_LASTROUND', payload: data}))
-        .then(() => {
-            dispatch({type: 'SET_BACKGROUNDIMAGE', payload: window.location.origin + `/backgroundImages/${event.startDate.substring(5, 7)}.jpg`})
+        .then(data => {
+            dispatch({type: 'SET_EVENT', payload: data})
+            return data
         })
-    }, [event])
+        .then(data => {
+            getMatchesByEvent(eventid)
+            .then(data => dispatch({type: 'SET_MATCHES_AND_LASTROUND', payload: data}))
+            .then(() => {
+                dispatch({type: 'SET_BACKGROUNDIMAGE', payload: getEventBackgroundImageURL(data)})
+            })
+        })
+    }, [])
 
     const setTab = (tab) => {
         dispatch({type: 'SET_TAB', payload: tab})
@@ -71,43 +77,59 @@ function Event() {
         }
     }
 
+    const setBackgroundPosition = (position) => {
+        dispatch({type: 'SET_BACKGROUNDPOSITION', payload: position})
+    }
+
   return (
     <div className={EventCSS.parent}>
-        <MoonLoader size={100} loading={eventLoading}/> 
+        <MoonLoader size={100} loading={eventLoading}/>
         {event && (<>
             {/* event container */}
-            <div className={EventCSS.eventContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${backgroundImage})`}}>
+            <div className={EventCSS.eventContainer} 
+                style={{
+                    backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${backgroundImage})`,
+                    backgroundPosition: `0px ${event?.backgroundPosition ? event?.backgroundPosition : '50%'}%`
+                }}>
                 {/* corner container */}
-                <div className={EventCSS.cornerContainer}>
-                    {!recyclebin ? <>
-                        <button onClick={() => setTab('issues')} className={EventCSS.cornerItem}>Issues</button>
-
-                        {(userData.privilege==='admin') && <>
-                            <button onClick={() => setTab('editHistory')} className={EventCSS.cornerItem}>Edit History</button>
-                            <button 
-                            onClick={() => navigate(`/postmatch/?eventName=${event.name}&top8round=${lastRound?.top8}&round=${lastRound?.round}`)} 
-                            className={EventCSS.cornerItem}> 
-                                Post Match 
-                            </button>
+                <div className={EventCSS.cornerContainerParent}>
+                    <div className={EventCSS.cornerContainer}>
+                        {(!recyclebin && (userData.privilege==='admin' || userData.privilege==='moderator')) && <>
                             <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}><FontAwesomeIcon icon={faEdit} /></Link>
+                            <EventBackgroundAdjuster backgroundPosition={event?.backgroundPosition} setBackgroundPosition={setBackgroundPosition} eventid={eventid}/>
                         </>}
-                        </> :
-                        <button onClick={restore} className={`${EventCSS.restoreButton} ${EventCSS.cornerItem}`}>
-                            {eventLoading ? <ClipLoader size={15} color='white'/> : <>Restore Event</>}
-                        </button>
-                    }
+                    </div>
+                    <div className={EventCSS.cornerContainer}>
+                        {!recyclebin ? <>
+                            <button onClick={() => setTab('issues')} className={EventCSS.cornerItem}>Issues</button>
+
+                            {(userData.privilege==='admin' || userData.privilege==='moderator') && <>
+                                <button onClick={() => setTab('editHistory')} className={EventCSS.cornerItem}>Edit History</button>
+                                <button 
+                                onClick={() => navigate(`/postmatch/?eventName=${event.name}&top8round=${lastRound?.top8}&round=${lastRound?.round}`)} 
+                                className={EventCSS.cornerItem}> 
+                                    Post Match 
+                                </button>
+                                
+                            </>}
+                            </> :
+                            <button onClick={restore} className={`${EventCSS.restoreButton} ${EventCSS.cornerItem}`}>
+                                {eventLoading ? <ClipLoader size={15} color='white'/> : <>Restore Event</>}
+                            </button>
+                        }
+                    </div>
                 </div>
                 
                 <div className={EventCSS.eventName}>{event.name}</div>
                 <div className={EventCSS.div1}>
                     <div className={EventCSS.eventDetails}>
-                        <div>{event.startDate?.substr(0, 10)} {event.endDate && `- ${event.endDate.substr(0, 10)}`} </div>
-                        <div>{event.format}{event.format==='Mixed' && (<> Format</>)}</div>
-                        <div>{event.location}</div>
+                        <div>{event?.startDate?.substr(0, 10)} {event.endDate && `- ${event.endDate.substr(0, 10)}`} </div>
+                        <div>{event?.format}{event.format==='Mixed' && (<> Format</>)}</div>
+                        <div>{event?.location}</div>
                     </div>
-                    {event.description && <div className={EventCSS.verticalLine}></div>}
+                    {event?.description && <div className={EventCSS.verticalLine}></div>}
                     <div className={EventCSS.eventDetails}>
-                        <div>{event.description}</div>
+                        <div>{event?.description}</div>
                     </div>
                 </div>
             </div>

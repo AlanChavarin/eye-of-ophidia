@@ -7,6 +7,7 @@ const {errorHandler} = require('./middleware/errorMiddleware')
 const {sanitate} = require('./middleware/sanitateMiddleware')
 const path = require('path')
 
+
 app.use(cors({
     origin: 'http://localhost:5000',
     origin: 'http://localhost:3000'
@@ -36,6 +37,7 @@ app.use('/api/eventedithistory', require('./routes/eventEditHistoryRoutes'))
 app.use('/api/events', require('./routes/eventRoutes'))
 app.use('/api/names', require('./routes/nameRoutes'))
 app.use('/api/liveevent', require('./routes/liveEventRoutes'))
+app.use('/api/test', require('./routes/testRoutes'))
 
 app.use(express.static('frontend/build'))
 
@@ -44,4 +46,3 @@ app.get('*', (req, res) => {
 })
 
 app.use(errorHandler)
-

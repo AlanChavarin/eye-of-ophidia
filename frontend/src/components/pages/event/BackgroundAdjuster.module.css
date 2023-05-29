@@ -1,0 +1,32 @@
+.parent{
+    z-index: 1;
+}
+
+.form{
+    position: absolute;
+    background-color: white;
+    border: 1px solid lightgray;
+    
+    padding: 30px 40px 30px 40px;
+
+    box-shadow: 4px 4px 3px rgb(54, 54, 54);
+
+    right: 0px;
+
+}
+
+.label{
+    text-shadow: none;
+    color: black;
+}
+
+.button{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: .6em;
+}
+
+.input{
+    width: 50px
+}
