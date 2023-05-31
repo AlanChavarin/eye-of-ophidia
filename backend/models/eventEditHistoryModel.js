@@ -23,6 +23,7 @@ const eventEditHistorySchema = mongoose.Schema({
     top8Day: Boolean,
     description: String,
     image: String,
+    bigImage: String,
     backgroundPosition: Number,
     //edit history specific
     editor: {

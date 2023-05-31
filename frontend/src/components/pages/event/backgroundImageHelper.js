@@ -10,6 +10,12 @@ export const getEventBackgroundImageURL = (event) => {
 
     if(!event.image){
         return backgroundImage
+    } else if(event.bigImage){
+        try{
+            return URL.createObjectURL(event.bigImage)
+        } catch (error) {
+            return event.bigImage
+        }
     } else {
         try{
             return URL.createObjectURL(event.image)

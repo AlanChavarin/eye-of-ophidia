@@ -28,6 +28,8 @@ import ClipLoader from 'react-spinners/ClipLoader'
 
 //helpers
 import { getTimeDifference } from '../../../helpers/timeDifference'
+import useImageCompression from './useImageCompression'
+
 
 function PostEvent() {
   const navigate = useNavigate()
@@ -37,6 +39,8 @@ function PostEvent() {
   
   const {form, isMultiDay, deletePopup} = state
   const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure, image, resetImage} = form
+
+  const {smallImageCompression, bigImageCompression, progress} = useImageCompression()
 
   useEffect(() => {
     if(eventid){
@@ -82,8 +86,12 @@ function PostEvent() {
     dispatch({type: 'UPDATE_DAYROUNDARR', payload: tempArr})
   }
 
-  const onChangeImage = (e) => {
-    dispatch({type: 'UPDATE_IMAGE', payload: e})
+  const onChangeImage = async (e) => {
+    const imageFile = e.target.files[0]
+    const smallCompressedImage = await smallImageCompression(imageFile)
+    const bigCompressedImage = await bigImageCompression(imageFile)
+    dispatch({type: 'UPDATE_IMAGE', payload: smallCompressedImage})
+    dispatch({type: 'UPDATE_BIGIMAGE', payload: bigCompressedImage})
   }
 
   const onSubmit = (e) => {
@@ -182,9 +190,9 @@ function PostEvent() {
           <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={PostMatchCSS.input}></textarea>
         </div>
 
-        <div className={PostMatchCSS.container} style={{display: 'flex', flexDirection: 'column', color: image?.size > 500000 ? 'red' : ''}}>
-          {image?.size > 500000 && <div style={{fontWeight: '700'}}>File size is too big (must be under 500kb)</div>}
-          <label>Thumbnail Image</label>
+        <div className={PostMatchCSS.container} style={{display: 'flex', flexDirection: 'column'}}>
+          
+          <label>Thumbnail Image {progress && <span> - Compressing: {progress}%</span>}</label>
           <input type="file" onChange={onChangeImage}/>
         </div>
 

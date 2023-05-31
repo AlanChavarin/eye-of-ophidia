@@ -63,7 +63,7 @@ function App() {
               <Route path='/requestpasswordreset' element={<RequestPasswordReset />}/>
               <Route path='/passwordreset' element={<PasswordReset />}/>
               <Route path='/postissue' element={<PostIssue />}/>
-              <Route path='/testpage' element={<TestPage />}/>
+              {/* <Route path='/testpage' element={<TestPage />}/> */}
               <Route element={<UserAuth privilege='user'/>}>
                 <Route path='/me' element={<Me />}/>
               </Route>

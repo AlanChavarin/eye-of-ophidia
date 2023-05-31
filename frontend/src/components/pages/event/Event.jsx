@@ -95,7 +95,7 @@ function Event() {
                 <div className={EventCSS.cornerContainerParent}>
                     <div className={EventCSS.cornerContainer}>
                         {(!recyclebin && (userData.privilege==='admin' || userData.privilege==='moderator')) && <>
-                            <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}><FontAwesomeIcon icon={faEdit} /></Link>
+                            <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}>Edit <FontAwesomeIcon icon={faEdit} /></Link>
                             <EventBackgroundAdjuster backgroundPosition={event?.backgroundPosition} setBackgroundPosition={setBackgroundPosition} eventid={eventid}/>
                         </>}
                     </div>

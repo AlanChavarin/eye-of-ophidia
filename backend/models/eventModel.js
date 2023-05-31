@@ -23,6 +23,7 @@ const eventSchema = mongoose.Schema({
     top8Day: Boolean,
     description: String,
     image: String,
+    bigImage: String,
     backgroundPosition: Number,
     deleted: Boolean,
 })

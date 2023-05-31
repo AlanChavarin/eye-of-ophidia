@@ -68,6 +68,7 @@ const useEventService = () => {
         }
         if(formData.resetImage){
             formData.image = ''
+            formData.bigImage = ''
         }
 
         const formDataObject = new FormData()

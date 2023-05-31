@@ -3,14 +3,14 @@ import EditHistoryCSS from './styles/EditHistory.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
-function EditHistory({editHistory, previousHistory}) {
+function EditHistory({editHistory, previousHistory, pages}) {
     const [dropdown, setDropdown] = useState(false)
 
     const onClick = () => {
       dropdown ? setDropdown(false) : setDropdown(true)
     }
 
-    const a = ['name', 'location', 'format', 'startDate', 'endDate', 'description', 'editor', 'parentEvent', 'timeStamp']
+    const a = ['name', 'location', 'format', 'startDate', 'endDate', 'description', 'editor', 'parentEvent', 'timeStamp', 'image', 'bigImage', 'backgroundPosition']
     const h = (i) => {
       if(!previousHistory){
         return ''
@@ -20,7 +20,8 @@ function EditHistory({editHistory, previousHistory}) {
         return ''
       }
     }
-    const type = (previousHistory ? 'Change' : 'First post')
+    //const type = (previousHistory ? 'Change' : 'First post')
+    const type = 'Change'
 
   return (
     <div>
@@ -55,6 +56,11 @@ function EditHistory({editHistory, previousHistory}) {
           <div>
             <div className={`${h(6)}`}><b>Dedicated Top 8 Day: </b>{editHistory.top8day ? 'Yes' : 'No'}</div>
             <div className={`${h(7)}`}><b>Rounds per day array:</b>{editHistory?.dayRoundArr?.length}</div>
+          </div>
+          <div>
+            <div className={`${h(9)}`}><b>Thumbnail Image Link: </b>{editHistory?.image}</div>
+            <div className={`${h(10)}`}><b>Header Image Link: </b>{editHistory?.bigImage}</div>
+            <div className={`${h(11)}`}><b>BG Position: </b>{editHistory?.backgroundPosition}</div>
           </div>
         </div>
       )}

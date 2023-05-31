@@ -3,6 +3,8 @@ const asyncHandler = require('express-async-handler')
 const router = express.Router()
 const multer = require('multer')
 const cloudinary = require('cloudinary')
+const {protectModerator, protect} = require('../middleware/authMiddleware')
+
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -30,6 +32,6 @@ const postImage = asyncHandler(async (req, res) => {
     res.status(200).json(cldRes)
 })
 
-router.post('/upload', upload.single("image"), postImage)
+router.post('/upload', upload.single("image"), protect, protectModerator, postImage)
 
 module.exports = router

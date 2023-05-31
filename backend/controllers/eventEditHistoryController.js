@@ -16,9 +16,9 @@ const getEventEditHistory = asyncHandler(async (req, res) => {
         {"$match": find},
         { "$facet": {
             "histories": [
+                { "$sort": {"createdAt": -1}},
                 { "$skip": skip },
                 { "$limit": limit },
-                { "$sort": {"createdAt": -1}},
                 { "$lookup": {
                     from: "users",
                     localField: "editor",
@@ -59,7 +59,7 @@ const getEventEdit = asyncHandler(async (req, res) => {
 
 //used internally
 const postEventEdit = asyncHandler(async (freshlyEditedEvent, editor) => {
-    const {name, location, format, startDate, endDate, top8Day, dayRoundArr, description, _id, notATypicalTournamentStructure, image} = freshlyEditedEvent
+    const {name, location, format, startDate, endDate, top8Day, dayRoundArr, description, _id, notATypicalTournamentStructure, image, bigImage} = freshlyEditedEvent
     
     const eventEdit = await EventEditHistory.create({
         name: name,
@@ -71,6 +71,7 @@ const postEventEdit = asyncHandler(async (freshlyEditedEvent, editor) => {
         dayRoundArr: dayRoundArr,
         description: description,
         image: image,
+        bigImage: bigImage,
         notATypicalTournamentStructure: notATypicalTournamentStructure,
 
         //edit specific 

@@ -37,7 +37,7 @@ app.use('/api/eventedithistory', require('./routes/eventEditHistoryRoutes'))
 app.use('/api/events', require('./routes/eventRoutes'))
 app.use('/api/names', require('./routes/nameRoutes'))
 app.use('/api/liveevent', require('./routes/liveEventRoutes'))
-app.use('/api/test', require('./routes/testRoutes'))
+//app.use('/api/test', require('./routes/testRoutes'))
 
 app.use(express.static('frontend/build'))
 

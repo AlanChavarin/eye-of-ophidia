@@ -13,7 +13,7 @@ const recycleBin = asyncHandler(async (req, res, next) => {
 const storage = new multer.memoryStorage()
 const upload = multer({
     storage,
-    limits: {fileSize: 500000}
+    limits: {fileSize: 1000000}
 })
 
 router.get('/recyclebin', protect, protectModerator, recycleBin, getEvents)
@@ -26,16 +26,15 @@ router.get('/', getEvents)
 
 router.get('/:eventid', getEvent)
 
-router.post('/', protect, protectModerator, upload.single("image"), postEvent)
+router.post('/', protect, protectModerator, upload.fields([{name: 'image'}, {name: 'bigImage'}]), postEvent)
 
 router.put('/editbackgroundposition/:eventid', protect, protectModerator, editBackgroundPosition)
 
-router.put('/:eventid', protect, protectModerator, upload.single("image"), updateEvent)
+router.put('/:eventid', protect, protectModerator, upload.fields([{name: 'image'}, {name: 'bigImage'}]), updateEvent)
 
 router.delete('/:eventid', protect, protectModerator, deleteEvent)
 
 router.put('/:eventid', protect, protectModerator, restoreEvent)
-
 
 
 module.exports = router

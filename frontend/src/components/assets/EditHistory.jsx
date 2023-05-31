@@ -3,7 +3,7 @@ import EditHistoryCSS from './styles/EditHistory.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
-function EditHistory({editHistory, previousHistory}) {
+function EditHistory({editHistory, previousHistory, page}) {
     const [dropdown, setDropdown] = useState(false)
 
     const onClick = () => {
@@ -20,7 +20,8 @@ function EditHistory({editHistory, previousHistory}) {
         return ''
       }
     }
-    const type = (previousHistory ? 'Change' : 'First post')
+    //const type = ((previousHistory) ? 'Change' : 'First post')
+    const type = 'Change'
 
   return (
     <div>

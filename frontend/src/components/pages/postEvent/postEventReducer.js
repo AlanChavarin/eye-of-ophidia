@@ -10,6 +10,7 @@ export const INITIAL_STATE = {
         description: '',
         notATypicalTournamentStructure: false,
         image: null,
+        bigImage: null,
         resetImage: false,
     },
     isMultiDay: false,
@@ -62,7 +63,17 @@ export const postEventReducer = (state, action) => {
                 ...state,
                 form: {
                     ...state.form,
-                    image: action.payload.target.files[0]
+                    image: action.payload
+                }
+            }
+        
+            
+        case('UPDATE_BIGIMAGE') : 
+            return {
+                ...state,
+                form: {
+                    ...state.form,
+                    bigImage: action.payload
                 }
             }
         case('DELETE_IMAGE') : 

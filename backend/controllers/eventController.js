@@ -85,11 +85,16 @@ const getEvents = asyncHandler(async (req, res) => {
 })
 
 const postEvent = asyncHandler(async (req, res) => {
-    let cldRes
-    if(req.file){
-        const b64 = Buffer.from(req.file.buffer).toString("base64")
-        let dataURI = "data:" + req.file.mimetype + ";base64," + b64
-        cldRes = await handleUpload(dataURI)
+    let cldResImage
+    let cldResBigImage
+    if(req.files.image && req.files.bigImage){
+        const b64Image = Buffer.from(req.files.image.buffer).toString("base64")
+        let dataURIimage = "data:" + req.files.image.mimetype + ";base64," + b64Image
+        cldResImage = await handleUpload(dataURIimage)
+
+        const b64BigImage = Buffer.from(req.files.bigImage.buffer).toString("base64")
+        let dataURIbigImage = "data:" + req.files.bigImage.mimetype + ";base64," + b64BigImage
+        cldResBigImage = await handleUpload(dataURIbigImage)
     }
 
     const event = await Event.create({
@@ -101,9 +106,9 @@ const postEvent = asyncHandler(async (req, res) => {
         top8Day: req.body.top8Day,
         dayRoundArr: req.body.dayRoundArr,
         description: req.body.description,
-        image: req.body.image,
         notATypicalTournamentStructure: req.body.notATypicalTournamentStructure,
-        image: cldRes ? cldRes.secure_url : null,
+        image: cldResImage ? cldResImage.secure_url : null,
+        bigImage: cldResBigImage ? cldResBigImage.secure_url : null,
         deleted: false,
     })
     postEventEdit(event, req.user._id)
@@ -117,19 +122,27 @@ const updateEvent = asyncHandler(async (req, res) => {
         throw new Error('Event with that id does not exist or has been deleted')
     }
 
-    let cldRes
+    let cldResImage
+    let cldResBigImage
 
     if(req.body.resetImage){
         req.body.image = null
+        req.body.bigImage = null
     } else if (!req.body.resetImage){
         delete req.body.image
+        delete req.body.bigImage
     }
 
-    if(req.file && !req.body.resetImage){
-        const b64 = Buffer.from(req.file.buffer).toString("base64")
-        let dataURI = "data:" + req.file.mimetype + ";base64," + b64
-        cldRes = await handleUpload(dataURI)
-        req.body.image = cldRes ? cldRes.secure_url : null
+    if(req.files.image && req.files.bigImage && !req.body.resetImage){
+        const b64Image = Buffer.from(req.files.image[0].buffer).toString("base64")
+        let dataURIimage = "data:" + req.files.image[0].mimetype + ";base64," + b64Image
+        cldResImage = await handleUpload(dataURIimage)
+        req.body.image = cldResImage ? cldResImage.secure_url : null
+
+        const b64BigImage = Buffer.from(req.files.bigImage[0].buffer).toString("base64")
+        let dataURIbigImage = "data:" + req.files.bigImage[0].mimetype + ";base64," + b64BigImage
+        cldResBigImage = await handleUpload(dataURIbigImage)
+        req.body.bigImage = cldResBigImage ? cldResBigImage.secure_url : null
     }
     
     if(typeof(req.body.dayRoundArr)==='string'){
@@ -143,7 +156,6 @@ const updateEvent = asyncHandler(async (req, res) => {
 })
 
 const editBackgroundPosition = asyncHandler(async (req, res) => {
-    console.log(req.body.backgroundPosition)
     if(!Event.exists({_id: req.params.eventid, deleted: false})){
         res.status(400)
         throw new Error('Event with that id does not exist or has been deleted')
