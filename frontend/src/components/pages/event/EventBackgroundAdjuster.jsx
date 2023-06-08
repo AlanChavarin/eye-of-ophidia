@@ -42,7 +42,6 @@ function EventBackgroundAdjuster({backgroundPosition, setBackgroundPosition, eve
     const onSubmit = (e) => {
         e.preventDefault()
         editBackgroundPosition(backgroundPosition, eventid)
-        .then(data => console.log(data))
     }
 
     useEffect(() => {

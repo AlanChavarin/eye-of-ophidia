@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {getEvent, getEvents, postEvent, updateEvent, deleteEvent, restoreEvent, editBackgroundPosition} = require('../controllers/eventController')
+const {getEvent, getEvents, postEvent, updateEvent, deleteEvent, restoreEvent, editBackgroundPosition, getAllBackgroundImageLinks, deleteBackgroundImage} = require('../controllers/eventController')
 const {protect, protectModerator} = require('../middleware/authMiddleware')
 const asyncHandler = require('express-async-handler')
 const multer = require('multer')
@@ -22,6 +22,10 @@ router.get('/recyclebin/:eventid', protect, protectModerator, recycleBin, getEve
 
 router.put('/recyclebin/:eventid', protect, protectModerator, restoreEvent)
 
+router.delete('/deletebackgroundimage', protect, protectModerator, deleteBackgroundImage)
+
+router.get('/getallbackgroundimagelinks', getAllBackgroundImageLinks)
+
 router.get('/', getEvents)
 
 router.get('/:eventid', getEvent)
@@ -35,6 +39,8 @@ router.put('/:eventid', protect, protectModerator, upload.fields([{name: 'image'
 router.delete('/:eventid', protect, protectModerator, deleteEvent)
 
 router.put('/:eventid', protect, protectModerator, restoreEvent)
+
+
 
 
 module.exports = router

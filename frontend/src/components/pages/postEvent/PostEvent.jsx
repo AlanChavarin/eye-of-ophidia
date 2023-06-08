@@ -29,6 +29,7 @@ import ClipLoader from 'react-spinners/ClipLoader'
 //helpers
 import { getTimeDifference } from '../../../helpers/timeDifference'
 import useImageCompression from './useImageCompression'
+import BackgroundImageSelector from './BackgroundImageSelector'
 
 
 function PostEvent() {
@@ -38,7 +39,7 @@ function PostEvent() {
   const [state, dispatch] = useReducer(postEventReducer, INITIAL_STATE)
   
   const {form, isMultiDay, deletePopup} = state
-  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure, image, resetImage} = form
+  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure, resetImage, image} = form
 
   const {smallImageCompression, bigImageCompression, progress} = useImageCompression()
 
@@ -92,6 +93,11 @@ function PostEvent() {
     const bigCompressedImage = await bigImageCompression(imageFile)
     dispatch({type: 'UPDATE_IMAGE', payload: smallCompressedImage})
     dispatch({type: 'UPDATE_BIGIMAGE', payload: bigCompressedImage})
+  }
+
+  const onChangeImageLink = (smallLink, bigLink) => {
+    dispatch({type: 'UPDATE_IMAGE', payload: smallLink})
+    dispatch({type: 'UPDATE_BIGIMAGE', payload: bigLink})
   }
 
   const onSubmit = (e) => {
@@ -191,9 +197,13 @@ function PostEvent() {
         </div>
 
         <div className={PostMatchCSS.container} style={{display: 'flex', flexDirection: 'column'}}>
-          
           <label>Thumbnail Image {progress && <span> - Compressing: {progress}%</span>}</label>
           <input type="file" onChange={onChangeImage}/>
+        </div>
+
+        <div className={PostMatchCSS.container}>
+          <label>Choose from uploaded images</label>
+          <BackgroundImageSelector onChange={onChangeImageLink} image={image}/>
         </div>
 
         <div className={PostMatchCSS.container}>

@@ -171,13 +171,65 @@ const useEventService = () => {
         ))
     }
 
+    const getAllBackgroundImageLinks = async () => {
+        setLoading(true)
+        return new Promise(resolve => {
+            fetch(API_URL + 'getallbackgroundimagelinks')
+            .then(res => res.json())
+            .then(data => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                setLoading(false)
+                resolve(data)
+            })
+            .catch((error) => err(error))
+        })
+    }
+
+    const deleteBackgroundImage = async (imageLink, bigImageLink) => {
+        setLoading(true)
+        return new Promise(resolve => {
+            fetch(API_URL + 'deletebackgroundimage', {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('user')
+                },
+                body: JSON.stringify({
+                    image: imageLink,
+                    bigImage: bigImageLink
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.errorMessage){
+                    throw new Error(data.errorMessage)
+                }
+                addAlert(data.message, 'success')
+                setLoading(false)
+                resolve(data)
+            })
+        })
+    }
+
     const err = (error) => {
         console.error(error.message)
         addAlert(error.message, 'error')
         setLoading(false)
     }
 
-    return {eventLoading, getEvent, getEvents, postEvent, deleteEvent, restoreEvent, editBackgroundPosition}
+    return {
+        eventLoading, 
+        getEvent, 
+        getEvents, 
+        postEvent, 
+        deleteEvent, 
+        restoreEvent, 
+        editBackgroundPosition, 
+        getAllBackgroundImageLinks, 
+        deleteBackgroundImage
+    }
 }
 
 export default useEventService

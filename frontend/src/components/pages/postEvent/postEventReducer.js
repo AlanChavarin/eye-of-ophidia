@@ -66,8 +66,6 @@ export const postEventReducer = (state, action) => {
                     image: action.payload
                 }
             }
-        
-            
         case('UPDATE_BIGIMAGE') : 
             return {
                 ...state,

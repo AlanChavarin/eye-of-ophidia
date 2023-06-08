@@ -4,6 +4,7 @@ const Match = require('../models/matchModel')
 const {postEventEdit} = require('./eventEditHistoryController')
 const cloudinary = require('cloudinary')
 const multer = require('multer')
+const {extractPublicId} = require('cloudinary-build-url')
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -167,6 +168,24 @@ const editBackgroundPosition = asyncHandler(async (req, res) => {
     res.status(200).json(event)
 })
 
+const getAllBackgroundImageLinks = asyncHandler(async (req, res) => {
+    const pipeline = ([
+        {"$group": {"_id": {image: '$image', bigImage: '$bigImage'}}}
+    ])
+
+    const eventQuery = await Event.aggregate(pipeline)
+
+    let data = []
+
+    eventQuery.map(entry => {
+        if(entry._id.image){
+            data.push(entry._id)
+        }
+    })
+
+    res.status(200).json(data)
+})
+
 const deleteEvent = asyncHandler(async (req, res) => {
     const event = await Event.findByIdAndUpdate(req.params.eventid, {deleted: true}, {new: true})
     res.status(200).json(event)
@@ -177,6 +196,17 @@ const restoreEvent = asyncHandler(async (req, res) => {
     res.status(200).json(event)
 })
 
+const deleteBackgroundImage = asyncHandler(async (req, res) => {
+    //extract image id
+    const imageId = extractPublicId(req.body.image)
+    await cloudinary.uploader.destroy(imageId)
+    const bigImageId = extractPublicId(req.body.bigImage)
+    await cloudinary.uploader.destroy(bigImageId)
+
+    await Event.updateMany({image: req.body.image}, {image: null, bigImage: null})
+    res.status(200).json({message: 'images deleted'})
+})
+
 module.exports = {
     getEvent,
     getEvents,
@@ -184,5 +214,7 @@ module.exports = {
     updateEvent,
     deleteEvent,
     restoreEvent,
-    editBackgroundPosition
+    editBackgroundPosition,
+    getAllBackgroundImageLinks,
+    deleteBackgroundImage
 }
