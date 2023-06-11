@@ -98,6 +98,10 @@ const postEvent = asyncHandler(async (req, res) => {
         cldResBigImage = await handleUpload(dataURIbigImage)
     }
 
+    if(typeof(req.body.dayRoundArr)==='string'){
+        req.body.dayRoundArr = JSON.parse("[" + req.body.dayRoundArr + "]")
+    }
+
     const event = await Event.create({
         name: req.body.name,
         location: req.body.location,
