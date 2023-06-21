@@ -231,8 +231,9 @@ export const postMatchReducer = (state, action) => {
         }
 
         case('SET_SWISSROUND_OR_TOP8ROUND_BASED_ON_TOP8') : {
-            const {top8} = state.form
-            if(top8==='true'){
+            //console.log(state.form)
+            //const {top8} = state.form
+            if(state.form?.top8==='true'){
                 return{
                     ...state,
                     form: {
@@ -240,7 +241,7 @@ export const postMatchReducer = (state, action) => {
                         swissRound: null 
                     }
                 }
-            } else if (top8==='false'){
+            } else if (state.form?.top8==='false'){
                 return{
                     ...state,
                     form: {

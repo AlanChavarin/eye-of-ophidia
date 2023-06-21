@@ -70,3 +70,27 @@
         font-size: 1.5em;
     }
 }
+
+.spoilerText{
+    font-size: 24px;
+    margin: 16px;
+    text-align: center;
+    color: #1446A0;
+    font-weight: 600;
+}
+
+.tempSpan{
+    font-size: 24px;
+    color: blue;
+    font-weight: 700;
+}
+
+@media(width < 400px){
+    .spoilerText{
+        font-size: 18px;
+    }
+
+    .tempSpan{
+        font-size: 18px;
+    }
+}

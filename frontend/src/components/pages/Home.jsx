@@ -11,6 +11,9 @@ function Home() {
 
   return (
     <div className={HomeCSS.parent}>
+      <div className={HomeCSS.spoilerText}>
+        <span className={HomeCSS.tempSpan}>Dusk till Dawn</span> shadow <span className={HomeCSS.tempSpan}>spoiler</span> will be revealed on this home page, {' '}<span className={HomeCSS.tempSpan}>July 2nd</span>.
+      </div>
       <p className={HomeCSS.p}><FontAwesomeIcon icon={faEye} className={HomeCSS.icon}/>Eye of Ophidia</p>
       <SearchForm page='matches'/>
       {/* live event */}
