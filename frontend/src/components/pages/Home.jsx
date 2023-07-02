@@ -11,13 +11,25 @@ function Home() {
 
   return (
     <div className={HomeCSS.parent}>
-      <div className={HomeCSS.spoilerText}>
+      {/* <div className={HomeCSS.spoilerText}>
         <span className={HomeCSS.tempSpan}>Dusk till Dawn</span> shadow <span className={HomeCSS.tempSpan}>spoiler</span> will be revealed on this home page, {' '}<span className={HomeCSS.tempSpan}>July 2nd</span>.
-      </div>
+      </div> */}
       <p className={HomeCSS.p}><FontAwesomeIcon icon={faEye} className={HomeCSS.icon}/>Eye of Ophidia</p>
       <SearchForm page='matches'/>
       {/* live event */}
       <LiveEvent/>
+      {/* preview image */}
+      <img src="backgroundImages/preview.jpg" alt="" style={{
+        width: '90%',
+        marginTop: '64px',
+        minWidth: '320px',
+        borderRadius: '8px',
+      }}/>
+      <img src="backgroundImages/card.PNG" alt="" style={{
+        width: '60%',
+        minWidth: '320px',
+        borderRadius: '16px',
+      }}/>
       {/* info on site */}
       <div className={HomeCSS.infoContainer}>
         <div className={HomeCSS.infoItem}>
