@@ -22,12 +22,12 @@ function Home() {
       <img src="backgroundImages/preview.jpg" alt="" style={{
         width: '90%',
         marginTop: '64px',
-        minWidth: '320px',
+        minWidth: '200px',
         borderRadius: '8px',
       }}/>
       <img src="backgroundImages/card.PNG" alt="" style={{
         width: '60%',
-        minWidth: '320px',
+        minWidth: '200px',
         borderRadius: '16px',
       }}/>
       {/* info on site */}

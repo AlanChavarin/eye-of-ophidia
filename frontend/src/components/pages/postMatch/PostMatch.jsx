@@ -14,7 +14,7 @@ import Popup from '../../assets/Popup'
 import SearchableDropdown from '../../assets/SearchableDropdown'
 import HeroSelect from '../../assets/HeroSelect'
 import NameSelect from '../../assets/NameSelect'
-import PostMatchInfoDropdown from '../../assets/PostMatchInfoDropdown'
+import PostMatchInfoDropdown from './PostMatchInfoDropdown'
 
 //service
 import useEventService from '../../../service/useEventService'

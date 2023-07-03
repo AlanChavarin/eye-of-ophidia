@@ -1,0 +1,36 @@
+.parent{
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 16px;
+    justify-content: center;
+}
+
+.button{
+    background-color: lightgray;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px 5px 10px;
+
+    font-size: 20px;
+
+    box-shadow: 2px 2px 2px black;
+
+    align-self: center;
+}
+
+.button:hover {
+    cursor: pointer;
+    background-color: rgb(156, 155, 155);
+}
+
+.selectedButton{
+    background-color: #e24840;
+    color: white;
+}
+
+.selectedButton:hover{
+    background-color: #e24840;
+    color: white;
+}

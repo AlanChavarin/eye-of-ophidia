@@ -197,3 +197,15 @@
     }
 
 }
+
+@media(width < 360px){
+    .playerContainer{
+        height: 130px;
+    }
+}
+
+@media(width < 290px){
+    .playerContainer{
+        height: 110px;
+    }
+}

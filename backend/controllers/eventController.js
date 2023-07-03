@@ -114,6 +114,7 @@ const postEvent = asyncHandler(async (req, res) => {
         notATypicalTournamentStructure: req.body.notATypicalTournamentStructure,
         image: cldResImage ? cldResImage.secure_url : null,
         bigImage: cldResBigImage ? cldResBigImage.secure_url : null,
+        backgroundPosition: req.body.backgroundPosition,
         deleted: false,
     })
     postEventEdit(event, req.user._id)
@@ -121,7 +122,9 @@ const postEvent = asyncHandler(async (req, res) => {
 })
 
 const updateEvent = asyncHandler(async (req, res) => {
-    delete req.body.backgroundPosition
+    if(!req.body.backgroundPosition){
+        delete req.body.backgroundPosition
+    }
     if(!Event.exists({_id: req.params.eventid, deleted: false})){
         res.status(400)
         throw new Error('Event with that id does not exist or has been deleted')

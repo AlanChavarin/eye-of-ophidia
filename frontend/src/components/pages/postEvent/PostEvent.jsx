@@ -15,6 +15,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 //assets
 import Popup from '../../assets/Popup'
 import EventThumbnail from '../../assets/EventThumbnail'
+import EventHero from '../event/EventHero'
+import TabSelector from '../../assets/TabSelector'
 
 //css
 import PostMatchCSS from '../styles/PostMatch.module.css'
@@ -32,14 +34,15 @@ import useImageCompression from './useImageCompression'
 import BackgroundImageSelector from './BackgroundImageSelector'
 
 
+
 function PostEvent() {
   const navigate = useNavigate()
   const {eventid} = useParams()
   const {eventLoading, getEvent, postEvent, deleteEvent} = useEventService()
   const [state, dispatch] = useReducer(postEventReducer, INITIAL_STATE)
   
-  const {form, isMultiDay, deletePopup} = state
-  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure, resetImage, image} = form
+  const {form, isMultiDay, deletePopup, previewTab} = state
+  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure, resetImage, image, backgroundPosition} = form
 
   const {smallImageCompression, bigImageCompression, progress} = useImageCompression()
 
@@ -100,6 +103,10 @@ function PostEvent() {
     dispatch({type: 'UPDATE_BIGIMAGE', payload: bigLink})
   }
 
+  const onChangeBackgroundPosition = (e) => {
+    dispatch({type: 'UPDATE_BACKGROUNDPOSITION', payload: e.target.value})
+  }
+
   const onSubmit = (e) => {
     e.preventDefault()
     postEvent(form, eventid)
@@ -114,6 +121,10 @@ function PostEvent() {
         navigate('/events')
       }
     })
+  }
+
+  const setPreviewTab = (tab) => {
+    dispatch({type: 'UPDATE_PREVIEWTAB', payload: tab})
   }
 
   return (
@@ -206,8 +217,24 @@ function PostEvent() {
           <BackgroundImageSelector onChange={onChangeImageLink} image={image}/>
         </div>
 
+        <div>
+          <label>Adjust hero background offset %: </label>
+          <input type="number" min='0' max='100' onChange={onChangeBackgroundPosition} value={backgroundPosition}/>
+        </div>
+
         <div className={PostMatchCSS.container}>
-          <EventThumbnail event={form} page='event' disableLink={true}/>
+          <TabSelector 
+            tabsArray={['Preview Thumbnail', 'Preview Hero']}
+            selectedTab={previewTab}
+            setSelectedTab={setPreviewTab}
+          />
+          {previewTab==='Preview Thumbnail' && 
+            <EventThumbnail event={form} page='event' disableLink={true}/>
+          }
+          {previewTab==='Preview Hero' && 
+            <EventHero event={form} />
+          }
+          
         </div>
 
         <div>

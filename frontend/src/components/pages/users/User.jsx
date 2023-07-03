@@ -1,22 +1,23 @@
 //react
 import { useState, useEffect, useContext } from "react"
-import UserContext from '../../context/UserContext'
+import UserContext from '../../../context/UserContext'
 
 //fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGear, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faGear, faCaretDown, faCaretUp, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 
 //css
-import UsersCSS from '../pages/styles/Users.module.css'
+import UsersCSS from './Users.module.css'
 
 //service
-import useLoginService from "../../service/useLoginService"
+import useLoginService from "../../../service/useLoginService"
 
 //loader
 import ClipLoader from "react-spinners/ClipLoader"
 
 function User({user}) {
   const [dropdown, setDropdown] = useState(false)
+  const [infoDropdown, setInfoDropdown] = useState(false)
   const {loginLoading, changePrivileges} = useLoginService()
   const [data, setData] = useState(user)
   const {userData} = useContext(UserContext)
@@ -27,9 +28,13 @@ function User({user}) {
     setDropdown(!dropdown)
   }
 
+  const onClickInfo = () => {
+    setInfoDropdown(!infoDropdown)
+  }
+
   useEffect(() => {
     document.addEventListener('mousedown', outsideClick)
-  }, [dropdown])
+  }, [dropdown, infoDropdown])
 
   const fireWarning = (privilege) => {
     setWarning(true)
@@ -48,12 +53,12 @@ function User({user}) {
       setDropdown(false)
       setWarning(false)
     })
-    
   } 
 
   const outsideClick = (e) => {
     if(!(e.target.getAttribute('id')===data._id)){
       setDropdown(false)
+      setInfoDropdown(false)
       cancelWarning()
       document.removeEventListener('mousedown', outsideClick)
     }
@@ -67,7 +72,13 @@ function User({user}) {
     }}>{data.name}: {loginLoading ? <ClipLoader size={14}/> : data.privilege}</p>
 
     <button className={UsersCSS.button} onClick={onClick}>
-      <FontAwesomeIcon icon={dropdown ? faCaretDown : faGear}/>
+      <FontAwesomeIcon icon={faGear}/>
+      {dropdown && <FontAwesomeIcon icon={faCaretDown}/>}
+    </button>
+
+    <button className={UsersCSS.button} onClick={onClickInfo}>
+      <FontAwesomeIcon icon={faCircleInfo}/>
+      {infoDropdown && <FontAwesomeIcon icon={faCaretDown}/>}
     </button>
 
     <div style={{position: 'relative'}}>
@@ -77,6 +88,15 @@ function User({user}) {
           {(userData.privilege==='admin') && <button id={data._id} onClick={() => fireWarning('moderator')}>Moderator</button>}
           <button id={data._id} onClick={() => fireWarning('user')}>User</button>
           <button id={data._id} onClick={() => fireWarning('banned')}>Banned</button>
+        </div>
+      }
+
+      {(infoDropdown && !warning) && 
+        <div className={UsersCSS.dropdown} id={data._id}>
+          <div>{data.name}</div>
+          <div>{data.email}</div>
+          <div>Verified: {data.verified ? 'true' : 'false'}</div>
+          
         </div>
       }
 

@@ -16,7 +16,7 @@ import Verify from "./components/pages/Verify"
 import Events from "./components/pages/Events"
 import Event from "./components/pages/event/Event"
 import IssuePage from './components/pages/IssuePage'
-import Users from './components/pages/Users'
+import Users from './components/pages/users/Users'
 import RequestPasswordReset from "./components/pages/RequestPasswordReset"
 import PasswordReset from "./components/pages/PasswordReset"
 import PostIssue from "./components/pages/PostIssue"

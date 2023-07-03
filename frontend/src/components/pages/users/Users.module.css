@@ -51,6 +51,8 @@
     cursor: pointer;
     border: none;
     background: none;
+    display: flex;
+    gap: 6px;
 }
 
 .button:hover{
@@ -63,8 +65,12 @@
     border: 1px solid lightgray;
     padding: 10px;
     z-index: 1;
-    min-width: 200px;
+    min-width: 300px;
     right: -20px;
     top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 

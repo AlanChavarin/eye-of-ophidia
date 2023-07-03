@@ -107,6 +107,24 @@
 @media(width < 450px){
     .default{
         height: 150px;
-        width: 96wv;
+        width: 96vw;
+    }
+}
+
+@media(width < 380px){
+    .default{
+        min-width: 0px;
+    }
+
+    .date{
+        font-size:x-small;
+    }
+
+    .playerName{
+        font-size: medium;
+    }
+
+    .eventTitle{
+        font-size: medium;
     }
 }

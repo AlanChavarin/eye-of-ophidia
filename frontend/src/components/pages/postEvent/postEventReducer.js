@@ -12,9 +12,11 @@ export const INITIAL_STATE = {
         image: null,
         bigImage: null,
         resetImage: false,
+        backgroundPosition: '',
     },
     isMultiDay: false,
     deletePopup: false,
+    previewTab: 'Preview Thumbnail',
 }
 
 export const postEventReducer = (state, action) => {
@@ -82,6 +84,21 @@ export const postEventReducer = (state, action) => {
                     image: null
                 }
             }
+        case('UPDATE_PREVIEWTAB') : 
+            return {
+                ...state,
+                previewTab: action.payload
+            }
+        case('UPDATE_BACKGROUNDPOSITION'):
+            return{
+                ...state,
+                previewTab: 'Preview Hero',
+                form: {
+                    ...state.form,
+                    backgroundPosition: action.payload
+                }
+            }
+            
         default:
             return state
     }

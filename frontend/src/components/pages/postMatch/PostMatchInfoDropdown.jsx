@@ -1,7 +1,7 @@
 import { useState, useEffect} from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faCircleInfo} from "@fortawesome/free-solid-svg-icons"
-import PostMatchInfoDropdownCSS from './styles/PostMatchInfoDropdown.module.css'
+import PostMatchInfoDropdownCSS from './PostMatchInfoDropdown.module.css'
 
 function PostMatchInfoDropdown({twitch}) {
 
