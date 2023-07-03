@@ -65,7 +65,7 @@ function User({user}) {
   }
 
   return (<div className={UsersCSS.user}>
-    <img className={UsersCSS.img} src={`/profilepics/${data.picture}.png`} width="25" height="25"/>
+    <img className={UsersCSS.img} src={`${window.location.origin}/profilepics/${data.picture}.png`} width="25" height="25"/>
 
     <p style={{
       fontSize: (data.name.length > 19) && '.6em'

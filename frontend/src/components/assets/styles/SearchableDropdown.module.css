@@ -21,6 +21,8 @@
     background-color: lightgray;
 }
 
-@media (orientation: portrait){
-    
+@media(width < 300px){
+    .parent{
+        width: 90%;
+    }
 }
