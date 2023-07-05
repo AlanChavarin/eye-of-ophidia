@@ -122,6 +122,7 @@ const postEvent = asyncHandler(async (req, res) => {
 })
 
 const updateEvent = asyncHandler(async (req, res) => {
+    console.log(req.params.eventid)
     if(!req.body.backgroundPosition){
         delete req.body.backgroundPosition
     }
