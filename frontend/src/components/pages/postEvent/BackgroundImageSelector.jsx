@@ -39,7 +39,6 @@ function BackgroundImageSelector({onChange, image}) {
     const onClick = (e) => {
         e.preventDefault()
         setActive(!active)
-        
     }
 
     const onDelete = (e) => {
