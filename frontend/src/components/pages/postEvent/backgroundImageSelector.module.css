@@ -14,6 +14,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    z-index: 1;
 }
 
 .inner{
@@ -47,6 +49,8 @@
     padding-top: 24px;
     padding-bottom: 24px;
 
+    background-position: center center;
+
 }
 
 @media(width < 1060px){
@@ -71,7 +75,7 @@
 
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 70% 0%;
+    background-position: center center;
     height: 270px;
     max-width: 400px;
     width: 100%;
@@ -79,6 +83,7 @@
 
     border-radius: 10px;
     border: 1px solid lightgray;
+
 }
 
 .image:hover{

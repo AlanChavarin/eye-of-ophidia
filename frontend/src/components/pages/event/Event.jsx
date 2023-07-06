@@ -1,5 +1,5 @@
 //react
-import {useParams, Link, useSearchParams, useNavigate} from 'react-router-dom'
+import {useParams, useSearchParams, useNavigate} from 'react-router-dom'
 import { useReducer, useEffect, useContext } from 'react'
 import UserContext from '../../../context/UserContext'
 
@@ -17,17 +17,15 @@ import EditHistories from '../../assets/EditHistories'
 
 //font awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 //css
-import EventCSS from '../styles/Event.module.css'
+import EventCSS from './Event.module.css'
 
 //loader
 import MoonLoader from 'react-spinners/MoonLoader'
-import ClipLoader from 'react-spinners/ClipLoader'
 
 //helper components
-import EventBackgroundAdjuster from './EventBackgroundAdjuster'
 import EventHero from './EventHero'
 
 //helper

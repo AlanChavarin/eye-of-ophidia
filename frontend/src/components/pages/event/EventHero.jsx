@@ -6,7 +6,7 @@ import { useContext } from 'react'
 import UserContext from '../../../context/UserContext'
 
 //css
-import EventCSS from '../styles/Event.module.css'
+import EventCSS from './Event.module.css'
 
 //helpers
 import EventBackgroundAdjuster from './EventBackgroundAdjuster'
@@ -27,7 +27,7 @@ function EventHero({event, backgroundImage, recyclebin, eventid, page, setTab, l
   return (
     <div className={EventCSS.eventContainer} 
         style={{
-            backgroundPosition: `0px ${event?.backgroundPosition ? event?.backgroundPosition : '50%'}%`,
+            backgroundPosition: `center ${event?.backgroundPosition ? event?.backgroundPosition : '50%'}%`,
             backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), 
             url(${page==='eventPage' ? backgroundImage : getEventBackgroundImageURL(event)})`,
             alignSelf: 'center'

@@ -13,13 +13,12 @@
     width: 95vw;
     min-height: 200px;
 
-
     border-radius: 10px;
     border: 1px solid lightgray;
 
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: 0% 50%;
+    background-position: 0% center;
 
     background-color: white;
 
@@ -70,6 +69,12 @@
     font-size: 2em;
     border-bottom: 3px solid rgb(85, 85, 85);
     width: 300px;
+}
+
+@media(width < 310px){
+    .dayLabel{
+        width: 240px;
+    }
 }
 
 @media(orientation: portrait), (width: 720px){

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 
 //css
 import BackgroundAdjusterCSS from './BackgroundAdjuster.module.css'
-import EventCSS from '../styles/Event.module.css'
+import EventCSS from './Event.module.css'
 import PostMatchCSS from '../styles/PostMatch.module.css'
 
 //fontawesome
