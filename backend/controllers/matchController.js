@@ -25,7 +25,7 @@ const getMatches = asyncHandler(async (req, res) => {
     }
 
     if(req.query.text){
-        find["$text"] = {"$search": req.query.text}
+        find["$text"] = {"$search": wordWrapper(req.query.text)}
     }
 
     if(req.query.hero1 && req.query.hero2){
@@ -42,7 +42,6 @@ const getMatches = asyncHandler(async (req, res) => {
             {"player1hero": req.query.hero2} , {"player2hero": req.query.hero2}, 
         ]
     }
-
 
     const date1 = new Date(req.query.startDate)
     const date2 = new Date(req.query.endDate)
@@ -71,6 +70,7 @@ const getMatches = asyncHandler(async (req, res) => {
                 { "$count": "count" }
             ]
         }}
+        
     ]
 
     const matchesQuery = await Match.aggregate(pipeline)
@@ -246,6 +246,14 @@ const updateDeckLinks = async (formData) => {
         }, {'player1deck': player2deck}, 
         {runValidators: true, new: true})
     }
+}
+
+const wordWrapper = (query) => {
+    const wrappedWord = query
+    .split(" ")
+    .map(word => `\"${word}\"`)
+    .join(" ")
+    return wrappedWord
 }
 
 module.exports = {

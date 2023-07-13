@@ -48,7 +48,7 @@ const getEvents = asyncHandler(async (req, res) => {
     }
 
     if(req.query.text){
-        find["$text"] = {"$search": req.query.text}
+        find["$text"] = {"$search": wordWrapper(req.query.text)}
     }
 
     if(req.query.startDate){
@@ -214,6 +214,15 @@ const deleteBackgroundImage = asyncHandler(async (req, res) => {
     await Event.updateMany({image: req.body.image}, {image: null, bigImage: null})
     res.status(200).json({message: 'images deleted'})
 })
+
+//used internally
+const wordWrapper = (query) => {
+    const wrappedWord = query
+    .split(" ")
+    .map(word => `\"${word}\"`)
+    .join(" ")
+    return wrappedWord
+}
 
 module.exports = {
     getEvent,
