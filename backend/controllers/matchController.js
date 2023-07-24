@@ -60,7 +60,7 @@ const getMatches = asyncHandler(async (req, res) => {
 
     const pipeline = [
         {"$match": find},
-        { "$facet": {
+        {"$facet": {
             "matches": [
                 { "$sort": {"event.startDate": order}},
                 { "$skip": skip },
@@ -70,7 +70,6 @@ const getMatches = asyncHandler(async (req, res) => {
                 { "$count": "count" }
             ]
         }}
-        
     ]
 
     const matchesQuery = await Match.aggregate(pipeline)
@@ -80,19 +79,21 @@ const getMatches = asyncHandler(async (req, res) => {
         "count": matchesQuery[0].count[0]?.count
     }
 
-    res.status(200).json(data)
+    res.status(200)
+    res.json(data)
 })
 
 const getMatchesByEvent = asyncHandler(async (req, res) => {
     var matches
     if(!req.recyclebin){req.recyclebin = false}
     if(ObjectId.isValid(req.params.event)){
-        matches = await Match.find({'event._id': req.params.event, deleted: req.recyclebin})
-        .sort({top8: 1, swissRound: 1})
+        matches = await Match.find({'event._id': req.params.event, deleted: req.recyclebin}).sort({top8: 1, swissRound: 1})
     } else {
         matches = await Match.find({'event.name': req.params.event, deleted: req.recyclebin}).sort({top8: 1, swissRound: 1})
     }
-    res.status(200).json(matches)
+    console.log(matches)
+    res.status(200)
+    res.json(matches)
 })
 
 const getMatch = asyncHandler(async (req, res) => {
@@ -102,7 +103,8 @@ const getMatch = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('Match with that id not found')
     }
-    res.status(200).json(match)
+    res.status(200)
+    res.json(match)
 })
 
 const postMatch = asyncHandler(async (req, res) => {
@@ -112,7 +114,7 @@ const postMatch = asyncHandler(async (req, res) => {
     } = req.body
     const eventData = await Event.findOne({name: event})
     if(top8 === 'true'){
-        delete swissRound
+        delete req.body.swissRound
     } else {
         req.body.top8Round='None'
     }

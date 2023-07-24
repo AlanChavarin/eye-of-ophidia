@@ -1,2 +1,4 @@
 .env
 /node_modules
+/backend/controllers/tests
+/backend/dbHandler.js
