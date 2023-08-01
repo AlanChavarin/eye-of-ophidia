@@ -29,6 +29,4 @@ router.put('/:matchid', protect, protectModerator, updateMatch)
 
 router.delete('/:id', protect, protectModerator, deleteMatch)
 
-
-
 module.exports = router

@@ -5,6 +5,7 @@
     justify-content: flex-start;
     height: 100%;
     gap: 30px;
+    padding-bottom: 8px;
 }
 
 .p{

@@ -2,3 +2,4 @@
 /node_modules
 /backend/controllers/tests
 /backend/dbHandler.js
+/backend/fixtures

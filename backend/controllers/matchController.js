@@ -8,12 +8,12 @@ const ObjectId = require('mongodb').ObjectId
 
 const getMatches = asyncHandler(async (req, res) => {
     let skip, limit, find, order
-    if(!req.query.limit){limit = 10} 
+    if(!req.query?.limit){limit = 10} 
     else {limit = parseInt(req.query.limit)}
-    if(!req.query.page){skip = 0} 
+    if(!req.query?.page){skip = 0} 
     else {skip = parseInt(req.query.page*limit)}
 
-    order = parseInt(req.query.order)
+    order = parseInt(req.query?.order)
     !(order === 1 || order === -1) && (order = -1)
 
     find = {}
@@ -24,37 +24,37 @@ const getMatches = asyncHandler(async (req, res) => {
         find["deleted"] = true
     }
 
-    if(req.query.text){
+    if(req.query?.text){
         find["$text"] = {"$search": wordWrapper(req.query.text)}
     }
 
-    if(req.query.hero1 && req.query.hero2){
+    if(req.query?.hero1 && req.query?.hero2){
         find["$or"] = [
             {"player1hero": req.query.hero1, "player2hero": req.query.hero2, }, 
             {"player1hero": req.query.hero2, "player2hero": req.query.hero1, }
         ]
-    } else if(req.query.hero1){
+    } else if(req.query?.hero1){
         find["$or"] = [
             {"player1hero": req.query.hero1}, {"player2hero": req.query.hero1}, 
         ]
-    } else if(req.query.hero2){
+    } else if(req.query?.hero2){
         find["$or"] = [
             {"player1hero": req.query.hero2} , {"player2hero": req.query.hero2}, 
         ]
     }
 
-    const date1 = new Date(req.query.startDate)
-    const date2 = new Date(req.query.endDate)
+    const date1 = new Date(req.query?.startDate)
+    const date2 = new Date(req.query?.endDate)
 
-    if(req.query.startDate && req.query.endDate){
+    if(req.query?.startDate && req.query?.endDate){
         find["event.startDate"] = {"$gte": date1, "$lte": date2}
-    } else if(req.query.startDate){
+    } else if(req.query?.startDate){
         find["event.startDate"] = {"$gte": date1}
-    } else if(req.query.endDate){
+    } else if(req.query?.endDate){
         find["event.startDate"] = {"$lte": date2}
     }
 
-    if(req.query.format){
+    if(req.query?.format){
         find["format"] = req.query.format
     }
 
@@ -87,11 +87,14 @@ const getMatchesByEvent = asyncHandler(async (req, res) => {
     var matches
     if(!req.recyclebin){req.recyclebin = false}
     if(ObjectId.isValid(req.params.event)){
-        matches = await Match.find({'event._id': req.params.event, deleted: req.recyclebin}).sort({top8: 1, swissRound: 1})
+        matches = await Match.find({'event._id': new ObjectId(req.params.event), deleted: req.recyclebin}).sort({top8: 1, swissRound: 1})
     } else {
         matches = await Match.find({'event.name': req.params.event, deleted: req.recyclebin}).sort({top8: 1, swissRound: 1})
     }
-    console.log(matches)
+    if(!matches || !matches[0]){
+        res.status(400)
+        throw new Error('event of that name or id not found')
+    }
     res.status(200)
     res.json(matches)
 })
@@ -149,7 +152,8 @@ const postMatch = asyncHandler(async (req, res) => {
 
     req.query.dontUpdateLinks !== 'true' && updateDeckLinks(req.body)
 
-    res.status(200).json(match)
+    res.status(200)
+    res.json(match)
 })
 
 const updateMatch = asyncHandler(async (req, res) => {
@@ -168,19 +172,27 @@ const updateMatch = asyncHandler(async (req, res) => {
     if(!await Name.exists({name: req.body.player1name})){Name.create({name: req.body.player1name})} 
     if(!await Name.exists({name: req.body.player2name})){Name.create({name: req.body.player2name})} 
     req.query.dontUpdateLinks !== 'true' && updateDeckLinks(req.body)
-    res.status(200).json(match)
+    res.status(200)
+    res.json(match)
     
 })
 
 const deleteMatch = asyncHandler(async (req, res) => {
     const match = await Match.findByIdAndUpdate(req.params.id, {deleted: true}, {new: true})
+    if(!match){
+        res.status(400)
+        throw new Error('given match doesnt exist')
+    }
     await Issue.deleteMany({target: req.params.id})
-    res.status(200).json(match)
+    console.log(match)
+    res.status(200)
+    res.json(match)
 })
 
 const restoreMatch = asyncHandler(async (req, res) => {
     const match = await Match.findByIdAndUpdate(req.params.id, {deleted: false}, {new: true})
-    res.status(200).json(match)
+    res.status(200)
+    res.json(match)
 })
 
 const getNameLinkPairsbyEvent = asyncHandler(async (req, res) => {
@@ -196,7 +208,8 @@ const getNameLinkPairsbyEvent = asyncHandler(async (req, res) => {
         }
     })
 
-    res.status(200).json(pairs)
+    res.status(200)
+    res.json(pairs)
 })
 
 //internal use only

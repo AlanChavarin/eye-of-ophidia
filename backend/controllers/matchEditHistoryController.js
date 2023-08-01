@@ -22,7 +22,7 @@ const getMatchEditHistory = asyncHandler(async (req, res) => {
                 { "$lookup": {
                     from: "users",
                     localField: "editor",
-                    foreignField: "_id",
+                    foreignField: "id",
                     as: "ownerDetails"
                 }}
             ],

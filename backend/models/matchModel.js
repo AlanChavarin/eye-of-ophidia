@@ -84,6 +84,18 @@ const heroEnum = async (v) => {
     return !!await Hero.findOne({name: v})
 }
 
+matchSchema.index({
+    player1hero: 'text',
+    player2hero: 'text',
+    player1name: 'text',
+    player2name: 'text',
+    format: 'text',
+    'event.name': 'text',
+    'event.description': 'text',
+    'event.location': 'text',
+    'event.format': 'text',
+})
+
 module.exports = mongoose.model('Match', matchSchema)
 
 // const heroNames = ['Rhinar, Reckless Rampage', 'Bravo, Showstopper', 'Katsu, the Wanderer', 'Dorinthea Ironsong', 'Dash, Inventor Extraordinaire', 'Azalea, Ace in the Hole', 'Viserai, Rune Blood', 'Kano, Dracai of Aether', 'Prism, Sculptor of Arc Light', 'Ser Boltyn, Breaker of Dawn', 'Levia, Shadowborn Abomination', 'Chane, Bound by Shadow', 'Oldhim, Grandfather of Eternity', 'Lexi, Livewire', 'Briar, Warden of Thorns', 'Dromai, Ash Artist', 'Fai, Rising Rebellion', 'Iyslander, Stormbind']
