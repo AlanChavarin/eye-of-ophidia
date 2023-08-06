@@ -86,6 +86,7 @@ const getEvents = asyncHandler(async (req, res) => {
 })
 
 const postEvent = asyncHandler(async (req, res) => {
+
     let cldResImage
     let cldResBigImage
     if(req.files.image && req.files.bigImage){
@@ -96,7 +97,11 @@ const postEvent = asyncHandler(async (req, res) => {
         const b64BigImage = Buffer.from(req.files.bigImage.buffer).toString("base64")
         let dataURIbigImage = "data:" + req.files.bigImage.mimetype + ";base64," + b64BigImage
         cldResBigImage = await handleUpload(dataURIbigImage)
-    }
+
+        req.body.image = cldResImage.secure_url
+        req.body.bigImage = cldResBigImage.secure_url
+    } 
+
 
     if(typeof(req.body.dayRoundArr)==='string'){
         req.body.dayRoundArr = JSON.parse("[" + req.body.dayRoundArr + "]")
@@ -107,13 +112,13 @@ const postEvent = asyncHandler(async (req, res) => {
         location: req.body.location,
         format: req.body.format,
         startDate: req.body.startDate,
-        endDate: req.body.endDate,
+        endDate: req.body.endDate, 
         top8Day: req.body.top8Day,
         dayRoundArr: req.body.dayRoundArr,
         description: req.body.description,
         notATypicalTournamentStructure: req.body.notATypicalTournamentStructure,
-        image: cldResImage ? cldResImage.secure_url : null,
-        bigImage: cldResBigImage ? cldResBigImage.secure_url : null,
+        image: req.body.image,
+        bigImage: req.body.bigImage,
         backgroundPosition: req.body.backgroundPosition,
         deleted: false,
     })
@@ -122,7 +127,7 @@ const postEvent = asyncHandler(async (req, res) => {
 })
 
 const updateEvent = asyncHandler(async (req, res) => {
-    console.log(req.params.eventid)
+
     if(!req.body.backgroundPosition){
         delete req.body.backgroundPosition
     }
@@ -137,7 +142,7 @@ const updateEvent = asyncHandler(async (req, res) => {
     if(req.body.resetImage){
         req.body.image = null
         req.body.bigImage = null
-    } else if (!req.body.resetImage){
+    } else if (!req.body.resetImage && !req.body.image){
         delete req.body.image
         delete req.body.bigImage
     }
@@ -152,8 +157,8 @@ const updateEvent = asyncHandler(async (req, res) => {
         let dataURIbigImage = "data:" + req.files.bigImage[0].mimetype + ";base64," + b64BigImage
         cldResBigImage = await handleUpload(dataURIbigImage)
         req.body.bigImage = cldResBigImage ? cldResBigImage.secure_url : null
-    }
-    
+    } 
+
     if(typeof(req.body.dayRoundArr)==='string'){
         req.body.dayRoundArr = JSON.parse("[" + req.body.dayRoundArr + "]")
     }
