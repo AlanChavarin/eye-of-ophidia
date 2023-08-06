@@ -87,13 +87,28 @@ const getMatchesByEvent = asyncHandler(async (req, res) => {
     var matches
     if(!req.recyclebin){req.recyclebin = false}
     if(ObjectId.isValid(req.params.event)){
-        matches = await Match.find({'event._id': new ObjectId(req.params.event), deleted: req.recyclebin}).sort({top8: 1, swissRound: 1})
+
+        if( !(await Event.find({'event._id': new ObjectId(req.params.event)})) ){
+            res.status(400)
+            throw new Error('event of that name or id not found')
+        }
+
+        matches = await Match.find(
+            {'event._id': new ObjectId(req.params.event), deleted: req.recyclebin})
+            .sort({top8: 1, swissRound: 1}
+        )
+
     } else {
-        matches = await Match.find({'event.name': req.params.event, deleted: req.recyclebin}).sort({top8: 1, swissRound: 1})
-    }
-    if(!matches || !matches[0]){
-        res.status(400)
-        throw new Error('event of that name or id not found')
+
+        if( !(await Event.find({'event.name': req.params.event})) ){
+            res.status(400)
+            throw new Error('event of that name or id not found')
+        }
+
+        matches = await Match.find(
+            {'event.name': req.params.event, deleted: req.recyclebin})
+            .sort({top8: 1, swissRound: 1}
+        )
     }
     res.status(200)
     res.json(matches)

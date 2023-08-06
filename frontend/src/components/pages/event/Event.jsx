@@ -1,7 +1,6 @@
 //react
 import {useParams, useSearchParams, useNavigate} from 'react-router-dom'
-import { useReducer, useEffect, useContext } from 'react'
-import UserContext from '../../../context/UserContext'
+import { useReducer, useEffect } from 'react'
 
 //reducer
 import { eventReducer, INITIAL_STATE } from './eventReducer'
@@ -29,13 +28,12 @@ import MoonLoader from 'react-spinners/MoonLoader'
 import EventHero from './EventHero'
 
 //helper
-import {filter} from './filterHelper'
+import { filter } from './filterHelper'
 import { getEventBackgroundImageURL } from './backgroundImageHelper'
 
 
 function Event() {
     const navigate = useNavigate()
-    const {userData} = useContext(UserContext)
     const {eventLoading, getEvent, restoreEvent} = useEventService()
     const {matchLoading, getMatchesByEvent} = useMatchService()
 
@@ -66,7 +64,7 @@ function Event() {
     const setTab = (tab) => {
         dispatch({type: 'SET_TAB', payload: tab})
     }
-    
+
     const restore = () => {
         if(recyclebin){
             restoreEvent(eventid)
@@ -96,15 +94,12 @@ function Event() {
                 setTab={setTab}
                 lastRound={lastRound}
                 eventLoading={eventLoading}
-
-
             />
 
             {(tab==='issues') && (<>
-            <button onClick={() => setTab('matches')} className={EventCSS.cornerItem} style={{position: 'relative'}}>Back to event matches <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
-            <Issues targetid={event._id} targetType='event'/>
-            </>
-            )}
+                <button onClick={() => setTab('matches')} className={EventCSS.cornerItem} style={{position: 'relative'}}>Back to event matches <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
+                <Issues targetid={event._id} targetType='event'/>
+            </>)}
 
             {/* matches */}
             {(tab==='matches') && 
@@ -112,14 +107,16 @@ function Event() {
                     <MoonLoader size={70} loading={matchLoading || eventLoading}/> 
                     {(matches && event.endDate && event.dayRoundArr && !event.notATypicalTournamentStructure) ? 
                         <>
-                            {Array.from(Array(event.dayRoundArr.length), (e, i) => <div className={EventCSS.labelThumbnailContainer}>
-                                <div className={EventCSS.dayLabel}>Day {i + 1}</div>
-                                <div className={EventCSS.matchThumbnailContainer}>
-                                    {matches.filter(match => filter(match, i, event))
-                                        .map((match) => (<MatchThumbnail key={match._id} match={match}/>))}
-                                    {(matches.filter(match => filter(match, i, event)).length < 1) && <>No Vods Available :{'('}</>}
+                            {Array.from(Array(event.dayRoundArr.length), (e, i) => 
+                                <div className={EventCSS.labelThumbnailContainer} key={i}>
+                                    <div className={EventCSS.dayLabel}>Day {i + 1}</div>
+                                    <div className={EventCSS.matchThumbnailContainer}>
+                                        {matches.filter(match => filter(match, i, event))
+                                            .map((match) => (<MatchThumbnail key={match._id} match={match}/>))}
+                                        {(matches.filter(match => filter(match, i, event)).length < 1) && <>No Vods Available :{'('}</>}
+                                    </div>
                                 </div>
-                            </div>)}
+                            )}
                             <div className={EventCSS.labelThumbnailContainer}>
                                 <div className={EventCSS.dayLabel}>Top8</div>
                                 <div className={EventCSS.matchThumbnailContainer}>
