@@ -84,11 +84,11 @@ const getMatches = asyncHandler(async (req, res) => {
 })
 
 const getMatchesByEvent = asyncHandler(async (req, res) => {
-    var matches
+    let matches
     if(!req.recyclebin){req.recyclebin = false}
     if(ObjectId.isValid(req.params.event)){
-
-        if( !(await Event.find({'event._id': new ObjectId(req.params.event)})) ){
+        const doesEventExist = await Event.exists({'_id': new ObjectId(req.params.event), deleted: req.recyclebin})
+        if(!doesEventExist){
             res.status(400)
             throw new Error('event of that name or id not found')
         }
@@ -96,8 +96,8 @@ const getMatchesByEvent = asyncHandler(async (req, res) => {
         matches = await Match.find({'event._id': new ObjectId(req.params.event), deleted: req.recyclebin}).sort({top8: 1, swissRound: 1})
 
     } else {
-
-        if( !(await Event.find({'event.name': req.params.event})) ){
+        const doesEventExist = await Event.exists({'name': req.params.event, deleted: req.recyclebin})
+        if(!doesEventExist){
             res.status(400)
             throw new Error('event of that name or id not found')
         }
@@ -193,7 +193,6 @@ const deleteMatch = asyncHandler(async (req, res) => {
         throw new Error('given match doesnt exist')
     }
     await Issue.deleteMany({target: req.params.id})
-    console.log(match)
     res.status(200)
     res.json(match)
 })

@@ -28,4 +28,11 @@ const eventSchema = mongoose.Schema({
     deleted: Boolean,
 })
 
+eventSchema.index({
+    name: 'text',
+    location: 'text',
+    format: 'text',
+    description: 'text',
+})
+
 module.exports = mongoose.model('Event', eventSchema)

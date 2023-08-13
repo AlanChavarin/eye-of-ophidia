@@ -48,22 +48,23 @@ function MatchThumbnail({match, page, recyclebin}) {
     ${MatchThumbnailCSS.match} 
     ${!page && MatchThumbnailCSS.default}
     ${page==='issue' && MatchThumbnailCSS.issuePage}
-    `}>
+    `}
+    data-cy='matchThumbnail'>
       {match && (
         <>
         {page==='issue' && <Link to={`/postmatch/${match._id}`} className={MatchThumbnailCSS.editButton}><FontAwesomeIcon icon={faEdit} /></Link>}
 
         <div className={MatchThumbnailCSS.info}>
-          <div className={MatchThumbnailCSS.eventTitle}>
+          <div className={MatchThumbnailCSS.eventTitle} data-cy="matchThumbnailEventName">
             {match.event.name}
           </div>
           <div className={MatchThumbnailCSS.date}>
             {(match.top8) ? (`${match?.top8Round}`) : `Round ${match?.swissRound}`}
           </div>
-          <div className={MatchThumbnailCSS.date}>
+          <div className={MatchThumbnailCSS.date} data-cy="matchThumbnailFormat">
             {match.format !== 'Classic Constructed' && match.format}
           </div>
-          <div className={MatchThumbnailCSS.date}>
+          <div className={MatchThumbnailCSS.date} data-cy="matchThumbnailDate">
             {getMatchDate()}
           </div>
         </div>
@@ -73,7 +74,7 @@ function MatchThumbnail({match, page, recyclebin}) {
             backgroundRepeat: 'no-repeat',
             backgroundSize: '180%',
             backgroundPosition: '40% 10%',
-          }}>
+          }} data-cy='player1ImageContainer'>
 
           <div className={MatchThumbnailCSS.playerName}>
             {match.player1name}
@@ -86,7 +87,7 @@ function MatchThumbnail({match, page, recyclebin}) {
             backgroundRepeat: 'no-repeat',
             backgroundSize: '180%',
             backgroundPosition: '40% 10%',
-          }}>
+          }} data-cy='player2ImageContainer'>
 
           <div className={MatchThumbnailCSS.playerName}>
             {match.player2name}

@@ -91,12 +91,12 @@ function SearchForm({page}) {
                 {/* Search bar */}
                 <div className={SearchFormCSS.searchBar}> 
                     <button className={SearchFormCSS.searchButton}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
-                    <input className={SearchFormCSS.searchInput} type='text' name='text' value={text} onChange={onChange} placeholder={`Search for ${page}`}/>
+                    <input className={SearchFormCSS.searchInput} type='text' name='text' value={text} onChange={onChange} placeholder={`Search for ${page}`} data-cy='matchesSearchBarInput'/>
                     <button 
                     className={SearchFormCSS.sliderButton} 
                     onClick={(e) => onSliderClick(e)}
                     style={{backgroundColor: parameters && 'lightgray'}}
-                    ><FontAwesomeIcon icon={faSliders}/></button>
+                    ><FontAwesomeIcon icon={faSliders} data-cy='paramsButton'/></button>
                 </div>
 
                 {/* parameters container */}
@@ -105,12 +105,12 @@ function SearchForm({page}) {
                         
                         {(page==='matches') && <div className={SearchFormCSS.hero}>
                             <label style={{fontWeight: '500'}}>Hero Matchup: </label>
-                            <div className={SearchFormCSS.container}>   
-                                <HeroSelect name='hero1' onChange={onChange} value={hero1}/>
+                            <div className={SearchFormCSS.container} data-cy='heroSelect1'>   
+                                <HeroSelect name='hero1' onChange={onChange} value={hero1} />
                             </div>
                             <label className={SearchFormCSS.vs}>VS</label>
-                            <div className={SearchFormCSS.container}>
-                                <HeroSelect name='hero2' onChange={onChange} value={hero2}/>
+                            <div className={SearchFormCSS.container} data-cy='heroSelect2'>
+                                <HeroSelect name='hero2' onChange={onChange} value={hero2} />
                             </div>
                         </div>}
 
@@ -124,7 +124,7 @@ function SearchForm({page}) {
                         { page==='matches' && 
                             <div className={SearchFormCSS.hero}>
                                 <label style={{fontWeight: '500'}}>Format: </label>
-                                <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
+                                <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format} data-cy="selectFormatDropdown">
                                     <option value=''>None</option>
                                     <option value="Classic Constructed">Classic Constructed</option>
                                     <option value="Blitz">Blitz</option>

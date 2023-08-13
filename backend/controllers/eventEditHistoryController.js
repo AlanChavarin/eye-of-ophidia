@@ -59,6 +59,7 @@ const getEventEdit = asyncHandler(async (req, res) => {
 
 //used internally
 const postEventEdit = asyncHandler(async (freshlyEditedEvent, editor) => {
+    console.log('POST EVENT CALLED')
     const {name, location, format, startDate, endDate, top8Day, dayRoundArr, description, _id, notATypicalTournamentStructure, image, bigImage} = freshlyEditedEvent
     
     const eventEdit = await EventEditHistory.create({

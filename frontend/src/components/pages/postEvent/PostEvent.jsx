@@ -256,7 +256,7 @@ function PostEvent() {
         <div className={PostMatchCSS.popupButtons}>
           {eventLoading ? <ClipLoader size={25}/> : <>
             <button className={PopupCSS.deleteButton} onClick={onDelete}>Delete</button>
-            <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); dispatch({type: 'UPDATE_DELETEPOPUP', payload: true})}}>Cancel</button>
+            <button className={PopupCSS.cancelButton} onClick={(e) => {e.preventDefault(); dispatch({type: 'UPDATE_DELETEPOPUP', payload: false})}}>Cancel</button>
           </>}
         </div>
       </Popup>

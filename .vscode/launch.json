@@ -11,6 +11,18 @@
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Jest Tests",
+            "program": "${workspaceFolder}/frontend/node_modules/jest/bin/jest.js",
+            "args": ["--runInBand backend/controllers/tests/matchController.test.js"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "windows": {
+              "program": "${workspaceFolder}/frontend/node_modules/jest/bin/jest.js"
+            }
         }
     ]
 }
