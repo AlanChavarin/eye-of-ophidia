@@ -188,6 +188,11 @@ const useEventService = () => {
     }
 
     const deleteBackgroundImage = async (imageLink, bigImageLink) => {
+        const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/
+        if(!urlPattern.test(imageLink) || !urlPattern.test(bigImageLink)){
+            throw new Error('did not pass a valid url')
+        }
+
         setLoading(true)
         return new Promise(resolve => {
             fetch(API_URL + 'deletebackgroundimage', {

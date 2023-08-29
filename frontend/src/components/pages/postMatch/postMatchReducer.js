@@ -102,17 +102,18 @@ export const postMatchReducer = (state, action) => {
                     ...action.payload,
                     event: action.payload.event.name,
                     top8: action.payload.top8 ? 'true' : 'false',
-                    date: action.payload.date ? action.payload.date.substring(0, 10) : ''
+                    date: action.payload.date ? action.payload.date.substring(0, 10) : '',
+                    format: ''
                 }
             }
 
         case('SET_EVENTDATA_AND_EVENTNAMES') : {
                 let tempEventNamesArr = []
                 action.payload.events?.map(event => tempEventNamesArr.push(event.name))
-                return{
+                return {
                     ...state,
                     eventData: action.payload.events,
-                    eventNames: tempEventNamesArr
+                    eventNames: tempEventNamesArr,
                 }
             }
         
@@ -161,9 +162,15 @@ export const postMatchReducer = (state, action) => {
                 }
 
                 if(state.form.event === thisEvent.name){
+                    // newState = {
+                    //     ...newState,
+                    //     selectedEventData: thisEvent
+                    // }
                     newState = {
-                        ...newState,
-                        selectedEventData: thisEvent
+                        ...state,
+                        form: {
+                            ...state.form,
+                        } 
                     }
                 }
             })

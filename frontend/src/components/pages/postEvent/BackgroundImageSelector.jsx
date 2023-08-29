@@ -82,17 +82,19 @@ function BackgroundImageSelector({onChange, image}) {
     }, [active])
 
   return (<>{active ?
-    <div className={BackgroundImageSelectorCSS.parent}>
+    <div className={BackgroundImageSelectorCSS.parent} data-cy="eventBackgroundImageSelector">
         <div className={BackgroundImageSelectorCSS.inner}>
              <h1>Select Background Image</h1>
-             <button onClick={onClick} className={BackgroundImageSelectorCSS.xButton}>X</button>
+             <button onClick={onClick} className={BackgroundImageSelectorCSS.xButton} data-cy="eventBackgroundImageSelectorExitButton">X</button>
              {eventLoading && <ClipLoader size={50}/>}
              <div className={BackgroundImageSelectorCSS.imageContainer}>
                 {imageLinks && 
-                    imageLinks.map(link => link && 
+                    imageLinks.map((link, i) => link && 
                         <div className={BackgroundImageSelectorCSS.image} 
                             style={{backgroundImage: `url(${getURL(link.image)})`}}
                             onClick={(e) => onChange(link.image, link.bigImage)}
+                            key={i}
+                            data-cy={"eventBackgroundImage" + i}
                         >
                             <button 
                                 onClick={e => activateDeletePopup(e, link)} className={BackgroundImageSelectorCSS.xButton} style={{boxShadow: 'none'}}>
@@ -119,7 +121,7 @@ function BackgroundImageSelector({onChange, image}) {
 
     :
 
-    <button onClick={onClick} className={BackgroundImageSelectorCSS.button}>Choose Image</button>
+    <button onClick={onClick} className={BackgroundImageSelectorCSS.button} data-cy="eventBackgroundImageSelectorButton">Choose Image</button>
 
     
   }

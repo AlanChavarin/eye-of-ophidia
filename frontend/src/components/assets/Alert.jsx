@@ -14,14 +14,14 @@ function Alerts({alert}) {
   }
 
   return (
-    <div className={
+    <div data-cy="alert" className={
       `${AlertCSS.alert} 
       ${alert.type === 'success' && AlertCSS.success}
       ${alert.type === 'error' && AlertCSS.error}
       ${deleted && AlertCSS.deleted}`
       } key={alert.id}>
       <button className={AlertCSS.closeButton} onClick={() => deleteAlert()}>X</button>
-      <div className={AlertCSS.message}>
+      <div data-cy="alertMessage" className={AlertCSS.message}>
         {alert.message}
       </div>
     </div>

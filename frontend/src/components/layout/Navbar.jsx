@@ -38,7 +38,7 @@ function Navbar() {
               <div>Submit a new match!</div>
             </Link>
             <Link to='/postevent' className={NavbarCSS.item}>
-              <div>Submit a new event</div>
+              <div data-cy="navbarSubmitEvent">Submit a new event</div>
             </Link>
             <Link to='/issuepage' className={NavbarCSS.item}>
               <div>Issues</div>
@@ -52,7 +52,7 @@ function Navbar() {
 
         {userData.name && <>
           <Link to='/me' className={NavbarCSS.item}>
-            <div>{userData.name}</div>
+            <div data-cy="navbarProfile">{userData.name}</div>
           </Link>
         </>}
       </div>

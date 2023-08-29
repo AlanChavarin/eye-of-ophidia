@@ -29,7 +29,6 @@ import PopupCSS from '../../assets/styles/Popup.module.css'
 import MoonLoader from 'react-spinners/MoonLoader'
 import ClipLoader from 'react-spinners/ClipLoader'
 
-
 function PostMatch() {
   const {matchLoading, postMatch, getMatch, deleteMatch, getNameLinkPairs} = useMatchService()
   const {getEvents} = useEventService()
@@ -43,11 +42,19 @@ function PostMatch() {
 
   useEffect(() => {
     getEvents(null, null, null, null, 1000)
-    .then(data => dispatch({type: 'SET_EVENTDATA_AND_EVENTNAMES', payload: data}))
-    .then(() => dispatch({type: 'SET_FORM_BASED_ON_SEARCHPARAMS', payload: searchParams}))
+    .then(data => {
+      dispatch({type: 'SET_EVENTDATA_AND_EVENTNAMES', payload: data})
+    }
+    )
+    .then(() => {
+      dispatch({type: 'SET_FORM_BASED_ON_SEARCHPARAMS', payload: searchParams})
+    }
+    )
     .then(() => {
       matchid && getMatch(matchid)
-      .then(data => dispatch({type: 'SET_FORM_EDITING_MATCH', payload: data}))
+      .then(data => {
+        dispatch({type: 'SET_FORM_EDITING_MATCH', payload: data})
+      })
     })
   }, [])
 
@@ -120,16 +127,17 @@ function PostMatch() {
         
         <div className={PostMatchCSS.container}>
           <label>Event <span style={{color: 'red'}}>*</span></label>
-          <SearchableDropdown items={eventNames} onChange={onChange} value={event} name='event'/>
+          <SearchableDropdown items={eventNames} onChange={onChange} value={event} name='event' dataCy="matchEvent"/>
         </div>
         <div className={PostMatchCSS.container}>
           <label>Format <span style={{color: 'red'}}>*</span></label>
-          <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
+          <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format} data-cy="matchFormat">
             <option value=''>None</option>
             <option value="Classic Constructed">Classic Constructed</option>
             <option value="Blitz">Blitz</option>
             <option value="Draft">Draft</option>
             <option value="Sealed">Sealed</option>
+            <option value="Mixed">Mixed</option>
           </select>
         </div>
 
@@ -137,18 +145,18 @@ function PostMatch() {
           <div className={PostMatchCSS.container}>
             <div>
               <label>Top 8</label>
-              <input type="radio" name="top8" value={'true'} required checked={top8==='true'} onChange={onChange}/>
+              <input type="radio" name="top8" value={'true'} required checked={top8==='true'} onChange={onChange} data-cy="matchTop8RadioButton"/>
             </div>
             <div>
               <label>Swiss</label>
-              <input type="radio" name="top8" value={'false'} required checked={top8==='false'} onChange={onChange}/>
+              <input type="radio" name="top8" value={'false'} required checked={top8==='false'} onChange={onChange} data-cy="matchSwissRadioButton"/>
             </div>
          </div>
           
           {top8==='true' && 
             <div className={PostMatchCSS.container}>
               <label>Top 8 Round <span style={{color: 'red'}}>*</span></label>
-              <select name="top8Round" className={HeroSelectCSS.select} onChange={onChange} value={top8Round}>
+              <select name="top8Round" className={HeroSelectCSS.select} onChange={onChange} value={top8Round} data-cy="matchTop8Round">
                 <option>None</option>
                 <option value="Quarter Finals">Quarter Finals</option>
                 <option value="Semi Finals">Semi Finals</option>
@@ -160,87 +168,87 @@ function PostMatch() {
           {top8==='false' &&
             <div className={PostMatchCSS.swissRoundContainer}>
               <label><span style={{color: 'red'}}>*</span>Swiss Round:</label>
-              <input type="number" name='swissRound' value={swissRound} onChange={onChange} className={PostMatchCSS.input} style={{width: '40px', marginLeft: '5px'}}/>
+              <input type="number" name='swissRound' value={swissRound} onChange={onChange} className={PostMatchCSS.input} style={{width: '40px', marginLeft: '5px'}} data-cy="matchSwissRound"/>
             </div>
           }
         </div>
 
         <div className={PostMatchCSS.container} style={{flexDirection: 'row'}}>
           <label>Twitch.tv link</label>
-          <input type="checkbox" checked={twitch} name='twitch' onChange={onChangeChecked} className={PostMatchCSS.input}/>
+          <input type="checkbox" checked={twitch} name='twitch' onChange={onChangeChecked} className={PostMatchCSS.input} data-cy="matchTwitchCheckbox"/>
         </div>
 
         {!twitch ? <>
 
           <div className={PostMatchCSS.container}>
             <div style={{display: 'flex'}}><label>Youtube Video Link </label><PostMatchInfoDropdown /></div>
-            <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={PostMatchCSS.input}/>
+            <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={PostMatchCSS.input} data-cy="matchYoutubeVideoLink"/>
           </div>
           <div className={PostMatchCSS.container}>
             <label>Match Timestamp (in total seconds) <span style={{color: 'red'}}>*</span></label>
-            <input type="number" name='timeStamp' value={timeStamp} onChange={onChange} required className={PostMatchCSS.input} style={{width: '60px'}}/>
+            <input type="number" name='timeStamp' value={timeStamp} onChange={onChange} required className={PostMatchCSS.input} style={{width: '60px'}} data-cy="matchYoutubeTimeStamp"/>
           </div>
           <div className={PostMatchCSS.container}>
             <label>Youtube Video id <span style={{color: 'red'}}>*</span></label>
-            <input type="text" name='link' value={link} onChange={onChange} required className={PostMatchCSS.input}/>
+            <input type="text" name='link' value={link} onChange={onChange} required className={PostMatchCSS.input} data-cy="matchYoutubeVideoId"/>
           </div>
 
         </> : <>
 
           <div className={PostMatchCSS.container}>
             <div style={{display: 'flex'}}><label>Twitch Video Link </label><PostMatchInfoDropdown twitch={true} /></div>
-            <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={PostMatchCSS.input}/>
+            <input type="url" name='fullLink' value={fullLink} onChange={onChange} className={PostMatchCSS.input} data-cy="matchTwitchVideoLink"/>
           </div>
           <div className={PostMatchCSS.container}>
             <label>Twitch Match Timestamp<span style={{color: 'red'}}>*</span></label>
-            <input type="text" name='twitchTimeStamp' value={twitchTimeStamp} onChange={onChange} required className={PostMatchCSS.input}/>
+            <input type="text" name='twitchTimeStamp' value={twitchTimeStamp} onChange={onChange} required className={PostMatchCSS.input} data-cy="matchTwitchTimeStamp"/>
           </div>
           <div className={PostMatchCSS.container}>
             <label>Twitch Video id<span style={{color: 'red'}}>*</span></label>
-            <input type="text" name='link' value={link} onChange={onChange} required className={PostMatchCSS.input}/>
+            <input type="text" name='link' value={link} onChange={onChange} required className={PostMatchCSS.input} data-cy="matchTwitchVideoId"/>
           </div>
 
         </>}
 
         <div className={PostMatchCSS.container}>
           <label>Player 1 Hero <span style={{color: 'red'}}>*</span></label>
-          <HeroSelect name='player1hero' value={player1hero} onChange={onChange} required={true} type={heroType} className={PostMatchCSS.input}/>
+          <HeroSelect name='player1hero' value={player1hero} onChange={onChange} required={true} type={heroType} className={PostMatchCSS.input} dataCy="matchPlayer1Hero"/>
         </div>
         <div className={PostMatchCSS.container}>
           <label>Player 1 Full Name <span style={{color: 'red'}}>*</span></label>
-          <NameSelect name='player1name' value={player1name} onChange={onChange} className={PostMatchCSS.input}/>
+          <NameSelect name='player1name' value={player1name} onChange={onChange} className={PostMatchCSS.input} dataCy="matchPlayer1FullName"/>
         </div>
         <div className={PostMatchCSS.container}>
           <label>Player 1 Deck Link</label>
-          <input type="url" name='player1deck' value={player1deck} onChange={onChange} className={PostMatchCSS.input}/>
+          <input type="url" name='player1deck' value={player1deck} onChange={onChange} className={PostMatchCSS.input} data-cy="matchPlayer1DeckLink"/>
         </div>
 
         <div className={PostMatchCSS.container}>
           <label>Player 2 Hero <span style={{color: 'red'}}>*</span></label>
-          <HeroSelect name='player2hero' value={player2hero} onChange={onChange} required={true} type={heroType} className={PostMatchCSS.input}/>
+          <HeroSelect name='player2hero' value={player2hero} onChange={onChange} required={true} type={heroType} className={PostMatchCSS.input} dataCy="matchPlayer2Hero"/>
         </div>
         <div className={PostMatchCSS.container}>
           <label>Player 2 Full Name <span style={{color: 'red'}}>*</span></label>
-          <NameSelect name='player2name' value={player2name} onChange={onChange} className={PostMatchCSS.input}/>
+          <NameSelect name='player2name' value={player2name} onChange={onChange} className={PostMatchCSS.input} dataCy="matchPlayer2FullName"/>
         </div>
         <div className={PostMatchCSS.container}>
           <label>Player 2 Deck Link</label>
-          <input type="url" name='player2deck' value={player2deck} onChange={onChange} className={PostMatchCSS.input}/>
+          <input type="url" name='player2deck' value={player2deck} onChange={onChange} className={PostMatchCSS.input} data-cy="matchPlayer2DeckLink"/>
         </div>
 
         {selectedEventData?.notATypicalTournamentStructure && 
           <div className={PostMatchCSS.container}>
             <label>Match Date</label>
-            <input type="date" name='date' value={date} onChange={onChange} className={PostMatchCSS.input}/>
+            <input type="date" name='date' value={date} onChange={onChange} className={PostMatchCSS.input} data-cy="matchDate"/>
           </div>
         }
 
         <div className={PostMatchCSS.container} style={{flexDirection: 'row'}}>
           <input type="checkbox" checked={!dontUpdateLinks} 
-          onChange={() => dispatch({type: 'SET_DONTUPDATELINKS', payload: !dontUpdateLinks})} className={PostMatchCSS.input}/> <div style={{fontSize: '.8em'}}>Sync Deck Links (recomended)</div> 
+          onChange={() => dispatch({type: 'SET_DONTUPDATELINKS', payload: !dontUpdateLinks})} className={PostMatchCSS.input} data-cy="matchDontUpdateDeckLinksCheckbox"/> <div style={{fontSize: '.8em'}}>Sync Deck Links (recomended)</div> 
         </div>
 
-        <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton}> 
+        <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton} data-cy="matchSubmitButton"> 
           {matchLoading ? <ClipLoader color='white' size={20}/>
            : <>Submit</>}
         </button>

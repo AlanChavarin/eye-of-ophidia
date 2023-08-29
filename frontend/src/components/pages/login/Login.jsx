@@ -67,16 +67,16 @@ function Login() {
           {(registrationMode) ? (
             <div className={LoginCSS.container}>
               <label>Name</label>
-              <input type='text' value={name} name='name' minLength={5} onChange={onChange} className={LoginCSS.input}/>
+              <input type='text' value={name} name='name' minLength={5} onChange={onChange} className={LoginCSS.input} />
             </div>
           ): <></>}
           <div className={LoginCSS.container}>
               <label>Email</label>
-              <input type='email' value={email} name='email' onChange={onChange} className={LoginCSS.input}/>
+              <input type='email' value={email} name='email' onChange={onChange} className={LoginCSS.input} data-cy="inputEmail"/>
           </div>
           <div className={LoginCSS.container}>
               <label>Password</label>
-              <input type='password' value={password} name='password' minLength={8} onChange={onChange} className={LoginCSS.input}/>
+              <input type='password' value={password} name='password' minLength={8} onChange={onChange} className={LoginCSS.input} data-cy="inputPassword"/>
           </div>
           {(registrationMode) ? (
             <div className={LoginCSS.container}>

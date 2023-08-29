@@ -50,7 +50,8 @@ function App() {
           <div className={`app-container ${!recyclebin ? 'background-color' : ''}`} 
           style={recyclebin ? {
             backgroundColor: '#a6acde'
-          }: {}}>
+          }: {}}
+          data-cy="appContainer">
             <Routes>
               <Route path='/' element={<Home />}/>
               <Route path='/matches/' element={<SearchResults />}/>

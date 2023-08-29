@@ -27,12 +27,12 @@ function Footer() {
         </div> */}
         {(userData?.name) ? <>
           <Link to='/logout' className={FooterCSS.logout}>
-            <div>Logout</div>
+            <div data-cy="logoutButton">Logout</div>
           </Link>
         </> : <></>}
         {(!userData.name) && <>
           <Link to='/login' className={FooterCSS.item}>
-            <div style={{fontWeight: '650'}}>Login/Register</div>
+            <div data-cy="loginButton" style={{fontWeight: '650'}}>Login/Register</div>
           </Link>
         </>}
       </div>

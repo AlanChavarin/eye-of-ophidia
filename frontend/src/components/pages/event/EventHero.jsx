@@ -31,16 +31,18 @@ function EventHero({event, backgroundImage, recyclebin, eventid, page, setTab, l
             backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), 
             url(${page==='eventPage' ? backgroundImage : getEventBackgroundImageURL(event)})`,
             alignSelf: 'center'
-        }}>
+        }}
+        data-cy="eventHero">
         {/* corner container */}
         {page==='eventPage' && 
             <div className={EventCSS.cornerContainerParent}>
                 <div className={EventCSS.cornerContainer}>
                     {(!recyclebin && (userData.privilege==='admin' || userData.privilege==='moderator')) && <>
-                        <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`}>Edit <FontAwesomeIcon icon={faEdit} /></Link>
+                        <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`} data-cy="eventEditButton">Edit <FontAwesomeIcon icon={faEdit} /></Link>
                         <button 
                             onClick={() => navigate(`/postmatch/?eventName=${event.name}&top8round=${lastRound?.top8}&round=${lastRound?.round}`)} 
-                            className={EventCSS.cornerItem}> 
+                            className={EventCSS.cornerItem}
+                            data-cy="postMatchButton"> 
                                 Post Match 
                         </button> 
                         {/* {eventid && <EventBackgroundAdjuster backgroundPosition={event?.backgroundPosition} setBackgroundPosition={setBackgroundPosition} eventid={eventid}/>} */}

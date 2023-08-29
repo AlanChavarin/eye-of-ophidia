@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import useNameService from '../../service/useNameService'
 import SearchableDropdown from './SearchableDropdown'
 
-function NameSelect({name, onChange, value}) {
+function NameSelect({name, onChange, value, dataCy}) {
     const {getNames} = useNameService()
     const [names, setNames] = useState()
 
@@ -16,7 +16,7 @@ function NameSelect({name, onChange, value}) {
     }, [])
 
   return (
-    <SearchableDropdown items={names} name={name} value={value} onChange={onChange}/>
+    <SearchableDropdown items={names} name={name} value={value} onChange={onChange} dataCy={dataCy}/>
   )
 }
 export default NameSelect

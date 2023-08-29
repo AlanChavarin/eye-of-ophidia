@@ -1,12 +1,12 @@
 describe('tests the matches page search', () => {
-    it.skip('does a blank match seach', () => {
+    it('does a blank match seach', () => {
         cy.visit('/')
         cy.get('[data-cy="matchesSearchBarInput"]').type('{enter}')
         cy.url().should('include', '/matches')
         cy.get('[data-cy="matchThumbnail"]').should('have.length.gt', 10)
     })
 
-    it.skip('does searching matches by hero work', () => {
+    it('does searching matches by hero work', () => {
         cy.visit('/')
         cy.get('[data-cy="paramsButton"]').click()
         cy.get('[data-cy="heroSelect1"]').type('Bravo, Showstopper{enter}')
@@ -21,7 +21,7 @@ describe('tests the matches page search', () => {
         
     })
 
-    it.skip('does searching matches by a hero matchup work', () => {
+    it('does searching matches by a hero matchup work', () => {
         cy.visit('/')
         cy.get('[data-cy="paramsButton"]').click()
         cy.get('[data-cy="heroSelect1"]').type('Bravo, Showstopper')
@@ -41,7 +41,7 @@ describe('tests the matches page search', () => {
         })
     })
 
-    it.skip('does searching matches by a hero matchup work via searchbar work', () => {
+    it('does searching matches by a hero matchup work via searchbar work', () => {
         cy.visit('/')
         cy.get('[data-cy="matchesSearchBarInput"]').type('Oldhim, Grandfather Bravo{enter}')
         cy.get('[data-cy="matchThumbnail"]').each(element => {
@@ -59,7 +59,7 @@ describe('tests the matches page search', () => {
         })
     })
 
-    it.skip('Does format filter work', () => {
+    it('Does format filter work', () => {
         cy.visit('/')
         cy.get('[data-cy="paramsButton"]').click()
         cy.get('[data-cy="selectFormatDropdown"]').select('Blitz').type('{enter}')
@@ -68,7 +68,7 @@ describe('tests the matches page search', () => {
         })
     })
 
-    it.skip('are results sorted by date correctly?', () => {
+    it('are results sorted by date correctly?', () => {
         cy.visit('/')
         cy.get('[data-cy="matchesSearchBarInput"]').type('battle{enter}')
         cy.get('[data-cy="matchThumbnail"]').each((currentElement, index, elements) => {

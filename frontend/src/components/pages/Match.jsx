@@ -63,9 +63,9 @@ function Match() {
 
         <div className={MatchCSS.videoFeedbackContainer}>
           <div className={MatchCSS.videoContainer}>
-            {(match && !match.twitch) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp===0 ? 1 : match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>}
+            {(match && !match.twitch) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp===0 ? 1 : match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen data-cy="youtubeIFrame"></iframe>}
 
-            {(match && match.twitch) && <iframe src={`https://player.twitch.tv/?video=${match.link}&time=${match.twitchTimeStamp ? match.twitchTimeStamp : '1s'}&parent=${process.env.NODE_ENV==='production' ? 'www.eyeofophidia.net' : 'localhost'}`} frameborder="0" allowfullscreen="true" scrolling="no"></iframe>
+            {(match && match.twitch) && <iframe src={`https://player.twitch.tv/?video=${match.link}&time=${match.twitchTimeStamp ? match.twitchTimeStamp : '1s'}&parent=${process.env.NODE_ENV==='production' ? 'www.eyeofophidia.net' : 'localhost'}`} frameborder="0" allowfullscreen="true" scrolling="no" data-cy="twitchIframe"></iframe>
 }
           </div>
         </div>
@@ -76,17 +76,17 @@ function Match() {
           {/* buttons */}
           <div className={MatchCSS.containerTab}> 
             {!recyclebin ? <>
-              <button value='details' onClick={onClick} style={{backgroundColor: (tab==='details') && '#1446A0', color: (tab==='details') && 'white'}}>Details</button>
-              <button value='comments' onClick={onClick} style={{backgroundColor: (tab==='comments') && '#1446A0', color: (tab==='comments') && 'white'}}>Comments</button>
-              <button value='issues' onClick={onClick} style={{backgroundColor: (tab==='issues') && '#1446A0', color: (tab==='issues') && 'white'}}>Issues</button>
+              <button value='details' onClick={onClick} style={{backgroundColor: (tab==='details') && '#1446A0', color: (tab==='details') && 'white'}} data-cy="detailsButton">Details</button>
+              <button value='comments' onClick={onClick} style={{backgroundColor: (tab==='comments') && '#1446A0', color: (tab==='comments') && 'white'}} data-cy="commentsButton">Comments</button>
+              <button value='issues' onClick={onClick} style={{backgroundColor: (tab==='issues') && '#1446A0', color: (tab==='issues') && 'white'}} data-cy="issuesButtno">Issues</button>
 
               {(userData.privilege==='admin' || userData.privilege==='moderator') && <>
-                <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}}>Edit History</button>
-                <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} /></Link>
+                <button value='history' onClick={onClick} style={{backgroundColor: (tab==='history') && '#1446A0', color: (tab==='history') && 'white'}} data-cy="editHistoryButton">Edit History</button>
+                <Link to={`/postmatch/${matchid}`}><FontAwesomeIcon icon={faEdit} data-cy="editButton"/></Link>
               </>}</> 
               :
 
-            <button onClick={restore} className={MatchCSS.restoreButton}>
+            <button onClick={restore} className={MatchCSS.restoreButton} data-cy="restoreButton">
               {matchLoading ? <ClipLoader size={15} color='white'/> : <>Restore Match</>}
             </button>
             }
@@ -98,18 +98,18 @@ function Match() {
           {tab==='details' && <>
             <EventThumbnail event={match.event} page='match' match={match}/>
 
-            <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player1hero)})`}}>
-              <div className={MatchCSS.playerName}>{match.player1name}</div>
+            <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player1hero)})`}} data-cy="player1Details">
+              <div className={MatchCSS.playerName} data-cy="player1Name">{match.player1name}</div>
               {match.player1deck ? 
-                <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> :
+                <a href={`${match.player1deck}`} target="_blank" className={MatchCSS.link} data-cy="player1DeckLink">Deck List</a> :
                 <div className={MatchCSS.unavailable}>Deck list N/A</div>
               }
             </div>
 
-            <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player2hero)})`}}>
-              <div className={MatchCSS.playerName}>{match.player2name}</div>
+            <div className={MatchCSS.playerContainer} style={{backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url(${heroURL(match.player2hero)})`}} data-cy="player2Details">
+              <div className={MatchCSS.playerName} data-cy="player2Name">{match.player2name}</div>
               {match.player2deck ? 
-                <a href={`${match.player2deck}`} target="_blank" className={MatchCSS.link}>Deck List</a> :
+                <a href={`${match.player2deck}`} target="_blank" className={MatchCSS.link} data-cy="player2DeckLink">Deck List</a> :
                 <div className={MatchCSS.unavailable}>Deck list N/A</div>
               }
             </div> </>}

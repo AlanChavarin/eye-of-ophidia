@@ -2,7 +2,7 @@
  import useHeroService from '../../service/useHeroService'
  import SearchableDropdown from './SearchableDropdown'
 
-function HeroSelect({name, onChange, required, value, type}) {
+function HeroSelect({name, onChange, required, value, type, dataCy}) {
     const {getHeroes, getAdultHeroNames, getYoungHeroNames} = useHeroService()
     const [heroData, setHeroData] = useState([])
 
@@ -20,7 +20,7 @@ function HeroSelect({name, onChange, required, value, type}) {
     }, [type])
     
   return (
-    <SearchableDropdown items={heroData} name={name} value={value} onChange={onChange} placeholder={true}/>
+    <SearchableDropdown items={heroData} name={name} value={value} onChange={onChange} placeholder={true} dataCy={dataCy}/>
   )
 }
 export default HeroSelect

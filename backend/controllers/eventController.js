@@ -3,6 +3,7 @@ const Event = require('../models/eventModel')
 const Match = require('../models/matchModel')
 const {postEventEdit} = require('./eventEditHistoryController')
 const {handleImageFiles, handleImageDeletion} = require('./abstractions/cloudinaryHelper')
+const crypto = require('crypto')
 
 const getEvent = asyncHandler(async (req, res) => {
     if(!req.recyclebin){req.recyclebin = false}
@@ -72,20 +73,15 @@ const getEvents = asyncHandler(async (req, res) => {
     res.json(data)
 })
 
-const postEvent = asyncHandler(async (req, res) => {    
+const postEvent = asyncHandler(async (req, res) => { 
+
 
     if(req.files?.image && req.files?.bigImage && req.body.resetImage !== 'true'){
-        console.log('does this run?')
         //call cloudinary helper function that takes the files, handles upload, and returns the image links
         const imageObject = await handleImageFiles(req.files.image, req.files.bigImage)
         req.body.image = imageObject.image
         req.body.bigImage = imageObject.bigImage
-    }
-
-    if(req.body.resetImage === 'true'){
-        req.body.image = null
-        req.body.bigImage = null
-    } else if (req.body.resetImage !== 'false' && !req.body.image){
+    } else if(!req.body.image.startsWith('http') && !req.body.bigImage.startsWith('http')){
         delete req.body.image
         delete req.body.bigImage
     }
@@ -144,13 +140,22 @@ const updateEvent = asyncHandler(async (req, res) => {
         delete req.body.bigImage
     }
 
-    
-
     if(typeof(req.body.dayRoundArr)==='string'){
         req.body.dayRoundArr = JSON.parse("[" + req.body.dayRoundArr + "]")
     }
 
+    const oldEvent = await Event.findById(req.params.eventid)
     const event = await Event.findOneAndUpdate({_id: req.params.eventid, deleted: false}, req.body, {runValidators: true, new: true})
+
+    console.log(oldEvent.image)
+    console.log(oldEvent.image !== event.image || oldEvent.bigImage !== event.bigImage)
+    console.log(await Event.findOne({image: oldEvent.image, bigImage: oldEvent.bigImage, deleted: false}))
+    
+
+    if(oldEvent.image && (oldEvent.image !== event.image || oldEvent.bigImage !== event.bigImage) && !(await Event.findOne({image: oldEvent.image, bigImage: oldEvent.bigImage, deleted: false}))){
+        console.log('is this called?')
+        await handleImageDeletion(oldEvent.image, oldEvent.bigImage)
+    }
 
     postEventEdit(event, req.user._id)
 
@@ -192,7 +197,16 @@ const getAllBackgroundImageLinks = asyncHandler(async (req, res) => {
 })
 
 const deleteEvent = asyncHandler(async (req, res) => {
-    const event = await Event.findByIdAndUpdate(req.params.eventid, {deleted: true}, {new: true})
+    const oldEvent = await Event.findById(req.params.eventid)
+    const deletionName = oldEvent.name + crypto.randomUUID()
+    const event = await Event.findByIdAndUpdate(
+        req.params.eventid,
+        {
+            deleted: true,
+            name: deletionName,
+        },
+        { new: true },
+    )
 
     if(!event){
         res.status(400)

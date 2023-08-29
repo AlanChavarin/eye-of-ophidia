@@ -38,11 +38,11 @@ import BackgroundImageSelector from './BackgroundImageSelector'
 function PostEvent() {
   const navigate = useNavigate()
   const {eventid} = useParams()
-  const {eventLoading, getEvent, postEvent, deleteEvent} = useEventService()
+  const {eventLoading, getEvent, postEvent, deleteEvent, deleteBackgroundImage} = useEventService()
   const [state, dispatch] = useReducer(postEventReducer, INITIAL_STATE)
   
   const {form, isMultiDay, deletePopup, previewTab} = state
-  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure, resetImage, image, backgroundPosition} = form
+  const {name, location, format, startDate, endDate, top8Day, description, dayRoundArr, notATypicalTournamentStructure, resetImage, image, bigImage, backgroundPosition} = form
 
   const {smallImageCompression, bigImageCompression, progress} = useImageCompression()
 
@@ -123,6 +123,14 @@ function PostEvent() {
     })
   }
 
+  // const onDeleteBackgroundImage = (e) => {
+  //   e.preventDefault()
+  //   deleteBackgroundImage(image, bigImage)
+  //   .then(data => {
+  //     onChangeImageLink(null, null)
+  //   })
+  // }
+
   const setPreviewTab = (tab) => {
     dispatch({type: 'UPDATE_PREVIEWTAB', payload: tab})
   }
@@ -136,17 +144,17 @@ function PostEvent() {
 
         <div className={PostMatchCSS.container}>
           <label>Event Name <span style={{color: 'red'}}>*</span></label>
-          <input type="text" name='name' value={name} onChange={onChange} required className={PostMatchCSS.input}/>
+          <input type="text" name='name' value={name} onChange={onChange} required className={PostMatchCSS.input} data-cy="eventName"/>
         </div>
         
         <div className={PostMatchCSS.container}>
           <label>Location Name <span style={{color: 'red'}}>*</span></label>
-          <input type="text" name='location' value={location} onChange={onChange} required className={PostMatchCSS.input}/>
+          <input type="text" name='location' value={location} onChange={onChange} required className={PostMatchCSS.input} data-cy="eventLocation"/>
         </div>
 
         <div className={PostMatchCSS.container}>
           <label>Format <span style={{color: 'red'}}>*</span></label>
-          <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format}>
+          <select name="format" className={HeroSelectCSS.select} onChange={onChange} value={format} data-cy="eventFormat">
             <option value="Classic Constructed">Classic Constructed</option>
             <option value="Blitz">Blitz</option>
             <option value="Draft">Draft</option>
@@ -162,7 +170,7 @@ function PostEvent() {
 
         <div>
           <label>Multiday Event</label>
-          <input type="checkbox"  value={isMultiDay} onChange={onChangeCheckedMultiDay}/>
+          <input type="checkbox"  value={isMultiDay} onChange={onChangeCheckedMultiDay} data-cy="eventMultidayCheckbox"/>
         </div>
 
         <div className={PostMatchCSS.container}>
@@ -171,22 +179,22 @@ function PostEvent() {
               Event spans too many days for a conventional tournament structure (max 5). Change dates or check "Non-conventional tournament structure" on.
             </span>}
           <label>{isMultiDay ? <>Start Date</> : <>Date</>} </label>
-          <input type="date" name='startDate' value={startDate} onChange={onChange} required className={PostMatchCSS.input}
+          <input data-cy="eventStartDate" type="date" name='startDate' value={startDate} onChange={onChange} required className={PostMatchCSS.input}
           style={{backgroundColor: (getTimeDifference(startDate, endDate) > 4 && !notATypicalTournamentStructure) ? '#ff3333' : ''}}/>
         </div>
 
         {isMultiDay && <>
           <div className={PostMatchCSS.container} >
             <label>End Date</label>
-            <input type="date" name='endDate' value={endDate} onChange={onChange} required className={PostMatchCSS.input}
+            <input data-cy="eventEndDate" type="date" name='endDate' value={endDate} onChange={onChange} required className={PostMatchCSS.input}
             style={{backgroundColor: (getTimeDifference(startDate, endDate) > 4 && !notATypicalTournamentStructure) ? '#ff3333' : ''}}/>
           </div>
         </>}
  
-        { (isMultiDay && !notATypicalTournamentStructure && (getTimeDifference(startDate, endDate) < 5)) && <>
+        {(isMultiDay && !notATypicalTournamentStructure && (getTimeDifference(startDate, endDate) < 5)) && <>
           <div>
             <label>Dedicated day for top 8</label>
-            <input type="checkbox" name="top8Day" value={top8Day} onChange={onChangeCheckedTop8Day}/>
+            <input type="checkbox" name="top8Day" value={top8Day} onChange={onChangeCheckedTop8Day} data-cy="eventTop8DayCheckbox"/>
           </div>
 
           <div className={PostMatchCSS.container}>
@@ -194,7 +202,7 @@ function PostEvent() {
               && Array.from(Array(getTimeDifference(startDate, endDate) + !top8Day),
                (e, i) => <div key={i}>
                 <label>Last swiss round of day {i + 1}: </label>
-                <input type="number" value={dayRoundArr[i]} index={i} onChange={(e) => onChangeDayRoundArray(e)} style={{width: '50px'}}/>
+                <input data-cy={'dayRound' + i} type="number" value={dayRoundArr[i]} index={i} onChange={(e) => onChangeDayRoundArray(e)} style={{width: '50px'}}/>
             </div>)}
             {top8Day && <div>
               <label>Day {getTimeDifference(startDate, endDate) + 1}: Top 8 only</label>
@@ -204,12 +212,12 @@ function PostEvent() {
         
         <div className={PostMatchCSS.container}>
           <label>Description</label>
-          <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={PostMatchCSS.input}></textarea>
-        </div>
+          <textarea name="description" cols="30" rows="5" value={description} onChange={onChange}  className={PostMatchCSS.input} data-cy="eventDescription"></textarea>
+        </div> 
 
         <div className={PostMatchCSS.container} style={{display: 'flex', flexDirection: 'column'}}>
-          <label>Thumbnail Image {progress && <span> - Compressing: {progress}%</span>}</label>
-          <input type="file" onChange={onChangeImage}/>
+          <label data-cy="eventChooseFileLabel">Thumbnail Image {progress && <span data-cy="fileCompressionStatusSpan"> - Compressing: {progress}%</span>}</label>
+          <input type="file" onChange={onChangeImage} data-cy="eventChooseFile"/>
         </div>
 
         <div className={PostMatchCSS.container}>
@@ -219,7 +227,7 @@ function PostEvent() {
 
         <div>
           <label>Adjust hero background offset %: </label>
-          <input type="number" min='0' max='100' onChange={onChangeBackgroundPosition} value={backgroundPosition}/>
+          <input type="number" min='0' max='100' onChange={onChangeBackgroundPosition} value={backgroundPosition} data-cy="eventOffset"/>
         </div>
 
         <div className={PostMatchCSS.container}>
@@ -239,10 +247,10 @@ function PostEvent() {
 
         <div>
           <label>Reset image to default? (will not upload image)</label>
-          <input type="checkbox" name="resetImage" value={resetImage} onChange={onChangeChecked}/>
+          <input type="checkbox" name="resetImage" value={resetImage} onChange={onChangeChecked} data-cy="eventResetImageCheckbox"/>
         </div>
 
-        <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton}> 
+        <button type="submit" form="form1" value="Submit" className={PostMatchCSS.submitButton} data-cy="eventFormSubmitButton"> 
           {eventLoading ? <ClipLoader color='white' size={20}/>
            : <>Submit</>}
         </button>

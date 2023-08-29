@@ -10,7 +10,8 @@ function EventThumbnail({event, page, recyclebin, match, disableLink}) {
     ${(page==='event') && EventThumbnailCSS.forEventsPage} 
     ${(page==='match') && EventThumbnailCSS.forMatchPage}
     ${(page==='issue') && EventThumbnailCSS.forIssuePage}
-    `} 
+    `}
+    data-cy="eventThumbnail"
     style={{
       backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url(${getEventBackgroundImageURL(event)})`,
       cursor: disableLink ? 'default' : 'pointer',
