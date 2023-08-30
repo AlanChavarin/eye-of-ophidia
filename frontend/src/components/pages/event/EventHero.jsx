@@ -40,7 +40,7 @@ function EventHero({event, backgroundImage, recyclebin, eventid, page, setTab, l
                     {(!recyclebin && (userData.privilege==='admin' || userData.privilege==='moderator')) && <>
                         <Link className={EventCSS.cornerItem} to={`/postevent/${eventid}`} data-cy="eventEditButton">Edit <FontAwesomeIcon icon={faEdit} /></Link>
                         <button 
-                            onClick={() => navigate(`/postmatch/?eventName=${event.name}&top8round=${lastRound?.top8}&round=${lastRound?.round}&format=${lastRound.format}&twitch=${lastRound.twitch}`)} 
+                            onClick={() => navigate(`/postmatch/?eventName=${event.name}&top8round=${lastRound?.top8}&round=${lastRound?.round}&format=${lastRound?.format}&twitch=${lastRound?.twitch}`)} 
                             className={EventCSS.cornerItem}
                             data-cy="postMatchButton"> 
                                 Post Match 
