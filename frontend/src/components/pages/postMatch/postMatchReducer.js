@@ -102,8 +102,7 @@ export const postMatchReducer = (state, action) => {
                     ...action.payload,
                     event: action.payload.event.name,
                     top8: action.payload.top8 ? 'true' : 'false',
-                    date: action.payload.date ? action.payload.date.substring(0, 10) : '',
-                    format: ''
+                    date: action.payload.date ? action.payload.date.substring(0, 10) : ''
                 }
             }
 
@@ -161,18 +160,18 @@ export const postMatchReducer = (state, action) => {
                     }
                 }
 
-                if(state.form.event === thisEvent.name){
-                    // newState = {
-                    //     ...newState,
-                    //     selectedEventData: thisEvent
-                    // }
-                    newState = {
-                        ...state,
-                        form: {
-                            ...state.form,
-                        } 
-                    }
-                }
+                // if(state.form.event === thisEvent.name){
+                //     // newState = {
+                //     //     ...newState,
+                //     //     selectedEventData: thisEvent
+                //     // }
+                //     newState = {
+                //         ...state,
+                //         form: {
+                //             ...state.form,
+                //         } 
+                //     }
+                // }
             })
             
             if(newState){
@@ -270,9 +269,12 @@ export const postMatchReducer = (state, action) => {
                 form: {
                     ...state.form,
                     top8: query.top8round ? query.top8round : '',
-                    swissRound: (query.top8round==='false' || !query.top8round) ? query.round : null,
+                    swissRound: (query.top8round==='false' || !query.top8round) ? query.round : 1,
                     top8Round: query.top8round==='true' ? query.round : 'None',
-                    event: query.eventName ? query.eventName : ''
+                    event: query.eventName ? query.eventName : '',
+                    format: query.format ? query.format : '',
+                    twitch: query.twitch=='true' ? !!query.twitch : false
+
                 }
             }
         }

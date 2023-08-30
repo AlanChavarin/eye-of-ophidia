@@ -42,21 +42,25 @@ export const eventReducer = (state, action) => {
                 lastRound: action.payload
             }
         case('SET_MATCHES_AND_LASTROUND') : {
-            let round = action.payload[action.payload.length-1]
+            let match = action.payload[action.payload.length-1]
+            let round
             let top8
             if(!round?.top8){
                 top8 = false
-                round = round?.swissRound
+                round = match?.swissRound
             } else {
                 top8 = true
-                round = round?.top8Round
+                round = match?.top8Round
             }
             return{
                 ...state,
                 matches: action.payload,
                 lastRound: {
                     top8: top8,
-                    round: round
+                    round: round,
+                    format: match?.format,
+                    twitch: match?.twitch,
+
                 }
             }
         }
