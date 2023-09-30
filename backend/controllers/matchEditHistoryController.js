@@ -16,13 +16,13 @@ const getMatchEditHistory = asyncHandler(async (req, res) => {
         {"$match": find},
         { "$facet": {
             "histories": [
+                { "$sort": {"createdAt": -1}},
                 { "$skip": skip },
                 { "$limit": limit },
-                { "$sort": {"createdAt": -1}},
                 { "$lookup": {
                     from: "users",
                     localField: "editor",
-                    foreignField: "id",
+                    foreignField: "_id",
                     as: "ownerDetails"
                 }}
             ],

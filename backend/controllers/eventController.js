@@ -146,14 +146,9 @@ const updateEvent = asyncHandler(async (req, res) => {
 
     const oldEvent = await Event.findById(req.params.eventid)
     const event = await Event.findOneAndUpdate({_id: req.params.eventid, deleted: false}, req.body, {runValidators: true, new: true})
-
-    console.log(oldEvent.image)
-    console.log(oldEvent.image !== event.image || oldEvent.bigImage !== event.bigImage)
-    console.log(await Event.findOne({image: oldEvent.image, bigImage: oldEvent.bigImage, deleted: false}))
     
 
     if(oldEvent.image && (oldEvent.image !== event.image || oldEvent.bigImage !== event.bigImage) && !(await Event.findOne({image: oldEvent.image, bigImage: oldEvent.bigImage, deleted: false}))){
-        console.log('is this called?')
         await handleImageDeletion(oldEvent.image, oldEvent.bigImage)
     }
 

@@ -1,5 +1,6 @@
 //react
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import AlertContext from '../../../context/AlertContext'
 
 //service
 import useEventService from '../../../service/useEventService'
@@ -35,6 +36,7 @@ function BackgroundImageSelector({onChange, image}) {
     const [activeImagesToDelete, setActiveImagesToDelete] = useState()
     const {eventLoading, getAllBackgroundImageLinks, deleteBackgroundImage} = useEventService()
     const [imageLinks, setImageLinks] = useState()
+    const {addAlert} = useContext(AlertContext)
 
     const onClick = (e) => {
         e.preventDefault()
@@ -85,14 +87,14 @@ function BackgroundImageSelector({onChange, image}) {
     <div className={BackgroundImageSelectorCSS.parent} data-cy="eventBackgroundImageSelector">
         <div className={BackgroundImageSelectorCSS.inner}>
              <h1>Select Background Image</h1>
-             <button onClick={onClick} className={BackgroundImageSelectorCSS.xButton} data-cy="eventBackgroundImageSelectorExitButton">X</button>
+             <button onClick={(e) => onClick(e)} className={BackgroundImageSelectorCSS.xButton} data-cy="eventBackgroundImageSelectorExitButton">X</button>
              {eventLoading && <ClipLoader size={50}/>}
              <div className={BackgroundImageSelectorCSS.imageContainer}>
                 {imageLinks && 
                     imageLinks.map((link, i) => link && 
                         <div className={BackgroundImageSelectorCSS.image} 
                             style={{backgroundImage: `url(${getURL(link.image)})`}}
-                            onClick={(e) => onChange(link.image, link.bigImage)}
+                            onClick={(e) => {onChange(link.image, link.bigImage); addAlert('Image Chosen', 'success')}}
                             key={i}
                             data-cy={"eventBackgroundImage" + i}
                         >
@@ -111,7 +113,7 @@ function BackgroundImageSelector({onChange, image}) {
                 </div>
                 <div className={PostMatchCSS.popupButtons}>
                     {eventLoading ? <ClipLoader size={25}/> : <>
-                    <button className={PopupCSS.deleteButton} onClick={e => onDelete(e)}>Delete</button>
+                    <button className={PopupCSS.deleteButton} onClick={(e) => onDelete(e)}>Delete</button>
                     <button className={PopupCSS.cancelButton} onClick={(e) => deactivateDeletePopup(e)}>Cancel</button>
                     </>}
                 </div>
@@ -121,7 +123,7 @@ function BackgroundImageSelector({onChange, image}) {
 
     :
 
-    <button onClick={onClick} className={BackgroundImageSelectorCSS.button} data-cy="eventBackgroundImageSelectorButton">Choose Image</button>
+    <button onClick={(e) => onClick(e)} className={BackgroundImageSelectorCSS.button} data-cy="eventBackgroundImageSelectorButton">Choose Image</button>
 
     
   }

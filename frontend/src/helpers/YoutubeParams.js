@@ -1,6 +1,10 @@
 export const getYoutubeParams = (link) => {
     if(!link){
         return false
+    } else if (link.substring(0, 29) === 'https://www.youtube.com/live/'){
+        let id = link.substring(29, link.indexOf('?'))
+        return [id, 0]
+
     } else if(link.substring(0, 17) === 'https://youtu.be/'){
         let params = link.substring(17, link.length)
         let time

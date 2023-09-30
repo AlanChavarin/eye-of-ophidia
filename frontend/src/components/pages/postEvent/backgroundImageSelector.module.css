@@ -53,13 +53,13 @@
 
 }
 
-@media(width < 1060px){
+/* @media(width < 1060px){
     .imageContainer{
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
     }
-}
+} */
 
 @media(width < 500px){
     .inner{
