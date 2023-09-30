@@ -1,6 +1,7 @@
 //react
 import {useParams, useSearchParams, useNavigate} from 'react-router-dom'
 import { useReducer, useEffect } from 'react'
+import { Helmet } from 'react-helmet';
 
 //reducer
 import { eventReducer, INITIAL_STATE } from './eventReducer'
@@ -30,6 +31,7 @@ import EventHero from './EventHero'
 //helper
 import { filter } from './filterHelper'
 import { getEventBackgroundImageURL } from './backgroundImageHelper'
+
 
 
 function Event() {
@@ -140,6 +142,17 @@ function Event() {
             
             <br />
         </>)}
+
+
+        <Helmet>
+            <title>{event.name}</title>
+            <meta name="description" content={`${event.name} VoDs`}/>
+            <meta property="og:title" content={event.name} />
+            <meta property="og:description" content={`${event.name} VoDs`} />
+            <meta property="og:image" content={event.backgroundImage} />
+            <meta property="og:type" content="website" />
+        </Helmet>
+
     </div>
   )
 }
