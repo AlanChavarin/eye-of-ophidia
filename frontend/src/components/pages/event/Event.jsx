@@ -143,16 +143,6 @@ function Event() {
             <br />
         </>)}
 
-
-        <Helmet>
-            <title>{event.name}</title>
-            <meta name="description" content={`${event.name} VoDs`}/>
-            <meta property="og:title" content={event.name} />
-            <meta property="og:description" content={`${event.name} VoDs`} />
-            <meta property="og:image" content={event.backgroundImage} />
-            <meta property="og:type" content="website" />
-        </Helmet>
-
     </div>
   )
 }
