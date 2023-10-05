@@ -8,10 +8,19 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 //css
 import MatchThumbnailCSS from './styles/MatchThumbnail.module.css'
 
+//helpers
+import heroUrlHelper from './helpers/heroUrlHelper'
+
 
 function MatchThumbnail({match, page, recyclebin}) {
-  const hero1url = window.location.origin + `/images/${encodeURI(match.player1hero)}.jpg`
-  const hero2url = window.location.origin + `/images/${encodeURI(match.player2hero)}.jpg`
+  // const hero1url = window.location.origin + `/images/${encodeURI(match.player1hero)}.jpg`
+  // const hero2url = window.location.origin + `/images/${encodeURI(match.player2hero)}.jpg`
+
+  const hero1url = heroUrlHelper(match.player1hero)
+  const hero2url = heroUrlHelper(match.player2hero)
+
+  console.log(hero1url)
+  console.log(hero2url)
 
   const getMatchDate = () => {
     if(match.event.notATypicalTournamentStructure && match.date){

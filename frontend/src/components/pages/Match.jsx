@@ -25,6 +25,9 @@ import MatchCSS from './styles/Match.module.css'
 import MoonLoader from 'react-spinners/MoonLoader'
 import ClipLoader from 'react-spinners/ClipLoader'
 
+//helpers
+import heroUrlHelper from '../assets/helpers/heroUrlHelper'
+
 function Match() {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
@@ -42,7 +45,8 @@ function Match() {
     }, [])
 
     const heroURL = (hero) => {
-      return window.location.origin + `/images/${encodeURI(hero)}.jpg`
+      // return window.location.origin + `/images/${encodeURI(hero)}.jpg`
+      return heroUrlHelper(hero)
     }
 
     const onClick = (e) => {
