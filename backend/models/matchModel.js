@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
+const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Living Legend', 'Mixed']
 const top8Rounds = ['Quarter Finals', 'Semi Finals', 'Finals', 'None']
 const Hero = require('../models/heroModel')
 const ObjectId = require('mongodb').ObjectId

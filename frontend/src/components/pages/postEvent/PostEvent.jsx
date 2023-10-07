@@ -159,6 +159,7 @@ function PostEvent() {
             <option value="Blitz">Blitz</option>
             <option value="Draft">Draft</option>
             <option value="Sealed">Sealed</option>
+            <option value="Living Legend">Living Legend</option>
             <option value="Mixed">Mixed</option>
           </select>
         </div>

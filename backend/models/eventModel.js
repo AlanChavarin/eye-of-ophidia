@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
+const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Living Legend', 'Mixed']
 
 const eventSchema = mongoose.Schema({
     name: {

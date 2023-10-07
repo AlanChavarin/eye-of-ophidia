@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const ObjectId = require('mongodb').ObjectId
-const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Mixed']
+const formats = ['Classic Constructed', 'Blitz', 'Draft', 'Sealed', 'Living Legend', 'Mixed']
 const top8Rounds = ['Quarter Finals', 'Semi Finals', 'Finals', 'None']
 
 const matchEditHistorySchema = mongoose.Schema({

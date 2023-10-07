@@ -136,6 +136,7 @@ function PostMatch() {
             <option value="Classic Constructed">Classic Constructed</option>
             <option value="Blitz">Blitz</option>
             <option value="Draft">Draft</option>
+            <option value="Living Legend">Living Legend</option>
             <option value="Sealed">Sealed</option>
           </select>
         </div>

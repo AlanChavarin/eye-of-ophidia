@@ -194,7 +194,7 @@ export const postMatchReducer = (state, action) => {
             const {format} = state.form
             let heroType
 
-            if(format==='Classic Constructed'){
+            if(format==='Classic Constructed' || format==='Living Legend'){
                 heroType = 'adult'
             }
             else if(format==='Blitz' || format==='Draft' || format==='Sealed'){
