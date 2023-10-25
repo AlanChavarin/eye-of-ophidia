@@ -37,6 +37,10 @@ function Issue({issue}) {
         setIssueData(issue)
     }, [])
 
+    useEffect(() => {
+        console.log(issueData)
+    }, [issueData])
+
   return (
     <div key={issue._id} className={IssuesCSS.issueContainer}>
         <MoonLoader size={30} loading={issueLoading && !issueData} cssOverride={{alignSelf: 'center'}}/> 
@@ -76,8 +80,9 @@ function Issue({issue}) {
 
         </>)}
             </div>
-            <div style={{fontSize: 'smaller'}}>
-                Submitted by <span style={{fontSize: issueData?.name?.length > 19 && '.7em'}}>{issueData?.name}</span> at {issueData?.createdDate.slice(0, 10)} 
+            <div style={{fontSize: 'smaller', display: 'flex', flexDirection: 'column'}}>
+                <div>Submitted by <span style={{fontSize: issueData?.name?.length > 19 && '.7em'}}>{issueData?.name}</span> at {issueData?.createdDate.slice(0, 10)}</div> 
+                <a href={`mailto:${issueData?.creatorDetails?.email}`}>{issueData?.creatorDetails?.email}</a>
             </div>
         </>}
     </div>
