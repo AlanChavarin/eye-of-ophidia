@@ -11,7 +11,6 @@ function Home() {
 
   return (
     <div className={HomeCSS.parent}>
-      <p style={{fontSize: '1em', padding: '8px'}}>Heads up! You may experience issues with youtube's timestamps when watching matches. If you do, use <span style={{fontWeight: 'bold'}}>Incognito mode</span>, or sign out of youtube/google.</p>
       <p className={HomeCSS.p}><FontAwesomeIcon icon={faEye} className={HomeCSS.icon}/>Eye of Ophidia</p>
       <SearchForm page='matches'/>
       {/* live event */}
