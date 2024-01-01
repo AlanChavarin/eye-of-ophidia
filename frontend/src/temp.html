@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Embed</title>
+</head>
+<body>
+
+<!-- Replace 'VIDEO_ID' and 'TIMESTAMP' with your actual values -->
+<iframe id="youtubePlayer" width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID?start=TIMESTAMP" frameborder="0" allowfullscreen></iframe>
+
+<script>
+    // Replace 'VIDEO_ID' with your actual video ID
+    var videoId = 'VIDEO_ID';
+
+    // Replace 'TIMESTAMP' with your actual timestamp in seconds
+    var startTime = TIMESTAMP;
+
+    // This function will be called when the YouTube API is ready
+    function onYouTubeIframeAPIReady() {
+        // Create a new YouTube player
+        var player = new YT.Player('youtubePlayer', {
+            videoId: videoId,
+            playerVars: {
+                'start': startTime,
+                'autoplay': 1,  // Auto-play the video
+                'controls': 0   // Hide video controls
+            },
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+
+    // This function will be called when the player is ready
+    function onPlayerReady(event) {
+        // You can perform additional actions here if needed
+    }
+
+    // Load the YouTube API script asynchronously
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+</script>
+
+</body>
+</html>

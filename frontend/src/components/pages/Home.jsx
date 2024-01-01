@@ -11,7 +11,7 @@ function Home() {
 
   return (
     <div className={HomeCSS.parent}>
-      <p style={{fontSize: '1em', padding: '8px'}}>Heads up! This tool is currently <span style={{fontWeight: 'bold'}}>BUGGED</span> due to a bug with youtube's video playback. Please either use <span style={{fontWeight: 'bold'}}>incognito mode</span>, <span style={{fontWeight: 'bold'}}>sign out</span> of google/youtube, or use a different browser to restore proper functionality. A fix is currently on its way.</p>
+      <p style={{fontSize: '1em', padding: '8px'}}>Heads up! You may experience issues with youtube's timestamps when watching matches. If you do, use <span style={{fontWeight: 'bold'}}>Incognito mode</span>, or sign out of youtube/google.</p>
       <p className={HomeCSS.p}><FontAwesomeIcon icon={faEye} className={HomeCSS.icon}/>Eye of Ophidia</p>
       <SearchForm page='matches'/>
       {/* live event */}

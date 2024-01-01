@@ -67,7 +67,7 @@ function Match() {
 
         <div className={MatchCSS.videoFeedbackContainer}>
           <div className={MatchCSS.videoContainer}>
-            {(match && !match.twitch) && <iframe src={`https://www.youtube.com/embed/${match.link}?start=${match.timeStamp===0 ? 1 : match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" start="180" allowFullScreen data-cy="youtubeIFrame"></iframe>}
+            {(match && !match.twitch) && <iframe src={`https://www.youtube-nocookie.com/embed/${match.link}?start=${match.timeStamp===0 ? 1 : match.timeStamp}&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  allowFullScreen data-cy="youtubeIFrame"></iframe>}
 
             {/* {(match && !match.twitch) && <iframe src={`https://www.youtube.com/embed/${match.link}?&rel=0`} title="YouTube video player" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" start="180" allowFullScreen data-cy="youtubeIFrame"></iframe>} */}
 
