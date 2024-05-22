@@ -35,10 +35,10 @@ function SearchableDropdown({items, name, value, onChange, placeholder, dataCy})
 
   return (
     <div className={SearchableDropdownCSS.parent}>
-        <input data-cy={dataCy} placeholder={placeholder && items[0]} type="text" name={name} onChange={(e) => {onFilter(e); onChange(e)}} value={value} onFocus={onFocus} onBlur={onBlur} className={LoginCSS.input}/>
-        <span className={SearchableDropdownCSS.dropdown} style={{visibility: dropdown ? "visible" : "hidden"}}>
-          {items?.map((item) => (<div className='dropdownItem' name={name} onClick={onClick} value={item} key={item}>{item}</div>))}
-        </span>
+      <input data-cy={dataCy} placeholder={placeholder && items[0]} type="text" name={name} onChange={(e) => {onFilter(e); onChange(e)}} value={value} onFocus={onFocus} onBlur={onBlur} className={LoginCSS.input}/>
+      <span className={SearchableDropdownCSS.dropdown} style={{visibility: dropdown ? "visible" : "hidden"}}>
+        {items?.map((item) => (<div className='dropdownItem' name={name} onClick={onClick} value={item} key={item}>{item}</div>))}
+      </span>
     </div>
   )
 }
